@@ -129,15 +129,19 @@ class _AllJobsState extends ConsumerState<AllJobs> {
           Consumer(builder: (context, watch, child) {
             addList.addAllJobs();
             jobsList.when(
-                data: (data) {},
+                data: (data) {
+                  log('inside data');
+                },
                 error: (error, stack) => Text(error.toString()),
                 loading: () =>
                     const Center(child: CircularProgressIndicator()));
             return Container(
+              height: 100,
+              width: double.infinity,
               child: ListView.builder(
                 itemCount: 2,
                 itemBuilder: (context, index) {
-                  Text('ss');
+                  return Text('ss');
                 },
               ),
             );

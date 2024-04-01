@@ -1,9 +1,9 @@
-
 class AllJobsModel {
   AllJobsModel({
-      this.data, 
-      this.links, 
-      this.meta,});
+    this.data,
+    this.links,
+    this.meta,
+  });
 
   AllJobsModel.fromJson(dynamic json) {
     if (json['data'] != null) {
@@ -18,13 +18,16 @@ class AllJobsModel {
   List<ViewAllJobsData>? data;
   Meta? links;
   Meta? meta;
-AllJobsModel copyWith({  List<ViewAllJobsData>? data,
-  Meta? links,
-  Meta? meta,
-}) => AllJobsModel(  data: data ?? this.data,
-  links: links ?? this.links,
-  meta: meta ?? this.meta,
-);
+  AllJobsModel copyWith({
+    List<ViewAllJobsData>? data,
+    Meta? links,
+    Meta? meta,
+  }) =>
+      AllJobsModel(
+        data: data ?? this.data,
+        links: links ?? this.links,
+        meta: meta ?? this.meta,
+      );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     if (data != null) {
@@ -38,7 +41,6 @@ AllJobsModel copyWith({  List<ViewAllJobsData>? data,
     }
     return map;
   }
-
 }
 
 class Meta {
@@ -50,7 +52,8 @@ class Meta {
     this.path,
     this.perPage,
     this.to,
-    this.total,});
+    this.total,
+  });
 
   Meta.fromJson(dynamic json) {
     currentPage = json['current_page'];
@@ -75,7 +78,8 @@ class Meta {
   int? perPage;
   int? to;
   int? total;
-  Meta copyWith({  int? currentPage,
+  Meta copyWith({
+    int? currentPage,
     int? from,
     int? lastPage,
     List<LinksMeta>? links,
@@ -83,15 +87,17 @@ class Meta {
     int? perPage,
     int? to,
     int? total,
-  }) => Meta(  currentPage: currentPage ?? this.currentPage,
-    from: from ?? this.from,
-    lastPage: lastPage ?? this.lastPage,
-    links: links ?? this.links,
-    path: path ?? this.path,
-    perPage: perPage ?? this.perPage,
-    to: to ?? this.to,
-    total: total ?? this.total,
-  );
+  }) =>
+      Meta(
+        currentPage: currentPage ?? this.currentPage,
+        from: from ?? this.from,
+        lastPage: lastPage ?? this.lastPage,
+        links: links ?? this.links,
+        path: path ?? this.path,
+        perPage: perPage ?? this.perPage,
+        to: to ?? this.to,
+        total: total ?? this.total,
+      );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['current_page'] = currentPage;
@@ -106,15 +112,14 @@ class Meta {
     map['total'] = total;
     return map;
   }
-
-
 }
 
 class LinksMeta {
   LinksMeta({
     this.url,
     this.label,
-    this.active,});
+    this.active,
+  });
 
   LinksMeta.fromJson(dynamic json) {
     url = json['url'];
@@ -128,10 +133,12 @@ class LinksMeta {
     String? url,
     String? label,
     bool? active,
-  }) => LinksMeta(  url: url ?? this.url,
-    label: label ?? this.label,
-    active: active ?? this.active,
-  );
+  }) =>
+      LinksMeta(
+        url: url ?? this.url,
+        label: label ?? this.label,
+        active: active ?? this.active,
+      );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['url'] = url;
@@ -139,7 +146,6 @@ class LinksMeta {
     map['active'] = active;
     return map;
   }
-
 }
 
 class Links {
@@ -147,7 +153,8 @@ class Links {
     this.first,
     this.last,
     this.prev,
-    this.next,});
+    this.next,
+  });
 
   Links.fromJson(dynamic json) {
     first = json['first'];
@@ -159,15 +166,18 @@ class Links {
   String? last;
   dynamic prev;
   String? next;
-  Links copyWith({  String? first,
+  Links copyWith({
+    String? first,
     String? last,
     dynamic prev,
     String? next,
-  }) => Links(  first: first ?? this.first,
-    last: last ?? this.last,
-    prev: prev ?? this.prev,
-    next: next ?? this.next,
-  );
+  }) =>
+      Links(
+        first: first ?? this.first,
+        last: last ?? this.last,
+        prev: prev ?? this.prev,
+        next: next ?? this.next,
+      );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['first'] = first;
@@ -176,43 +186,43 @@ class Links {
     map['next'] = next;
     return map;
   }
-
 }
 
 class ViewAllJobsData {
   ViewAllJobsData({
-      this.id, 
-      this.serviceProviderId, 
-      this.serviceProviderName, 
-      this.title, 
-      this.positionType, 
-      this.categoryId, 
-      this.categoryName, 
-      this.openings, 
-      this.orgId, 
-      this.orgName, 
-      this.pradeshId, 
-      this.pradeshName, 
-      this.districtId, 
-      this.districtName, 
-      this.muniId, 
-      this.muniName, 
-      this.ward, 
-      this.address, 
-      this.discloseAddress, 
-      this.deadline, 
-      this.engDeadline, 
-      this.description, 
-      this.specification, 
-      this.salaryMin, 
-      this.salaryMax, 
-      this.requiredExperience, 
-      this.requiredEducation, 
-      this.status, 
-      this.discloseOrgAddress, 
-      this.organization, 
-      this.jobCategory, 
-      this.serviceProvider,});
+    this.id,
+    this.serviceProviderId,
+    this.serviceProviderName,
+    this.title,
+    this.positionType,
+    this.categoryId,
+    this.categoryName,
+    this.openings,
+    this.orgId,
+    this.orgName,
+    this.pradeshId,
+    this.pradeshName,
+    this.districtId,
+    this.districtName,
+    this.muniId,
+    this.muniName,
+    this.ward,
+    this.address,
+    this.discloseAddress,
+    this.deadline,
+    this.engDeadline,
+    this.description,
+    this.specification,
+    this.salaryMin,
+    this.salaryMax,
+    this.requiredExperience,
+    this.requiredEducation,
+    this.status,
+    this.discloseOrgAddress,
+    this.organization,
+    this.jobCategory,
+    this.serviceProvider,
+  });
 
   ViewAllJobsData.fromJson(dynamic json) {
     id = json['id'];
@@ -220,18 +230,18 @@ class ViewAllJobsData {
     serviceProviderName = json['service_provider_name'];
     title = json['title'];
     positionType = json['position_type'];
-    categoryId = json['category_id'];
+    categoryId = int.parse(json['category_id']);
     categoryName = json['category_name'];
     openings = json['openings'];
     orgId = json['org_id'];
     orgName = json['org_name'];
-    pradeshId = json['pradesh_id'];
+    pradeshId = int.parse(json['pradesh_id']);
     pradeshName = json['pradesh_name'];
-    districtId = json['district_id'];
+    districtId = int.parse(json['district_id']);
     districtName = json['district_name'];
-    muniId = json['muni_id'];
+    muniId = int.parse(json['muni_id']);
     muniName = json['muni_name'];
-    ward = json['ward'];
+    ward = int.parse(json['ward']);
     address = json['address'];
     discloseAddress = json['disclose_address'];
     deadline = json['deadline'];
@@ -243,10 +253,16 @@ class ViewAllJobsData {
     requiredExperience = json['required_experience'];
     requiredEducation = json['required_education'];
     status = json['status'];
-    discloseOrgAddress = json['disclose_org_address'];
-    organization = json['organization'] != null ? Organization.fromJson(json['organization']) : null;
-    jobCategory = json['job_category'] != null ? JobCategory.fromJson(json['job_category']) : null;
-    serviceProvider = json['serviceProvider'] != null ? ServiceProvider.fromJson(json['serviceProvider']) : null;
+    discloseOrgAddress = int.parse(json['disclose_org_address']);
+    organization = json['organization'] != null
+        ? Organization.fromJson(json['organization'])
+        : null;
+    jobCategory = json['job_category'] != null
+        ? JobCategory.fromJson(json['job_category'])
+        : null;
+    serviceProvider = json['serviceProvider'] != null
+        ? ServiceProvider.fromJson(json['serviceProvider'])
+        : null;
   }
   int? id;
   int? serviceProviderId;
@@ -256,7 +272,7 @@ class ViewAllJobsData {
   int? categoryId;
   String? categoryName;
   String? openings;
-  int? orgId;
+  String? orgId;
   String? orgName;
   int? pradeshId;
   String? pradeshName;
@@ -280,71 +296,74 @@ class ViewAllJobsData {
   Organization? organization;
   JobCategory? jobCategory;
   ServiceProvider? serviceProvider;
-ViewAllJobsData copyWith({  int? id,
-  int? serviceProviderId,
-  String? serviceProviderName,
-  String? title,
-  String? positionType,
-  int? categoryId,
-  String? categoryName,
-  String? openings,
-  int? orgId,
-  String? orgName,
-  int? pradeshId,
-  String? pradeshName,
-  int? districtId,
-  String? districtName,
-  int? muniId,
-  String? muniName,
-  int? ward,
-  String? address,
-  int? discloseAddress,
-  String? deadline,
-  String? engDeadline,
-  String? description,
-  String? specification,
-  String? salaryMin,
-  String? salaryMax,
-  String? requiredExperience,
-  String? requiredEducation,
-  String? status,
-  int? discloseOrgAddress,
-  Organization? organization,
-  JobCategory? jobCategory,
-  ServiceProvider? serviceProvider,
-}) => ViewAllJobsData(  id: id ?? this.id,
-  serviceProviderId: serviceProviderId ?? this.serviceProviderId,
-  serviceProviderName: serviceProviderName ?? this.serviceProviderName,
-  title: title ?? this.title,
-  positionType: positionType ?? this.positionType,
-  categoryId: categoryId ?? this.categoryId,
-  categoryName: categoryName ?? this.categoryName,
-  openings: openings ?? this.openings,
-  orgId: orgId ?? this.orgId,
-  orgName: orgName ?? this.orgName,
-  pradeshId: pradeshId ?? this.pradeshId,
-  pradeshName: pradeshName ?? this.pradeshName,
-  districtId: districtId ?? this.districtId,
-  districtName: districtName ?? this.districtName,
-  muniId: muniId ?? this.muniId,
-  muniName: muniName ?? this.muniName,
-  ward: ward ?? this.ward,
-  address: address ?? this.address,
-  discloseAddress: discloseAddress ?? this.discloseAddress,
-  deadline: deadline ?? this.deadline,
-  engDeadline: engDeadline ?? this.engDeadline,
-  description: description ?? this.description,
-  specification: specification ?? this.specification,
-  salaryMin: salaryMin ?? this.salaryMin,
-  salaryMax: salaryMax ?? this.salaryMax,
-  requiredExperience: requiredExperience ?? this.requiredExperience,
-  requiredEducation: requiredEducation ?? this.requiredEducation,
-  status: status ?? this.status,
-  discloseOrgAddress: discloseOrgAddress ?? this.discloseOrgAddress,
-  organization: organization ?? this.organization,
-  jobCategory: jobCategory ?? this.jobCategory,
-  serviceProvider: serviceProvider ?? this.serviceProvider,
-);
+  ViewAllJobsData copyWith({
+    int? id,
+    int? serviceProviderId,
+    String? serviceProviderName,
+    String? title,
+    String? positionType,
+    int? categoryId,
+    String? categoryName,
+    String? openings,
+    String? orgId,
+    String? orgName,
+    int? pradeshId,
+    String? pradeshName,
+    int? districtId,
+    String? districtName,
+    int? muniId,
+    String? muniName,
+    int? ward,
+    String? address,
+    int? discloseAddress,
+    String? deadline,
+    String? engDeadline,
+    String? description,
+    String? specification,
+    String? salaryMin,
+    String? salaryMax,
+    String? requiredExperience,
+    String? requiredEducation,
+    String? status,
+    int? discloseOrgAddress,
+    Organization? organization,
+    JobCategory? jobCategory,
+    ServiceProvider? serviceProvider,
+  }) =>
+      ViewAllJobsData(
+        id: id ?? this.id,
+        serviceProviderId: serviceProviderId ?? this.serviceProviderId,
+        serviceProviderName: serviceProviderName ?? this.serviceProviderName,
+        title: title ?? this.title,
+        positionType: positionType ?? this.positionType,
+        categoryId: categoryId ?? this.categoryId,
+        categoryName: categoryName ?? this.categoryName,
+        openings: openings ?? this.openings,
+        orgId: orgId ?? this.orgId,
+        orgName: orgName ?? this.orgName,
+        pradeshId: pradeshId ?? this.pradeshId,
+        pradeshName: pradeshName ?? this.pradeshName,
+        districtId: districtId ?? this.districtId,
+        districtName: districtName ?? this.districtName,
+        muniId: muniId ?? this.muniId,
+        muniName: muniName ?? this.muniName,
+        ward: ward ?? this.ward,
+        address: address ?? this.address,
+        discloseAddress: discloseAddress ?? this.discloseAddress,
+        deadline: deadline ?? this.deadline,
+        engDeadline: engDeadline ?? this.engDeadline,
+        description: description ?? this.description,
+        specification: specification ?? this.specification,
+        salaryMin: salaryMin ?? this.salaryMin,
+        salaryMax: salaryMax ?? this.salaryMax,
+        requiredExperience: requiredExperience ?? this.requiredExperience,
+        requiredEducation: requiredEducation ?? this.requiredEducation,
+        status: status ?? this.status,
+        discloseOrgAddress: discloseOrgAddress ?? this.discloseOrgAddress,
+        organization: organization ?? this.organization,
+        jobCategory: jobCategory ?? this.jobCategory,
+        serviceProvider: serviceProvider ?? this.serviceProvider,
+      );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = id;
@@ -387,7 +406,6 @@ ViewAllJobsData copyWith({  int? id,
     }
     return map;
   }
-
 }
 
 /// id : 4
@@ -418,31 +436,32 @@ ViewAllJobsData copyWith({  int? id,
 
 class ServiceProvider {
   ServiceProvider({
-      this.id, 
-      this.name, 
-      this.pradeshId, 
-      this.pradeshName, 
-      this.districtId, 
-      this.districtName, 
-      this.muniId, 
-      this.muniName, 
-      this.ward, 
-      this.type, 
-      this.typeName, 
-      this.estdAt, 
-      this.pan, 
-      this.phone, 
-      this.mobile, 
-      this.fax, 
-      this.website, 
-      this.orgType, 
-      this.cpName, 
-      this.designation,
-      this.cpMobile, 
-      this.email,
-      this.status, 
-      this.description, 
-      this.logo,});
+    this.id,
+    this.name,
+    this.pradeshId,
+    this.pradeshName,
+    this.districtId,
+    this.districtName,
+    this.muniId,
+    this.muniName,
+    this.ward,
+    this.type,
+    this.typeName,
+    this.estdAt,
+    this.pan,
+    this.phone,
+    this.mobile,
+    this.fax,
+    this.website,
+    this.orgType,
+    this.cpName,
+    this.designation,
+    this.cpMobile,
+    this.email,
+    this.status,
+    this.description,
+    this.logo,
+  });
 
   ServiceProvider.fromJson(dynamic json) {
     id = json['id'];
@@ -454,7 +473,7 @@ class ServiceProvider {
     muniId = json['muni_id'];
     muniName = json['muni_name'];
     ward = json['ward'];
-    type = json['type'];
+    type = int.parse(json['type']);
     typeName = json['type_name'];
     estdAt = json['estd_at'];
     pan = json['pan'];
@@ -467,7 +486,7 @@ class ServiceProvider {
     designation = json['designation'];
     cpMobile = json['cp_mobile'];
     email = json['email'];
-    status = json['status'];
+    status = int.parse(json['status']);
     description = json['description'];
     logo = json['logo'];
   }
@@ -496,57 +515,60 @@ class ServiceProvider {
   int? status;
   String? description;
   String? logo;
-ServiceProvider copyWith({  int? id,
-  String? name,
-  int? pradeshId,
-  String? pradeshName,
-  int? districtId,
-  String? districtName,
-  int? muniId,
-  String? muniName,
-  String? ward,
-  int? type,
-  String? typeName,
-  String? estdAt,
-  String? pan,
-  String? phone,
-  String? mobile,
-  String? fax,
-  String? website,
-  String? orgType,
-  String? cpName,
-  String? designation,
-  String? cpMobile,
-  String? email,
-  int? status,
-  String? description,
-  String? logo,
-}) => ServiceProvider(  id: id ?? this.id,
-  name: name ?? this.name,
-  pradeshId: pradeshId ?? this.pradeshId,
-  pradeshName: pradeshName ?? this.pradeshName,
-  districtId: districtId ?? this.districtId,
-  districtName: districtName ?? this.districtName,
-  muniId: muniId ?? this.muniId,
-  muniName: muniName ?? this.muniName,
-  ward: ward ?? this.ward,
-  type: type ?? this.type,
-  typeName: typeName ?? this.typeName,
-  estdAt: estdAt ?? this.estdAt,
-  pan: pan ?? this.pan,
-  phone: phone ?? this.phone,
-  mobile: mobile ?? this.mobile,
-  fax: fax ?? this.fax,
-  website: website ?? this.website,
-  orgType: orgType ?? this.orgType,
-  cpName: cpName ?? this.cpName,
-  designation: designation ?? this.designation,
-  cpMobile: cpMobile ?? this.cpMobile,
-  email: email ?? this.email,
-  status: status ?? this.status,
-  description: description ?? this.description,
-  logo: logo ?? this.logo,
-);
+  ServiceProvider copyWith({
+    int? id,
+    String? name,
+    int? pradeshId,
+    String? pradeshName,
+    int? districtId,
+    String? districtName,
+    int? muniId,
+    String? muniName,
+    String? ward,
+    int? type,
+    String? typeName,
+    String? estdAt,
+    String? pan,
+    String? phone,
+    String? mobile,
+    String? fax,
+    String? website,
+    String? orgType,
+    String? cpName,
+    String? designation,
+    String? cpMobile,
+    String? email,
+    int? status,
+    String? description,
+    String? logo,
+  }) =>
+      ServiceProvider(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        pradeshId: pradeshId ?? this.pradeshId,
+        pradeshName: pradeshName ?? this.pradeshName,
+        districtId: districtId ?? this.districtId,
+        districtName: districtName ?? this.districtName,
+        muniId: muniId ?? this.muniId,
+        muniName: muniName ?? this.muniName,
+        ward: ward ?? this.ward,
+        type: type ?? this.type,
+        typeName: typeName ?? this.typeName,
+        estdAt: estdAt ?? this.estdAt,
+        pan: pan ?? this.pan,
+        phone: phone ?? this.phone,
+        mobile: mobile ?? this.mobile,
+        fax: fax ?? this.fax,
+        website: website ?? this.website,
+        orgType: orgType ?? this.orgType,
+        cpName: cpName ?? this.cpName,
+        designation: designation ?? this.designation,
+        cpMobile: cpMobile ?? this.cpMobile,
+        email: email ?? this.email,
+        status: status ?? this.status,
+        description: description ?? this.description,
+        logo: logo ?? this.logo,
+      );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = id;
@@ -576,7 +598,6 @@ ServiceProvider copyWith({  int? id,
     map['logo'] = logo;
     return map;
   }
-
 }
 
 /// id : 15
@@ -585,9 +606,10 @@ ServiceProvider copyWith({  int? id,
 
 class JobCategory {
   JobCategory({
-      this.id, 
-      this.name, 
-      this.status,});
+    this.id,
+    this.name,
+    this.status,
+  });
 
   JobCategory.fromJson(dynamic json) {
     id = json['id'];
@@ -597,13 +619,16 @@ class JobCategory {
   int? id;
   String? name;
   int? status;
-JobCategory copyWith({  int? id,
-  String? name,
-  int? status,
-}) => JobCategory(  id: id ?? this.id,
-  name: name ?? this.name,
-  status: status ?? this.status,
-);
+  JobCategory copyWith({
+    int? id,
+    String? name,
+    int? status,
+  }) =>
+      JobCategory(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        status: status ?? this.status,
+      );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = id;
@@ -611,7 +636,6 @@ JobCategory copyWith({  int? id,
     map['status'] = status;
     return map;
   }
-
 }
 
 /// id : 3
@@ -631,20 +655,21 @@ JobCategory copyWith({  int? id,
 
 class Organization {
   Organization({
-      this.id, 
-      this.serviceProviderId, 
-      this.name, 
-      this.description, 
-      this.pradeshId, 
-      this.pradeshName, 
-      this.districtId, 
-      this.districtName, 
-      this.muniId, 
-      this.muniName, 
-      this.ward, 
-      this.address, 
-      this.email, 
-      this.contactNumber,});
+    this.id,
+    this.serviceProviderId,
+    this.name,
+    this.description,
+    this.pradeshId,
+    this.pradeshName,
+    this.districtId,
+    this.districtName,
+    this.muniId,
+    this.muniName,
+    this.ward,
+    this.address,
+    this.email,
+    this.contactNumber,
+  });
 
   Organization.fromJson(dynamic json) {
     id = json['id'];
@@ -676,35 +701,38 @@ class Organization {
   String? address;
   String? email;
   String? contactNumber;
-Organization copyWith({  int? id,
-  int? serviceProviderId,
-  String? name,
-  String? description,
-  int? pradeshId,
-  String? pradeshName,
-  int? districtId,
-  String? districtName,
-  int? muniId,
-  String? muniName,
-  int? ward,
-  String? address,
-  String? email,
-  String? contactNumber,
-}) => Organization(  id: id ?? this.id,
-  serviceProviderId: serviceProviderId ?? this.serviceProviderId,
-  name: name ?? this.name,
-  description: description ?? this.description,
-  pradeshId: pradeshId ?? this.pradeshId,
-  pradeshName: pradeshName ?? this.pradeshName,
-  districtId: districtId ?? this.districtId,
-  districtName: districtName ?? this.districtName,
-  muniId: muniId ?? this.muniId,
-  muniName: muniName ?? this.muniName,
-  ward: ward ?? this.ward,
-  address: address ?? this.address,
-  email: email ?? this.email,
-  contactNumber: contactNumber ?? this.contactNumber,
-);
+  Organization copyWith({
+    int? id,
+    int? serviceProviderId,
+    String? name,
+    String? description,
+    int? pradeshId,
+    String? pradeshName,
+    int? districtId,
+    String? districtName,
+    int? muniId,
+    String? muniName,
+    int? ward,
+    String? address,
+    String? email,
+    String? contactNumber,
+  }) =>
+      Organization(
+        id: id ?? this.id,
+        serviceProviderId: serviceProviderId ?? this.serviceProviderId,
+        name: name ?? this.name,
+        description: description ?? this.description,
+        pradeshId: pradeshId ?? this.pradeshId,
+        pradeshName: pradeshName ?? this.pradeshName,
+        districtId: districtId ?? this.districtId,
+        districtName: districtName ?? this.districtName,
+        muniId: muniId ?? this.muniId,
+        muniName: muniName ?? this.muniName,
+        ward: ward ?? this.ward,
+        address: address ?? this.address,
+        email: email ?? this.email,
+        contactNumber: contactNumber ?? this.contactNumber,
+      );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = id;
@@ -723,5 +751,4 @@ Organization copyWith({  int? id,
     map['contact_number'] = contactNumber;
     return map;
   }
-
 }

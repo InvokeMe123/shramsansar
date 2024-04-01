@@ -19,7 +19,7 @@ class AllJobsDataSourceImp implements AllJobsDataSource {
     final result =
         await apiClient.request(path: ApiConst.VIEW_ALL_JOBS, type: 'get');
     log(result['data'].toString());
-    return AllJobsModel.fromJson(result['data']);
+    return AllJobsModel.fromJson(result);
   }
 
   @override
@@ -27,7 +27,7 @@ class AllJobsDataSourceImp implements AllJobsDataSource {
     log('ds of jobs');
     final result =
         await apiClient.request(path: ApiConst.VIEW_ALL_JOBS, type: 'get');
-    return AllJobsModel.fromJson(result['data']);
+    return AllJobsModel.fromJson(result);
   }
 }
 

@@ -86,7 +86,7 @@ class _DashboardState extends ConsumerState<Dashboard> {
               children: [
                 GestureDetector(
                   onTap: () {
-                   // normalNav(context, AllJobs());
+                    normalNav(context, AllJobs());
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(left: 0),

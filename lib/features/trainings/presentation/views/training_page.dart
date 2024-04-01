@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shramsansar/commons/training_card.dart';
 import 'package:shramsansar/const/app_color_const.dart';
 import 'package:shramsansar/const/app_const.dart';
 import 'package:shramsansar/features/getDistricts/data/models/district_model.dart';
@@ -10,6 +13,7 @@ import 'package:shramsansar/features/getPradesh/data/models/pradeshModel.dart';
 import 'package:shramsansar/features/getPradesh/presentation/controller/pradesh_controller.dart';
 import 'package:shramsansar/features/jobs/data/models/job_category_model.dart';
 import 'package:shramsansar/features/jobs/presentation/controller/job_catergory_controller.dart';
+import 'package:shramsansar/features/trainings/presentation/controller/view_all_training_controller.dart';
 
 class TrainingPage extends ConsumerStatefulWidget {
   const TrainingPage({super.key});
@@ -44,6 +48,8 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
 
   @override
   Widget build(BuildContext context) {
+    final result = ref.watch(viewAllTrainingControllerProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Training'),
@@ -55,9 +61,9 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
           districtsDropDown(context),
           const SizedBox(height: 10),
           getMuni(context),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           jobCategoryDropDown(context),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Row(
             children: [
               Spacer(),
@@ -76,8 +82,32 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
+          ),
+
+          // all trainings
+          const Text("All training"),
+
+          Expanded(
+            child: result.when(
+                data: (data) {
+                  if (data.data!.isEmpty) {
+                    return const Center(child: Text("No data found"));
+                  }
+                  return ListView.builder(
+                      itemCount: data.data!.length,
+                      itemBuilder: (_, index) {
+                        var trainingData = data.data![index];
+
+                        return TrainingCard(model: trainingData);
+                      });
+                },
+                error: (_, __) {
+                  return Text("he");
+                },
+                loading: () =>
+                    const Center(child: CircularProgressIndicator())),
           ),
         ],
       ),
@@ -275,7 +305,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
                   value: selectedJobCategory ??
                       (jobCate.isEmpty
                           ? AppConst.selectJobCategory
-                          : jobCate[0]),
+                          : jobCate[1]),
                   items: jobCate.map((name) {
                     return DropdownMenuItem<String>(
                       value: name,

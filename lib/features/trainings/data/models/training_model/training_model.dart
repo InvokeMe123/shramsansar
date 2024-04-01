@@ -1,11 +1,11 @@
-class ViewAllJobsModel {
+class TrainingModel {
   List<Data>? data;
   Links? links;
   Meta? meta;
 
-  ViewAllJobsModel({this.data, this.links, this.meta});
+  TrainingModel({this.data, this.links, this.meta});
 
-  ViewAllJobsModel.fromJson(Map<String, dynamic> json) {
+  TrainingModel.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
@@ -124,7 +124,7 @@ class ServiceProvider {
   String? phone;
   String? mobile;
   String? email;
-  Null? website;
+  String? website;
   String? description;
   String? logo;
 
@@ -184,7 +184,7 @@ class ServiceProvider {
 class Links {
   String? first;
   String? last;
-  String? prev;
+  Null? prev;
   String? next;
 
   Links({this.first, this.last, this.prev, this.next});
@@ -210,7 +210,7 @@ class Meta {
   int? currentPage;
   int? from;
   int? lastPage;
-  List<MetaLinks>? links;
+  List<Links2>? links2;
   String? path;
   int? perPage;
   int? to;
@@ -220,7 +220,7 @@ class Meta {
       {this.currentPage,
       this.from,
       this.lastPage,
-      this.links,
+      this.links2,
       this.path,
       this.perPage,
       this.to,
@@ -230,10 +230,10 @@ class Meta {
     currentPage = json['current_page'];
     from = json['from'];
     lastPage = json['last_page'];
-    if (json['links'] != null) {
-      links = <MetaLinks>[];
-      json['links'].forEach((v) {
-        links!.add(new MetaLinks.fromJson(v));
+    if (json['links2'] != null) {
+      links2 = <Links2>[];
+      json['links2'].forEach((v) {
+        links2!.add(new Links2.fromJson(v));
       });
     }
     path = json['path'];
@@ -247,8 +247,8 @@ class Meta {
     data['current_page'] = this.currentPage;
     data['from'] = this.from;
     data['last_page'] = this.lastPage;
-    if (this.links != null) {
-      data['links'] = this.links!.map((v) => v.toJson()).toList();
+    if (this.links2 != null) {
+      data['links2'] = this.links2!.map((v) => v.toJson()).toList();
     }
     data['path'] = this.path;
     data['per_page'] = this.perPage;
@@ -258,14 +258,14 @@ class Meta {
   }
 }
 
-class MetaLinks {
+class Links2 {
   String? url;
   String? label;
   bool? active;
 
-  MetaLinks({this.url, this.label, this.active});
+  Links2({this.url, this.label, this.active});
 
-  MetaLinks.fromJson(Map<String, dynamic> json) {
+  Links2.fromJson(Map<String, dynamic> json) {
     url = json['url'];
     label = json['label'];
     active = json['active'];

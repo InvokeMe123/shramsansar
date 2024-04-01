@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-
 class DistrictModel {
   List<DataModel> data;
 
@@ -53,7 +52,7 @@ class DistrictModel {
 
 class DataModel {
   int id;
-  String pradesh_id;
+  int pradesh_id;
   String pradesh_name;
   String name;
   String code;
@@ -67,7 +66,7 @@ class DataModel {
 
   DataModel copyWith({
     int? id,
-    String? pradesh_id,
+    int? pradesh_id,
     String? pradesh_name,
     String? name,
     String? code,
@@ -94,7 +93,7 @@ class DataModel {
   factory DataModel.fromMap(Map<String, dynamic> map) {
     return DataModel(
       id: map['id'] as int,
-      pradesh_id: map['pradesh_id'] as String,
+      pradesh_id: map['pradesh_id'],
       pradesh_name: map['pradesh_name'] as String,
       name: map['name'] as String,
       code: map['code'] as String,

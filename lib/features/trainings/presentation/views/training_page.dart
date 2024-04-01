@@ -27,7 +27,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
   int? selectedJobCategoryId;
 
   String? selectedPradesh;
-  int selectedPradeshId = 0;
+  int selectedPradeshId = 1;
 
   String? selectedDistrict;
   int selectedDistrictId = 0;
@@ -45,6 +45,10 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
   int? jobcategoryId;
   int? pradeshId;
   int? districtId;
+
+  bool isPradeshSelected = true;
+  bool isDistrictSelected = false;
+  bool isMunicipalitySelected = false;
 
   @override
   Widget build(BuildContext context) {
@@ -182,7 +186,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
           getDistricts.when(
               data: (data) {
                 for (var model in data.data) {
-                  if (model.pradesh_id == selectedPradeshId.toString()) {
+                  if (model.pradesh_id == selectedPradeshId) {
                     districts.add(model.name);
                   }
                 }
@@ -206,10 +210,14 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
                   child: Text(distict),
                 );
               }).toList(),
+              onTap: () {
+                debugPrint(districts.toString());
+              },
               onChanged: (newValue) {
                 setState(() {
                   selectedDistrict = newValue;
                   selectedMunicipality = null;
+                  isDistrictSelected = true;
                   selectedDistrictId = districts.indexOf(selectedDistrict!) + 1;
                 });
               },
@@ -235,7 +243,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
             getMuni.when(
                 data: (data) {
                   for (var model in data.data) {
-                    if (model.district_id == selectedDistrictId.toString()) {
+                    if (model.district_id == selectedDistrictId) {
                       muni.add(model.name);
                     }
                   }
@@ -263,6 +271,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
                   onChanged: (value) {
                     setState(() {
                       selectedMunicipality = value;
+                      isMunicipalitySelected = true;
                       selectedMunicipalityId =
                           muni.indexOf(selectedMunicipality!) + 1;
                     });
@@ -287,7 +296,8 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
           return jobCat.when(
             data: (data) {
               List<String> jobCate =
-                  data.data.map((model) => model.name).toList();
+                  data.data.map((model) => model.name).toSet().toList();
+
               return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: DropdownButton<String>(
@@ -305,7 +315,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
                   value: selectedJobCategory ??
                       (jobCate.isEmpty
                           ? AppConst.selectJobCategory
-                          : jobCate[1]),
+                          : jobCate[0]),
                   items: jobCate.map((name) {
                     return DropdownMenuItem<String>(
                       value: name,

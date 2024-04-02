@@ -30,15 +30,13 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
   int? selectedJobCategoryId;
 
   String? selectedPradesh;
-  int selectedPradeshId = 1;
+  int selectedPradeshId = 0;
 
   String? selectedDistrict;
   int selectedDistrictId = 0;
 
   String? selectedMunicipality;
   int selectedMunicipalityId = 0;
-
-  int pageId = 1;
 
   PradeshModel? pradeshModel;
   MunicipalityModel? muniModel;
@@ -48,10 +46,6 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
   int? jobcategoryId;
   int? pradeshId;
   int? districtId;
-
-  bool isPradeshSelected = true;
-  bool isDistrictSelected = false;
-  bool isMunicipalitySelected = false;
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +77,15 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
                           .zero, // Set the border radius to zero for a rectangular shape
                     ),
                     backgroundColor: AppColorConst.BUTTON_BLUE_COLOR),
-                onPressed: () async {},
+                onPressed: selectedDistrict == null ||
+                        selectedPradesh == null ||
+                        selectedMunicipality == null ||
+                        selectedJobCategory == null
+                    ? null
+                    : () async {
+                        debugPrint(
+                            "Pradesh: $selectedPradesh, District: $selectedDistrict, Muni: $selectedMunicipality, JobCategory: $selectedJobCategory");
+                      },
                 child: Text(
                   'Apply',
                   style: TextStyle(color: AppColorConst.WHAIT),
@@ -153,6 +155,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
                 error: (error, stack) => Text(error.toString()),
                 loading: () =>
                     const Center(child: CircularProgressIndicator()));
+
             return Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: DropdownButton<String>(
@@ -162,8 +165,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
                     child: Icon(Icons.arrow_drop_down),
                   ),
                   hint: const Text('Pradesh'),
-                  value:
-                      selectedPradesh ?? (pradesh.isEmpty ? null : pradesh[0]),
+                  value: selectedPradesh,
                   items: pradesh.map((name) {
                     return DropdownMenuItem(
                       value: name,
@@ -215,22 +217,16 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
                 child: Icon(Icons.arrow_drop_down),
               ),
               hint: const Text('Enter district'),
-              value:
-                  selectedDistrict ?? (districts.isEmpty ? null : districts[0]),
+              value: selectedDistrict,
               items: districts.map((distict) {
                 return DropdownMenuItem(
                   value: distict,
                   child: Text(distict),
                 );
               }).toList(),
-              onTap: () {
-                debugPrint(districts.toString());
-              },
               onChanged: (newValue) {
                 setState(() {
                   selectedDistrict = newValue;
-                  selectedMunicipality = null;
-                  isDistrictSelected = true;
                   selectedDistrictId = districts.indexOf(selectedDistrict!) + 1;
                 });
               },
@@ -273,8 +269,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
                     child: Icon(Icons.arrow_drop_down),
                   ),
                   hint: const Text('Municipality'),
-                  value:
-                      selectedMunicipality ?? (muni.isEmpty ? null : muni[0]),
+                  value: selectedMunicipality,
                   items: muni.map((name) {
                     return DropdownMenuItem(
                       value: name,
@@ -284,7 +279,6 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
                   onChanged: (value) {
                     setState(() {
                       selectedMunicipality = value;
-                      isMunicipalitySelected = true;
                       selectedMunicipalityId =
                           muni.indexOf(selectedMunicipality!) + 1;
                     });
@@ -325,10 +319,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
                       selectedJobCategory = value;
                     });
                   },
-                  value: selectedJobCategory ??
-                      (jobCate.isEmpty
-                          ? AppConst.selectJobCategory
-                          : jobCate[0]),
+                  value: selectedJobCategory,
                   items: jobCate.map((name) {
                     return DropdownMenuItem<String>(
                       value: name,

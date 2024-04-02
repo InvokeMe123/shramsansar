@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_pagination/flutter_pagination.dart';
 import 'package:flutter_pagination/widgets/button_styles.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shramsansar/features/trainings/provider/page_index_provider.dart';
 
 class PaginationCard extends ConsumerWidget {
@@ -20,9 +21,9 @@ class PaginationCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var totalPage = totalItems ~/ 10;
     return Pagination(
-      width: MediaQuery.of(context).size.width * .6, // this prop is optional
+      width: 40.w,
+      height: 5.h,
       paginateButtonStyles: PaginateButtonStyles(),
       prevButtonStyles: PaginateSkipButton(
           borderRadius: const BorderRadius.only(

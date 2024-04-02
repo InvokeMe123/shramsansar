@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shramsansar/commons/pagination_card.dart';
 import 'package:shramsansar/commons/training_card.dart';
 import 'package:shramsansar/const/app_color_const.dart';
@@ -65,13 +66,13 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
       body: Column(
         children: [
           getPradesh(context),
-          const SizedBox(height: 10),
+          SizedBox(height: 1.h),
           districtsDropDown(context),
-          const SizedBox(height: 10),
+          SizedBox(height: 1.h),
           getMuni(context),
-          const SizedBox(height: 10),
+          SizedBox(height: 1.h),
           jobCategoryDropDown(context),
-          const SizedBox(height: 10),
+          SizedBox(height: 1.h),
           Row(
             children: [
               const Spacer(),
@@ -90,9 +91,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
               ),
             ],
           ),
-          const SizedBox(
-            height: 10,
-          ),
+          SizedBox(height: 1.h),
 
           // all trainings
           const Text("All training"),

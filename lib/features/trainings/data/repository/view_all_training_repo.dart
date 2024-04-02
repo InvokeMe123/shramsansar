@@ -6,7 +6,7 @@ import 'package:shramsansar/features/trainings/data/data_source/view_all_trainin
 import 'package:shramsansar/features/trainings/data/models/training_model/training_model.dart';
 
 abstract class ViewAllTrainingRepository {
-  Future<Either<AppError, TrainingModel>> getAllTrainingRepo();
+  Future<Either<AppError, TrainingModel>> getAllTrainingRepo(int pageIndex);
 }
 
 class ViewAllTrainingRepositoryImpl implements ViewAllTrainingRepository {
@@ -15,9 +15,10 @@ class ViewAllTrainingRepositoryImpl implements ViewAllTrainingRepository {
   ViewAllTrainingRepositoryImpl(this.viewAllTrainingDS);
 
   @override
-  Future<Either<AppError, TrainingModel>> getAllTrainingRepo() async {
+  Future<Either<AppError, TrainingModel>> getAllTrainingRepo(
+      int pageIndex) async {
     try {
-      final result = await viewAllTrainingDS.getAllTrainingDS();
+      final result = await viewAllTrainingDS.getAllTrainingDS(pageIndex);
       return Right(result);
     } on DioException catch (e) {
       return Left(AppError(e.message.toString()));

@@ -5,7 +5,7 @@ import 'package:shramsansar/core/api_const/api_const.dart';
 import 'package:shramsansar/features/trainings/data/models/training_model/training_model.dart';
 
 abstract class ViewAllTrainingDS {
-  Future<TrainingModel> getAllTrainingDS();
+  Future<TrainingModel> getAllTrainingDS(int pageIndex);
 }
 
 class ViewAllTrainingDSImpl implements ViewAllTrainingDS {
@@ -13,9 +13,9 @@ class ViewAllTrainingDSImpl implements ViewAllTrainingDS {
   ViewAllTrainingDSImpl(this.apiClient);
 
   @override
-  Future<TrainingModel> getAllTrainingDS() async {
+  Future<TrainingModel> getAllTrainingDS(int pageIndex) async {
     final result = await apiClient.request(
-        path: "${ApiConst.VIEW_ALL_TRAININGS}1", type: 'get');
+        path: "${ApiConst.VIEW_ALL_TRAININGS}$pageIndex", type: 'get');
 
     return TrainingModel.fromJson(result);
   }

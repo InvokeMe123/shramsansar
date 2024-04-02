@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shramsansar/commons/pagination_card.dart';
 import 'package:shramsansar/commons/training_card.dart';
 import 'package:shramsansar/const/app_color_const.dart';
 import 'package:shramsansar/const/app_const.dart';
@@ -14,6 +15,7 @@ import 'package:shramsansar/features/getPradesh/presentation/controller/pradesh_
 import 'package:shramsansar/features/jobs/data/models/job_category_model.dart';
 import 'package:shramsansar/features/jobs/presentation/controller/job_catergory_controller.dart';
 import 'package:shramsansar/features/trainings/presentation/controller/view_all_training_controller.dart';
+import 'package:shramsansar/features/trainings/provider/page_index_provider.dart';
 
 class TrainingPage extends ConsumerStatefulWidget {
   const TrainingPage({super.key});
@@ -52,11 +54,13 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
 
   @override
   Widget build(BuildContext context) {
-    final result = ref.watch(viewAllTrainingControllerProvider);
+    int pageIndex = ref.watch(pageIndexProvider);
+
+    final result = ref.watch(viewAllTrainingControllerProvider(pageIndex));
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Training'),
+        title: const Text('Training'),
       ),
       body: Column(
         children: [
@@ -70,7 +74,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
           const SizedBox(height: 10),
           Row(
             children: [
-              Spacer(),
+              const Spacer(),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     shape: const RoundedRectangleBorder(
@@ -99,13 +103,20 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
                   if (data.data!.isEmpty) {
                     return const Center(child: Text("No data found"));
                   }
-                  return ListView.builder(
-                      itemCount: data.data!.length,
-                      itemBuilder: (_, index) {
-                        var trainingData = data.data![index];
+                  return Column(
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                            itemCount: data.data!.length,
+                            itemBuilder: (_, index) {
+                              var trainingData = data.data![index];
 
-                        return TrainingCard(model: trainingData);
-                      });
+                              return TrainingCard(model: trainingData);
+                            }),
+                      ),
+                      PaginationCard(totalItems: data.meta?.total ?? 10),
+                    ],
+                  );
                 },
                 error: (_, __) {
                   return Text("he");

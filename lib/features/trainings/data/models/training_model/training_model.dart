@@ -184,7 +184,7 @@ class ServiceProvider {
 class Links {
   String? first;
   String? last;
-  Null? prev;
+  String? prev;
   String? next;
 
   Links({this.first, this.last, this.prev, this.next});

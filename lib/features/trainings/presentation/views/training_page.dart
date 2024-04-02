@@ -113,7 +113,10 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
                               return TrainingCard(model: trainingData);
                             }),
                       ),
-                      PaginationCard(totalItems: data.meta?.total ?? 10),
+                      PaginationCard(
+                        totalItems: data.meta?.total ?? 10,
+                        perPage: data.meta?.perPage ?? 10,
+                      ),
                     ],
                   );
                 },

@@ -26,6 +26,18 @@ class ViewAllTrainingController
       state = AsyncValue.data(r);
     });
   }
+
+  searchTrainingDetails(
+      {required String muniID, required String categoryID}) async {
+    final result = await viewAllTrainingRepository.searchTrainingRepo(
+        muniID: muniID, categoryID: categoryID);
+    result.fold((l) {
+      state = AsyncValue.error(l.message, StackTrace.current);
+    }, (r) {
+      // we have data
+      state = AsyncValue.data(r);
+    });
+  }
 }
 
 final viewAllTrainingControllerProvider = StateNotifierProvider.family<

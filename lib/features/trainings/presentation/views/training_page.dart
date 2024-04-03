@@ -16,6 +16,7 @@ import 'package:shramsansar/features/getPradesh/presentation/controller/pradesh_
 import 'package:shramsansar/features/jobs/data/models/job_category_model.dart';
 import 'package:shramsansar/features/jobs/presentation/controller/job_catergory_controller.dart';
 import 'package:shramsansar/features/trainings/presentation/controller/view_all_training_controller.dart';
+import 'package:shramsansar/features/trainings/provider/filtered_provider.dart';
 import 'package:shramsansar/features/trainings/provider/page_index_provider.dart';
 
 class TrainingPage extends ConsumerStatefulWidget {
@@ -70,6 +71,27 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
           Row(
             children: [
               const Spacer(),
+              if (ref.watch(filteredProvider))
+                ElevatedButton(
+                  onPressed: () {
+                    ref
+                        .read(viewAllTrainingControllerProvider(pageIndex)
+                            .notifier)
+                        .getAllTrainingDetails();
+
+                    ref
+                        .read(filteredProvider.notifier)
+                        .update((state) => false);
+                    // resetting selected fields
+                    selectedPradesh = null;
+                    selectedDistrict = null;
+                    selectedMunicipality = null;
+                    selectedJobCategory = null;
+
+                    debugPrint("Clear filter");
+                  },
+                  child: const Text("Clear filter"),
+                ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     shape: const RoundedRectangleBorder(
@@ -84,7 +106,17 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
                     ? null
                     : () async {
                         debugPrint(
-                            "Pradesh: $selectedPradesh, District: $selectedDistrict, Muni: $selectedMunicipality, JobCategory: $selectedJobCategory");
+                            "Pradesh: $selectedPradeshId, District: $selectedDistrictId, Muni: $selectedMunicipalityId, JobCategory: $selectedJobCategory");
+
+                        ref
+                            .read(filteredProvider.notifier)
+                            .update((state) => true);
+                        ref
+                            .read(viewAllTrainingControllerProvider(pageIndex)
+                                .notifier)
+                            .searchTrainingDetails(
+                                muniID: selectedMunicipalityId.toString(),
+                                categoryID: selectedJobCategory.toString());
                       },
                 child: Text(
                   'Apply',
@@ -308,8 +340,8 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
               return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: DropdownButton<String>(
-                  icon: Padding(
-                    padding: const EdgeInsets.only(
+                  icon: const Padding(
+                    padding: EdgeInsets.only(
                         left: 75), // Adjust the left padding as needed
                     child: Icon(Icons.arrow_drop_down),
                   ),

@@ -7,6 +7,8 @@ import 'package:shramsansar/features/trainings/data/models/training_model/traini
 
 abstract class ViewAllTrainingRepository {
   Future<Either<AppError, TrainingModel>> getAllTrainingRepo(int pageIndex);
+  Future<Either<AppError, TrainingModel>> searchTrainingRepo(
+      {required String muniID, required String categoryID});
 }
 
 class ViewAllTrainingRepositoryImpl implements ViewAllTrainingRepository {
@@ -19,6 +21,18 @@ class ViewAllTrainingRepositoryImpl implements ViewAllTrainingRepository {
       int pageIndex) async {
     try {
       final result = await viewAllTrainingDS.getAllTrainingDS(pageIndex);
+      return Right(result);
+    } on DioException catch (e) {
+      return Left(AppError(e.message.toString()));
+    }
+  }
+
+  @override
+  Future<Either<AppError, TrainingModel>> searchTrainingRepo(
+      {required String muniID, required String categoryID}) async {
+    try {
+      final result = await viewAllTrainingDS.searchTrainingDS(
+          muniID: muniID, categoryID: categoryID);
       return Right(result);
     } on DioException catch (e) {
       return Left(AppError(e.message.toString()));

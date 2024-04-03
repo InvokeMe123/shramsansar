@@ -6,6 +6,9 @@ import 'package:shramsansar/features/trainings/data/models/training_model/traini
 
 abstract class ViewAllTrainingDS {
   Future<TrainingModel> getAllTrainingDS(int pageIndex);
+
+  Future<TrainingModel> searchTrainingDS(
+      {required String muniID, required String categoryID});
 }
 
 class ViewAllTrainingDSImpl implements ViewAllTrainingDS {
@@ -16,6 +19,20 @@ class ViewAllTrainingDSImpl implements ViewAllTrainingDS {
   Future<TrainingModel> getAllTrainingDS(int pageIndex) async {
     final result = await apiClient.request(
         path: "${ApiConst.VIEW_ALL_TRAININGS}$pageIndex", type: 'get');
+
+    return TrainingModel.fromJson(result);
+  }
+
+  @override
+  Future<TrainingModel> searchTrainingDS(
+      {required String muniID, required String categoryID}) async {
+    final result = await apiClient.request(
+        path:
+            "${ApiConst.VIEW_SEARCH_TRAINING}?muni_id=$muniID&category_id=$categoryID",
+        type: 'get');
+
+    debugPrint(
+        "LInk: ${ApiConst.VIEW_SEARCH_TRAINING}?muni_id=$muniID&category_id=$categoryID}");
 
     return TrainingModel.fromJson(result);
   }

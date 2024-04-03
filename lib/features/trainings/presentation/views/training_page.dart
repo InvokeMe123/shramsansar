@@ -1,5 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:shramsansar/commons/pagination_card.dart';
+import 'package:shramsansar/commons/training_card.dart';
 import 'package:shramsansar/const/app_color_const.dart';
 import 'package:shramsansar/const/app_const.dart';
 import 'package:shramsansar/features/getDistricts/data/models/district_model.dart';
@@ -10,6 +15,9 @@ import 'package:shramsansar/features/getPradesh/data/models/pradeshModel.dart';
 import 'package:shramsansar/features/getPradesh/presentation/controller/pradesh_controller.dart';
 import 'package:shramsansar/features/jobs/data/models/job_category_model.dart';
 import 'package:shramsansar/features/jobs/presentation/controller/job_catergory_controller.dart';
+import 'package:shramsansar/features/trainings/presentation/controller/view_all_training_controller.dart';
+import 'package:shramsansar/features/trainings/provider/filtered_provider.dart';
+import 'package:shramsansar/features/trainings/provider/page_index_provider.dart';
 
 class TrainingPage extends ConsumerStatefulWidget {
   const TrainingPage({super.key});
@@ -31,8 +39,6 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
   String? selectedMunicipality;
   int selectedMunicipalityId = 0;
 
-  int pageId = 1;
-
   PradeshModel? pradeshModel;
   MunicipalityModel? muniModel;
   JobCategoryModel? jobCategoryModel;
@@ -44,23 +50,48 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
 
   @override
   Widget build(BuildContext context) {
+    int pageIndex = ref.watch(pageIndexProvider);
+
+    final result = ref.watch(viewAllTrainingControllerProvider(pageIndex));
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Training'),
+        title: const Text('Training'),
       ),
       body: Column(
         children: [
           getPradesh(context),
-          const SizedBox(height: 10),
+          SizedBox(height: 1.h),
           districtsDropDown(context),
-          const SizedBox(height: 10),
+          SizedBox(height: 1.h),
           getMuni(context),
-          SizedBox(height: 10),
+          SizedBox(height: 1.h),
           jobCategoryDropDown(context),
-          SizedBox(height: 10),
+          SizedBox(height: 1.h),
           Row(
             children: [
-              Spacer(),
+              const Spacer(),
+              if (ref.watch(filteredProvider))
+                ElevatedButton(
+                  onPressed: () {
+                    ref
+                        .read(viewAllTrainingControllerProvider(pageIndex)
+                            .notifier)
+                        .getAllTrainingDetails();
+
+                    ref
+                        .read(filteredProvider.notifier)
+                        .update((state) => false);
+                    // resetting selected fields
+                    selectedPradesh = null;
+                    selectedDistrict = null;
+                    selectedMunicipality = null;
+                    selectedJobCategory = null;
+
+                    debugPrint("Clear filter");
+                  },
+                  child: const Text("Clear filter"),
+                ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     shape: const RoundedRectangleBorder(
@@ -68,7 +99,25 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
                           .zero, // Set the border radius to zero for a rectangular shape
                     ),
                     backgroundColor: AppColorConst.BUTTON_BLUE_COLOR),
-                onPressed: () async {},
+                onPressed: selectedDistrict == null ||
+                        selectedPradesh == null ||
+                        selectedMunicipality == null ||
+                        selectedJobCategory == null
+                    ? null
+                    : () async {
+                        debugPrint(
+                            "Pradesh: $selectedPradeshId, District: $selectedDistrictId, Muni: $selectedMunicipalityId, JobCategory: $selectedJobCategory");
+
+                        ref
+                            .read(filteredProvider.notifier)
+                            .update((state) => true);
+                        ref
+                            .read(viewAllTrainingControllerProvider(pageIndex)
+                                .notifier)
+                            .searchTrainingDetails(
+                                muniID: selectedMunicipalityId.toString(),
+                                categoryID: selectedJobCategory.toString());
+                      },
                 child: Text(
                   'Apply',
                   style: TextStyle(color: AppColorConst.WHAIT),
@@ -76,8 +125,40 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
               ),
             ],
           ),
-          SizedBox(
-            height: 10,
+          SizedBox(height: 1.h),
+
+          // all trainings
+          const Text("All training"),
+
+          Expanded(
+            child: result.when(
+                data: (data) {
+                  if (data.data!.isEmpty) {
+                    return const Center(child: Text("No data found"));
+                  }
+                  return Column(
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                            itemCount: data.data!.length,
+                            itemBuilder: (_, index) {
+                              var trainingData = data.data![index];
+
+                              return TrainingCard(model: trainingData);
+                            }),
+                      ),
+                      PaginationCard(
+                        totalItems: data.meta?.total ?? 10,
+                        perPage: data.meta?.perPage ?? 10,
+                      ),
+                    ],
+                  );
+                },
+                error: (_, __) {
+                  return Text("he");
+                },
+                loading: () =>
+                    const Center(child: CircularProgressIndicator())),
           ),
         ],
       ),
@@ -106,6 +187,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
                 error: (error, stack) => Text(error.toString()),
                 loading: () =>
                     const Center(child: CircularProgressIndicator()));
+
             return Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: DropdownButton<String>(
@@ -115,8 +197,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
                     child: Icon(Icons.arrow_drop_down),
                   ),
                   hint: const Text('Pradesh'),
-                  value:
-                      selectedPradesh ?? (pradesh.isEmpty ? null : pradesh[0]),
+                  value: selectedPradesh,
                   items: pradesh.map((name) {
                     return DropdownMenuItem(
                       value: name,
@@ -152,7 +233,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
           getDistricts.when(
               data: (data) {
                 for (var model in data.data) {
-                  if (model.pradesh_id == selectedPradeshId.toString()) {
+                  if (model.pradesh_id == selectedPradeshId) {
                     districts.add(model.name);
                   }
                 }
@@ -168,8 +249,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
                 child: Icon(Icons.arrow_drop_down),
               ),
               hint: const Text('Enter district'),
-              value:
-                  selectedDistrict ?? (districts.isEmpty ? null : districts[0]),
+              value: selectedDistrict,
               items: districts.map((distict) {
                 return DropdownMenuItem(
                   value: distict,
@@ -179,7 +259,6 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
               onChanged: (newValue) {
                 setState(() {
                   selectedDistrict = newValue;
-                  selectedMunicipality = null;
                   selectedDistrictId = districts.indexOf(selectedDistrict!) + 1;
                 });
               },
@@ -205,7 +284,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
             getMuni.when(
                 data: (data) {
                   for (var model in data.data) {
-                    if (model.district_id == selectedDistrictId.toString()) {
+                    if (model.district_id == selectedDistrictId) {
                       muni.add(model.name);
                     }
                   }
@@ -222,8 +301,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
                     child: Icon(Icons.arrow_drop_down),
                   ),
                   hint: const Text('Municipality'),
-                  value:
-                      selectedMunicipality ?? (muni.isEmpty ? null : muni[0]),
+                  value: selectedMunicipality,
                   items: muni.map((name) {
                     return DropdownMenuItem(
                       value: name,
@@ -257,12 +335,13 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
           return jobCat.when(
             data: (data) {
               List<String> jobCate =
-                  data.data.map((model) => model.name).toList();
+                  data.data.map((model) => model.name).toSet().toList();
+
               return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: DropdownButton<String>(
-                  icon: Padding(
-                    padding: const EdgeInsets.only(
+                  icon: const Padding(
+                    padding: EdgeInsets.only(
                         left: 75), // Adjust the left padding as needed
                     child: Icon(Icons.arrow_drop_down),
                   ),
@@ -272,10 +351,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
                       selectedJobCategory = value;
                     });
                   },
-                  value: selectedJobCategory ??
-                      (jobCate.isEmpty
-                          ? AppConst.selectJobCategory
-                          : jobCate[0]),
+                  value: selectedJobCategory,
                   items: jobCate.map((name) {
                     return DropdownMenuItem<String>(
                       value: name,

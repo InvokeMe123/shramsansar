@@ -54,7 +54,7 @@ class JobCategoryModel {
 class DataModel {
   int id;
   String name;
-  String status;
+  int status;
   DataModel({
     required this.id,
     required this.name,
@@ -64,7 +64,7 @@ class DataModel {
   DataModel copyWith({
     int? id,
     String? name,
-    String? status,
+    int? status,
   }) {
     return DataModel(
       id: id ?? this.id,
@@ -85,7 +85,7 @@ class DataModel {
     return DataModel(
       id: map['id'] as int,
       name: map['name'] as String,
-      status: map['status'] as String,
+      status: map['status'],
     );
   }
 

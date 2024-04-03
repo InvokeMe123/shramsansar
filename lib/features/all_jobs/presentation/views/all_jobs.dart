@@ -26,6 +26,9 @@ class AllJobs extends ConsumerStatefulWidget {
 }
 
 class _AllJobsState extends ConsumerState<AllJobs> {
+  int pageCount = 1;
+  int sPageCount = 1;
+  bool isSearching = false;
   String? selectedJobCategory;
   int? selectedJobCategoryId;
 
@@ -59,7 +62,7 @@ class _AllJobsState extends ConsumerState<AllJobs> {
       ),
       body: SingleChildScrollView(
           child: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -114,6 +117,10 @@ class _AllJobsState extends ConsumerState<AllJobs> {
               height: 20,
             ),
             viewAllJobsList(context),
+            SizedBox(
+              height: 20,
+            ),
+            //getJobs(context)
           ],
         ),
       )),
@@ -121,88 +128,114 @@ class _AllJobsState extends ConsumerState<AllJobs> {
   }
 
   viewAllJobsList(BuildContext context) {
-    var addList = ref.watch(allJobsControllerProvider.notifier);
+    //var addList = ref.watch(allJobsControllerProvider.notifier);
     var jobsList = ref.watch(allJobsControllerProvider);
+    List address = [];
+    jobsList.when(
+        data: (data) {
+          address.addAll(data.data!);
+          log(address.length.toString());
+          log((allJobsModel?.meta!.links2!.length).toString());
+        },
+        error: (error, stack) => Text(error.toString()),
+        loading: () => const Center(child: CircularProgressIndicator()));
+
     return Container(
-      child: Column(
-        children: [
-          Consumer(builder: (context, watch, child) {
-            addList.addAllJobs();
-            jobsList.when(
-                data: (data) {
-                  log('inside data');
-                },
-                error: (error, stack) => Text(error.toString()),
-                loading: () =>
-                    const Center(child: CircularProgressIndicator()));
-            return Container(
-              height: 100,
-              width: double.infinity,
-              child: ListView.builder(
-                itemCount: 2,
-                itemBuilder: (context, index) {
-                  return Text('ss');
-                },
-              ),
-            );
-          }),
-          Text('This is bad'),
-        ],
-      ),
-    );
+        width: MediaQuery.sizeOf(context).width,
+        height: 30.h,
+        child: ListView.builder(
+          itemCount: address.length,
+          itemBuilder: (context, index) {
+            Data data = address[index];
+            return AllJobList(data);
+          },
+        ));
   }
 
   getJobs(BuildContext context) {
-    if (muniModel != null && muniModel!.data.isNotEmpty) {
-      // Iterate over the data list and access the muni_id of each DataModel
-      for (var dataModel in muniModel!.data) {
-        muniId = dataModel.muni_id;
-        // Now you can use the muniId as needed
-        print('Muni ID: $muniId');
-      }
-    } else {
-      print('Municipality model is null or data is empty');
-    }
-    if (pradeshModel != null && pradeshModel!.data.isNotEmpty) {
-      for (var dataModel in pradeshModel!.data) {
-        pradeshId = dataModel.id;
-
-        print('Muni ID: $pradeshId');
-      }
-    } else {
-      print('Municipality model is null or data is empty');
-    }
-    if (jobCategoryModel != null && jobCategoryModel!.data.isNotEmpty) {
-      for (var dataModel in jobCategoryModel!.data) {
-        jobcategoryId = dataModel.id;
-
-        print('Muni ID: $jobcategoryId');
-      }
-    } else {
-      print('Municipality model is null or data is empty');
-    }
-    if (districtModel != null && districtModel!.data.isNotEmpty) {
-      for (var dataModel in districtModel!.data) {
-        districtId = dataModel.id;
-
-        print('Muni ID: $districtId');
-      }
-    } else {
-      print('Municipality model is null or data is empty');
-    }
     var getJobs = ref.watch(allJobsControllerProvider.notifier);
+    var showJobs = ref.watch(allJobsControllerProvider);
 
     return ListView.builder(
-      itemCount: allJobsModel!.meta!.links!.length,
+      itemCount: allJobsModel?.meta!.links2!.length,
       itemBuilder: (BuildContext context, int index) {
-        List<LinksMeta>? linkList = allJobsModel!.meta!.links!;
-        LinksMeta linkMeta = allJobsModel!.meta!.links![index];
+        List<Links2>? linkList = allJobsModel!.meta!.links2!;
+        Links2 linkMeta = allJobsModel!.meta!.links2![index];
         int lastItemIndexNumber = linkList.length - 1;
         if (index == 0) {
-          getJobs.getAllJobs(
-              pageId, muniId, jobcategoryId, pradeshId, districtId);
+          return InkWell(
+            onTap: () {
+              if (linkMeta.url != null) {
+                isSearching == true
+                    ? sPageCount = sPageCount - 1
+                    : pageCount = pageCount - 1;
+                getJobs.getAllJobs(pageId, muniId, pradeshId, districtId,
+                    selectedJobCategoryId);
+              } else {
+                showCustomSnackBar('Error', context);
+              }
+            },
+            child: Container(
+              margin: EdgeInsets.all(5),
+              decoration: selectNextButtonBoxDecoration(),
+              width: 20,
+              height: 10,
+              child: Container(
+                width: 10,
+                height: 10,
+                child: Icon(Icons.arrow_back),
+              ),
+            ),
+          );
+        } else if (index == lastItemIndexNumber) {
+          return InkWell(
+            onTap: () {
+              if (linkMeta.url != null) {
+                isSearching == true
+                    ? sPageCount = sPageCount - 1
+                    : pageCount = pageCount - 1;
+                getJobs.getAllJobs(pageId, muniId, pradeshId, districtId,
+                    selectedJobCategoryId);
+              } else {
+                showCustomSnackBar('Error', context);
+              }
+            },
+            child: Container(
+                margin: const EdgeInsets.all(5),
+                decoration: unselectNextButtonBoxDecoration(),
+                width: 22,
+                height: 22,
+                child: Container(
+                    margin: const EdgeInsets.all(2),
+                    child: Icon(Icons.arrow_forward))),
+          );
         } else {
-          showCustomSnackBar('Error', context);
+          return InkWell(
+            onTap: () {
+              pageCount = int.parse(linkMeta.label!);
+              getJobs.getAllJobs(
+                  pageId, muniId, selectedJobCategoryId, pradeshId, districtId);
+            },
+            child: Container(
+              margin: const EdgeInsets.all(5),
+              decoration: linkMeta.active == true
+                  ? selectPossitionButtonBoxDecoration()
+                  : unselectPossitionButtonBoxDecoration(),
+              width: 22,
+              height: 22,
+              child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        '${linkMeta.label}',
+                        textAlign: TextAlign.center,
+                        style:
+                            TextStyle(color: AppColorConst.PRAYMARY_TEXT_COLOR),
+                      ))),
+            ),
+          );
         }
       },
     );

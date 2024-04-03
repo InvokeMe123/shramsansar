@@ -10,21 +10,18 @@ class AllJobsController extends StateNotifier<AsyncValue<AllJobsModel>> {
 
   Future<void> getAllJobs(int pageId, int? muniId, int? categoryId,
       int? pradeshId, int? districtId) async {
-    try {
-      final result = await allJobsRepo.allJobsRepo(
-          pageId, muniId, categoryId, pradeshId, districtId);
-      final allJobsModel = AllJobsModel.fromJson(result);
-      state = AsyncValue.data(allJobsModel);
-    } catch (error) {
-      state = AsyncValue.error(
-          error.toString(), StackTrace.fromString(error.toString()));
-    }
+    final result = await allJobsRepo.allJobsRepo(
+        pageId, muniId, categoryId, pradeshId, districtId);
+    result.fold(
+        (l) => state =
+            AsyncValue.error(l.toString(), StackTrace.fromString(l.toString())),
+        (r) => state = AsyncValue.data(r));
   }
 
   Future<void> addAllJobs() async {
     final result = await allJobsRepo.addAllJobs();
     AllJobsModel? allJobsModel;
-    List<ViewAllJobsData> viewJobsdata = [];
+    List<Data> viewJobsdata = [];
     // viewJobsdata.addAll(allJobsModel!.data!);
     result.fold((error) {
       state = AsyncValue.error(

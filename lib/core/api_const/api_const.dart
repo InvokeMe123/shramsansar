@@ -22,7 +22,7 @@ class ApiConst {
   static String TOKEN = 'TOKEN';
 
   ///Jobs
-  static String VIEW_ALL_JOBS = 'view-all/jobs';
+  static String VIEW_ALL_JOBS = 'view-all/jobs?page=';
   static String VIEW_SEARCH_JOBS = 'search/jobs?';
   static String VIEW_SINGLE_JOB = 'view/normal/job/';
   static String JOB_APPLAY_F = 'job/';

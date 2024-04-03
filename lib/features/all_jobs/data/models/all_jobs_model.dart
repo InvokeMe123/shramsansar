@@ -36,16 +36,16 @@ class Data {
   String? serviceProviderName;
   String? title;
   String? positionType;
-  String? categoryId;
+  int? categoryId;
   String? categoryName;
   String? openings;
-  String? pradeshId;
+  int? pradeshId;
   String? pradeshName;
-  String? districtId;
+  int? districtId;
   String? districtName;
-  String? muniId;
+  int? muniId;
   String? muniName;
-  String? ward;
+  int? ward;
   String? address;
   String? deadline;
   String? engDeadline;
@@ -55,7 +55,7 @@ class Data {
   String? salaryMax;
   String? requiredExperience;
   String? requiredEducation;
-  String? discloseOrgAddress;
+  int? discloseOrgAddress;
   Organization? organization;
   ServiceProvider? serviceProvider;
 
@@ -162,7 +162,7 @@ class Organization {
   String? pradeshName;
   String? districtName;
   String? muniName;
-  String? ward;
+  int? ward;
   String? address;
   String? email;
   String? contactNumber;
@@ -212,7 +212,7 @@ class ServiceProvider {
   String? districtName;
   String? muniName;
   String? ward;
-  String? type;
+  int? type;
   String? typeName;
   String? phone;
   String? mobile;
@@ -277,7 +277,7 @@ class ServiceProvider {
 class Links {
   String? first;
   String? last;
-  Null? prev;
+  String? prev;
   String? next;
 
   Links({this.first, this.last, this.prev, this.next});

@@ -17,13 +17,13 @@ class ApiClient {
   }) async {
     final dbResult =
         token.isEmpty ? await dbClient.getData(dbKey: 'token') : token;
-    final Dio dio = Dio(BaseOptions(baseUrl: ApiConst.BASE_URL, headers: {
+    final Dio dio = Dio(BaseOptions(baseUrl: ApiConst.URL, headers: {
       'Authorization': 'Bearer $dbResult',
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     }));
     try {
-      log(ApiConst.BASE_URL + path);
+      log(ApiConst.URL + path);
       final result = type == 'get'
           ? await dio.get(path)
           : await dio.post(path, data: data);

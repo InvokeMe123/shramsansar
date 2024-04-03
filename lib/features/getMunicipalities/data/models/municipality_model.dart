@@ -55,8 +55,8 @@ class MunicipalityModel {
 
 class DataModel {
   int muni_id;
-  String type;
-  String district_id;
+  int type;
+  int district_id;
   String name;
   String code;
   DataModel({
@@ -69,8 +69,8 @@ class DataModel {
 
   DataModel copyWith({
     int? muni_id,
-    String? type,
-    String? district_id,
+    int? type,
+    int? district_id,
     String? name,
     String? code,
   }) {
@@ -96,8 +96,8 @@ class DataModel {
   factory DataModel.fromMap(Map<String, dynamic> map) {
     return DataModel(
       muni_id: map['muni_id'] as int,
-      type: map['type'] as String,
-      district_id: map['district_id'] as String,
+      type: map['type'],
+      district_id: map['district_id'],
       name: map['name'] as String,
       code: map['code'] as String,
     );

@@ -1,10 +1,10 @@
 name: shramsansar
 description: "A new Flutter project."
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
-  sdk: '>=3.3.1 <4.0.0'
+  sdk: ">=3.3.1 <4.0.0"
 
 dependencies:
   cached_network_image: ^3.3.1
@@ -13,10 +13,13 @@ dependencies:
   dio: ^5.4.1
   flutter:
     sdk: flutter
+  flutter_html: ^3.0.0-beta.2
   flutter_responsive_helper: ^1.0.2
   flutter_riverpod: ^2.5.1
   freezed_annotation: ^2.4.1
-  responsive_sizer: ^3.3.0+1
+  json_annotation: ^4.8.1
+  number_pagination: ^1.0.3
+  responsive_sizer: ^3.3.1
   shared_preferences: ^2.2.2
 
 dev_dependencies:
@@ -24,10 +27,10 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^3.0.0
   freezed: ^2.4.7
-  build_runner: ^2.4.8
+  build_runner: ^2.4.9
+  json_serializable: ^6.7.1
 
 flutter:
   uses-material-design: true
 
-assets:
-  -assets/images/  
+assets: -assets/images/

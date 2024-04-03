@@ -3,11 +3,16 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:shramsansar/commons/pagination_card.dart';
+import 'package:shramsansar/commons/pagination_card2.dart';
 import 'package:shramsansar/const/app_color_const.dart';
 import 'package:shramsansar/const/app_const.dart';
 import 'package:shramsansar/features/all_jobs/data/models/all_jobs_model.dart';
 import 'package:shramsansar/features/all_jobs/presentation/controller/all_jobs_controller.dart';
 import 'package:shramsansar/features/all_jobs/presentation/views/all_jobs_list.dart';
+import 'package:shramsansar/features/all_jobs/presentation/views/widgets/job_card.dart';
+import 'package:shramsansar/features/all_jobs/provider/filtered_provider.dart';
+import 'package:shramsansar/features/all_jobs/provider/page_index_provider.dart';
 import 'package:shramsansar/features/getDistricts/data/models/district_model.dart';
 import 'package:shramsansar/features/getDistricts/presentation/controller/district_controller.dart';
 import 'package:shramsansar/features/getMunicipalities/data/models/municipality_model.dart';
@@ -26,6 +31,9 @@ class AllJobs extends ConsumerStatefulWidget {
 }
 
 class _AllJobsState extends ConsumerState<AllJobs> {
+  int pageCount = 1;
+  int sPageCount = 1;
+  bool isSearching = false;
   String? selectedJobCategory;
   int? selectedJobCategoryId;
 
@@ -53,154 +61,129 @@ class _AllJobsState extends ConsumerState<AllJobs> {
 
   @override
   Widget build(BuildContext context) {
+    int pageIndex = ref.watch(pageIndexProvider1);
+    final result = ref.watch(allJobsControllerProvider(pageIndex));
     return Scaffold(
       appBar: AppBar(
         title: Text('All Jobs'),
       ),
-      body: SingleChildScrollView(
-          child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            getPradesh(context),
-            SizedBox(
-              height: 10,
-            ),
-            districtsDropDown(context),
-            SizedBox(
-              height: 10,
-            ),
-            getMuni(context),
-            SizedBox(
-              height: 10,
-            ),
-            jobCategoryDropDown(context),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              children: [
-                Spacer(),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius
-                            .zero, // Set the border radius to zero for a rectangular shape
-                      ),
-                      backgroundColor: AppColorConst.BUTTON_BLUE_COLOR),
-                  onPressed: () async {},
-                  child: Text(
-                    'Apply',
-                    style: TextStyle(color: AppColorConst.WHAIT),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              'Related Jobs',
-              style: TextStyle(
-                  color: AppColorConst.BUTTON_BLUE_COLOR, fontSize: 18),
-            ),
-            Container(
-              decoration: BoxDecoration(color: AppColorConst.BUTTON_BLUE_COLOR),
-              width: MediaQuery.sizeOf(context).width,
-              height: 1,
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            viewAllJobsList(context),
-          ],
-        ),
-      )),
-    );
-  }
-
-  viewAllJobsList(BuildContext context) {
-    var addList = ref.watch(allJobsControllerProvider.notifier);
-    var jobsList = ref.watch(allJobsControllerProvider);
-    return Container(
-      child: Column(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Consumer(builder: (context, watch, child) {
-            addList.addAllJobs();
-            jobsList.when(
-                data: (data) {},
-                error: (error, stack) => Text(error.toString()),
-                loading: () =>
-                    const Center(child: CircularProgressIndicator()));
-            return Container(
-              child: ListView.builder(
-                itemCount: 2,
-                itemBuilder: (context, index) {
-                  Text('ss');
-                },
-              ),
-            );
-          }),
-          Text('This is bad'),
+          getPradesh(context),
+          SizedBox(
+            height: 10,
+          ),
+          districtsDropDown(context),
+          SizedBox(
+            height: 10,
+          ),
+          getMuni(context),
+          SizedBox(
+            height: 10,
+          ),
+          jobCategoryDropDown(context),
+          SizedBox(
+            height: 10,
+          ),
+          Row(
+            children: [
+              const Spacer(),
+              if (ref.watch(filteredProvider1))
+                ElevatedButton(
+                    onPressed: () {
+                      ref
+                          .read(allJobsControllerProvider(pageIndex).notifier)
+                          .getAllJobsDetails();
+                      ref
+                          .watch(filteredProvider1.notifier)
+                          .update((state) => false);
+                      selectedPradesh = null;
+                      selectedDistrict = null;
+                      selectedMunicipality = null;
+                      selectedJobCategory = null;
+                    },
+                    child: Text('Clear filter')),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius
+                          .zero, // Set the border radius to zero for a rectangular shape
+                    ),
+                    backgroundColor: AppColorConst.BUTTON_BLUE_COLOR),
+                onPressed: selectedDistrict == null ||
+                        selectedPradesh == null ||
+                        selectedMunicipality == null ||
+                        selectedJobCategory == null
+                    ? null
+                    : () async {
+                        debugPrint(
+                            "Pradesh: $selectedPradeshId, District: $selectedDistrictId, Muni: $selectedMunicipalityId, JobCategory: $selectedJobCategory");
+                        ref
+                            .read(filteredProvider1.notifier)
+                            .update((state) => true);
+                        ref
+                            .read(allJobsControllerProvider(pageIndex).notifier)
+                            .searchJobsDetail(
+                                muniID: selectedMunicipalityId.toString(),
+                                categoryID: selectedJobCategoryId.toString());
+                      },
+                child: Text(
+                  'Apply',
+                  style: TextStyle(color: AppColorConst.WHAIT),
+                ),
+              )
+            ],
+          ),
+
+          Text(
+            'Related Jobs',
+            style:
+                TextStyle(color: AppColorConst.BUTTON_BLUE_COLOR, fontSize: 18),
+          ),
+          Container(
+            decoration: BoxDecoration(color: AppColorConst.BUTTON_BLUE_COLOR),
+            width: MediaQuery.sizeOf(context).width,
+            height: 1,
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Expanded(
+              child: result.when(
+                  data: (data) {
+                    if (data.data!.isEmpty) {
+                      return Center(
+                        child: Text('NO data'),
+                      );
+                    }
+                    return Column(
+                      children: [
+                        Expanded(
+                            child: ListView.builder(
+                                itemCount: data.data!.length,
+                                itemBuilder: (_, index) {
+                                  var allJobsData = data.data![index];
+                                  return JobCard(model: allJobsData);
+                                })),
+                        PaginationCard2(
+                            totalItems: data.meta?.total ?? 10,
+                            perPage: data.meta?.perPage ?? 10)
+                      ],
+                    );
+                  },
+                  error: (_, __) {
+                    return Text("he");
+                  },
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()))),
+
+          SizedBox(
+            height: 20,
+          ),
+          //getJobs(context)
         ],
       ),
-    );
-  }
-
-  getJobs(BuildContext context) {
-    if (muniModel != null && muniModel!.data.isNotEmpty) {
-      // Iterate over the data list and access the muni_id of each DataModel
-      for (var dataModel in muniModel!.data) {
-        muniId = dataModel.muni_id;
-        // Now you can use the muniId as needed
-        print('Muni ID: $muniId');
-      }
-    } else {
-      print('Municipality model is null or data is empty');
-    }
-    if (pradeshModel != null && pradeshModel!.data.isNotEmpty) {
-      for (var dataModel in pradeshModel!.data) {
-        pradeshId = dataModel.id;
-
-        print('Muni ID: $pradeshId');
-      }
-    } else {
-      print('Municipality model is null or data is empty');
-    }
-    if (jobCategoryModel != null && jobCategoryModel!.data.isNotEmpty) {
-      for (var dataModel in jobCategoryModel!.data) {
-        jobcategoryId = dataModel.id;
-
-        print('Muni ID: $jobcategoryId');
-      }
-    } else {
-      print('Municipality model is null or data is empty');
-    }
-    if (districtModel != null && districtModel!.data.isNotEmpty) {
-      for (var dataModel in districtModel!.data) {
-        districtId = dataModel.id;
-
-        print('Muni ID: $districtId');
-      }
-    } else {
-      print('Municipality model is null or data is empty');
-    }
-    var getJobs = ref.watch(allJobsControllerProvider.notifier);
-
-    return ListView.builder(
-      itemCount: allJobsModel!.meta!.links!.length,
-      itemBuilder: (BuildContext context, int index) {
-        List<LinksMeta>? linkList = allJobsModel!.meta!.links!;
-        LinksMeta linkMeta = allJobsModel!.meta!.links![index];
-        int lastItemIndexNumber = linkList.length - 1;
-        if (index == 0) {
-          getJobs.getAllJobs(
-              pageId, muniId, jobcategoryId, pradeshId, districtId);
-        } else {
-          showCustomSnackBar('Error', context);
-        }
-      },
     );
   }
 
@@ -259,7 +242,7 @@ class _AllJobsState extends ConsumerState<AllJobs> {
     );
   }
 
-  getPradesh(BuildContext context) {
+  Widget getPradesh(BuildContext context) {
     var getPradesh = ref.watch(pradeshControllerProvider);
     List<String> pradesh = [];
 
@@ -327,7 +310,7 @@ class _AllJobsState extends ConsumerState<AllJobs> {
           getDistricts.when(
               data: (data) {
                 for (var model in data.data) {
-                  if (model.pradesh_id == selectedPradeshId.toString()) {
+                  if (model.pradesh_id == selectedPradeshId) {
                     districts.add(model.name);
                   }
                 }
@@ -380,7 +363,7 @@ class _AllJobsState extends ConsumerState<AllJobs> {
             getMuni.when(
                 data: (data) {
                   for (var model in data.data) {
-                    if (model.district_id == selectedDistrictId.toString()) {
+                    if (model.district_id == selectedDistrictId) {
                       muni.add(model.name);
                     }
                   }
@@ -432,7 +415,7 @@ class _AllJobsState extends ConsumerState<AllJobs> {
           return jobCat.when(
             data: (data) {
               List<String> jobCate =
-                  data.data.map((model) => model.name).toList();
+                  data.data.map((model) => model.name).toSet().toList();
               return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: DropdownButton<String>(
@@ -447,10 +430,7 @@ class _AllJobsState extends ConsumerState<AllJobs> {
                       selectedJobCategory = value;
                     });
                   },
-                  value: selectedJobCategory ??
-                      (jobCate.isEmpty
-                          ? AppConst.selectJobCategory
-                          : jobCate[0]),
+                  value: selectedJobCategory,
                   items: jobCate.map((name) {
                     return DropdownMenuItem<String>(
                       value: name,

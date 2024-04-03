@@ -6,8 +6,9 @@ import 'package:shramsansar/core/api_const/api_const.dart';
 import 'package:shramsansar/features/all_jobs/data/models/all_jobs_model.dart';
 
 abstract class AllJobsDataSource {
-  Future<AllJobsModel> allJobDS();
-  Future<AllJobsModel> addJobs();
+  Future<AllJobsModel> getallJobDS(int pageIndex);
+  Future<AllJobsModel> searchJobDS(
+      {required String muniID, required String categoryID});
 }
 
 class AllJobsDataSourceImp implements AllJobsDataSource {
@@ -15,19 +16,23 @@ class AllJobsDataSourceImp implements AllJobsDataSource {
   AllJobsDataSourceImp(this.apiClient);
 
   @override
-  Future<AllJobsModel> allJobDS() async {
-    final result =
-        await apiClient.request(path: ApiConst.VIEW_ALL_JOBS, type: 'get');
-    log(result['data'].toString());
-    return AllJobsModel.fromJson(result['data']);
+  Future<AllJobsModel> getallJobDS(int pageIndex) async {
+    final result = await apiClient.request(
+        path: "${ApiConst.VIEW_ALL_JOBS}$pageIndex", type: 'get');
+
+    return AllJobsModel.fromJson(result);
   }
 
   @override
-  Future<AllJobsModel> addJobs() async {
+  Future<AllJobsModel> searchJobDS(
+      {required String muniID, required String categoryID}) async {
     log('ds of jobs');
-    final result =
-        await apiClient.request(path: ApiConst.VIEW_ALL_JOBS, type: 'get');
-    return AllJobsModel.fromJson(result['data']);
+    final result = await apiClient.request(
+        path:
+            "${ApiConst.VIEW_SEARCH_JOBS}muni_id=$muniID&category_id=$categoryID",
+        type: 'get');
+    log("link:${ApiConst.VIEW_SEARCH_JOBS}muni_id=$muniID&category_id=$categoryID");
+    return AllJobsModel.fromJson(result);
   }
 }
 

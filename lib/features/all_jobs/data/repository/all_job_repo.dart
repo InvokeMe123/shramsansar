@@ -8,9 +8,9 @@ import 'package:shramsansar/features/all_jobs/data/data_source/all_job_data_sour
 import 'package:shramsansar/features/all_jobs/data/models/all_jobs_model.dart';
 
 abstract class AllJobsRepo {
-  Future<Either<AppError, AllJobsModel>> allJobsRepo(int pageId, int? muniId,
-      int? categoryId, int? pradeshId, int? districtId);
-  Future<Either<AppError, AllJobsModel>> addAllJobs();
+  Future<Either<AppError, AllJobsModel>> getAllJobRepo(int pageIndex);
+  Future<Either<AppError, AllJobsModel>> searchJobRepo(
+      {required String muniID, required String categoryID});
 }
 
 class AllJobsRepoImp implements AllJobsRepo {
@@ -18,10 +18,9 @@ class AllJobsRepoImp implements AllJobsRepo {
   AllJobsRepoImp(this.allJobsDataSource);
 
   @override
-  Future<Either<AppError, AllJobsModel>> allJobsRepo(int pageId, int? muniId,
-      int? categoryId, int? pradeshId, int? districtId) async {
+  Future<Either<AppError, AllJobsModel>> getAllJobRepo(int pageIndex) async {
     try {
-      final result = await allJobsDataSource.allJobDS();
+      final result = await allJobsDataSource.getallJobDS(pageIndex);
       return Right(result);
     } on DioException catch (e) {
       return Left(AppError(e.message!));
@@ -29,10 +28,12 @@ class AllJobsRepoImp implements AllJobsRepo {
   }
 
   @override
-  Future<Either<AppError, AllJobsModel>> addAllJobs() async {
+  Future<Either<AppError, AllJobsModel>> searchJobRepo(
+      {required String muniID, required String categoryID}) async {
     log('repo of jobs');
     try {
-      final result = await allJobsDataSource.addJobs();
+      final result = await allJobsDataSource.searchJobDS(
+          muniID: muniID, categoryID: categoryID);
       return Right(result);
     } on DioException catch (e) {
       return Left(AppError(e.message!));

@@ -9,6 +9,7 @@ import 'package:shramsansar/const/app_color_const.dart';
 import 'package:shramsansar/core/dbclient.dart';
 import 'package:shramsansar/features/all_jobs/presentation/views/all_jobs.dart';
 import 'package:shramsansar/features/auth/presentation/views/login/loginScreen.dart';
+import 'package:shramsansar/features/trainings/presentation/views/training_page.dart';
 import 'package:shramsansar/utils/navigation/nav_app.dart';
 
 class Dashboard extends ConsumerStatefulWidget {
@@ -86,6 +87,7 @@ class _DashboardState extends ConsumerState<Dashboard> {
               children: [
                 GestureDetector(
                   onTap: () {
+                    // normalNav(context, AllJobs());
                     normalNav(context, AllJobs());
                   },
                   child: Padding(
@@ -98,14 +100,19 @@ class _DashboardState extends ConsumerState<Dashboard> {
                         child: const Center(child: Text('Jobs'))),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 7.0),
-                  child: Container(
-                      height: 18.h,
-                      width: 22.w,
-                      decoration:
-                          BoxDecoration(color: AppColorConst.PRAYMERY_COLOR),
-                      child: const Center(child: Text('Training'))),
+                GestureDetector(
+                  onTap: () {
+                    normalNav(context, TrainingPage());
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 7.0),
+                    child: Container(
+                        height: 18.h,
+                        width: 22.w,
+                        decoration:
+                            BoxDecoration(color: AppColorConst.PRAYMERY_COLOR),
+                        child: const Center(child: Text('Training'))),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 7.0),

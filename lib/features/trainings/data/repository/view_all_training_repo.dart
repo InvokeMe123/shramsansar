@@ -41,4 +41,5 @@ class ViewAllTrainingRepositoryImpl implements ViewAllTrainingRepository {
 }
 
 final viewAllTrainingRepositoryProvider = Provider<ViewAllTrainingRepository>(
-    (ref) => ViewAllTrainingRepositoryImpl(ref.read(viewAllTrainingProvider)));
+    (ref) =>
+        ViewAllTrainingRepositoryImpl(ref.read(viewAllTrainingDSProvider)));

@@ -23,7 +23,7 @@ class ApiClient {
       'Accept': 'application/json'
     }));
     try {
-      log(ApiConst.URL + path);
+      log("${ApiConst.URL}$path, token: $dbResult");
       final result = type == 'get'
           ? await dio.get(path)
           : await dio.post(path, data: data);

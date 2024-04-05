@@ -1,52 +1,40 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shramsansar/features/all_jobs/data/models/all_jobs_model.dart';
 import 'package:shramsansar/features/all_jobs/data/repository/all_job_repo.dart';
 
 class AllJobsController extends StateNotifier<AsyncValue<AllJobsModel>> {
   final AllJobsRepo allJobsRepo;
+  final int pageIndex;
 
-  AllJobsController(this.allJobsRepo) : super(AsyncValue.loading());
-
-  Future<void> getAllJobs(int pageId, int? muniId, int? categoryId,
-      int? pradeshId, int? districtId) async {
-    try {
-      final result = await allJobsRepo.allJobsRepo(
-          pageId, muniId, categoryId, pradeshId, districtId);
-      final allJobsModel = AllJobsModel.fromJson(result);
-      state = AsyncValue.data(allJobsModel);
-    } catch (error) {
-      state = AsyncValue.error(
-          error.toString(), StackTrace.fromString(error.toString()));
-    }
+  AllJobsController({required this.allJobsRepo, required this.pageIndex})
+      : super(AsyncValue.loading()) {
+    getAllJobsDetails();
   }
 
-  Future<void> addAllJobs() async {
-    final result = await allJobsRepo.addAllJobs();
-    AllJobsModel? allJobsModel;
-    List<ViewAllJobsData> viewJobsdata = [];
-    // viewJobsdata.addAll(allJobsModel!.data!);
-    result.fold((error) {
-      state = AsyncValue.error(
-        error.message,
-        StackTrace.fromString(error.toString()),
-      );
-    }, (data) {
-      if (data.data != null && data.data!.isNotEmpty) {
-        viewJobsdata.addAll(data.data!);
-        state = AsyncValue.data(data);
-      } else {
-        // Set the state to indicate empty data
-        state = AsyncValue.error(
-          'Invalid',
-          StackTrace.fromString('Invalid'),
-        );
-      }
-    });
+  Future<void> getAllJobsDetails() async {
+    final result = await allJobsRepo.getAllJobRepo(pageIndex);
+    result.fold(
+        (l) => state =
+            AsyncValue.error(l.toString(), StackTrace.fromString(l.toString())),
+        (r) => state = AsyncValue.data(r));
+  }
+
+  Future<void> searchJobsDetail(
+      {required String muniID, required String categoryID}) async {
+    final result =
+        await allJobsRepo.searchJobRepo(muniID: muniID, categoryID: categoryID);
+
+    result.fold(
+        (l) => state =
+            AsyncValue.error(l.message, StackTrace.fromString(l.message)),
+        (r) => state = AsyncValue.data(r));
   }
 }
 
-final allJobsControllerProvider =
-    StateNotifierProvider<AllJobsController, AsyncValue<AllJobsModel>>((ref) {
-  return AllJobsController(ref.watch(allJobsRepoProvider));
+final allJobsControllerProvider = StateNotifierProvider.family<
+    AllJobsController, AsyncValue<AllJobsModel>, int>((ref, pageIndex) {
+  return AllJobsController(
+      allJobsRepo: ref.read(allJobsRepoProvider), pageIndex: pageIndex);
 });

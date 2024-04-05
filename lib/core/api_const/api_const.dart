@@ -22,7 +22,7 @@ class ApiConst {
   static String TOKEN = 'TOKEN';
 
   ///Jobs
-  static String VIEW_ALL_JOBS = 'view-all/jobs';
+  static String VIEW_ALL_JOBS = 'view-all/jobs?page=';
   static String VIEW_SEARCH_JOBS = 'search/jobs?';
   static String VIEW_SINGLE_JOB = 'view/normal/job/';
   static String JOB_APPLAY_F = 'job/';
@@ -56,6 +56,7 @@ class ApiConst {
   static String VIEW_SEARCH_TRAINING = 'search/trainings';
   static String MUNICIPALITIES = 'municipalities/';
   static String MUNICIPALITIES_All = 'municipalities';
+  static String LATEST_TRAINING = 'latest/trainings';
 
   ///Notification
   static String NOTIFICATION_URI = 'notifications';

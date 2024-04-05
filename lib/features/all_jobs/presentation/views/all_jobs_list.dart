@@ -6,8 +6,9 @@ import 'package:shramsansar/const/app_image_const.dart';
 import 'package:shramsansar/core/api_const/api_const.dart';
 import 'package:shramsansar/features/all_jobs/data/models/all_jobs_model.dart';
 
+// ignore: must_be_immutable
 class AllJobList extends ConsumerWidget {
-  ViewAllJobsData viewAllJobsData;
+  Data viewAllJobsData;
   AllJobList(this.viewAllJobsData, {Key? key}) : super(key: key);
 
   @override
@@ -21,7 +22,7 @@ class AllJobList extends ConsumerWidget {
             bottom: 5,
             top: 5,
           ),
-          width: MediaQuery.sizeOf(context).width,
+          width: double.infinity,
           height: MediaQuery.sizeOf(context).height * 0.12,
           child: Row(
             children: [

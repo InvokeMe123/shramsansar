@@ -9,6 +9,7 @@ import 'package:shramsansar/const/app_color_const.dart';
 import 'package:shramsansar/core/dbclient.dart';
 import 'package:shramsansar/features/all_jobs/presentation/views/all_jobs.dart';
 import 'package:shramsansar/features/auth/presentation/views/login/loginScreen.dart';
+import 'package:shramsansar/features/latest_training/presentation/views/latest_training.dart';
 import 'package:shramsansar/features/trainings/presentation/views/training_page.dart';
 import 'package:shramsansar/utils/navigation/nav_app.dart';
 
@@ -88,6 +89,7 @@ class _DashboardState extends ConsumerState<Dashboard> {
                 GestureDetector(
                   onTap: () {
                     // normalNav(context, AllJobs());
+                    normalNav(context, AllJobs());
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(left: 0),
@@ -132,7 +134,9 @@ class _DashboardState extends ConsumerState<Dashboard> {
                       child: const Center(child: Text('Training\nCenters'))),
                 ),
               ],
-            )
+            ),
+            const Text("Latest Training"),
+            const LatestTraining(),
           ],
         ),
       ),

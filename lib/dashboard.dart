@@ -1,12 +1,15 @@
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shramsansar/commons/latest_job_card.dart';
 import 'package:shramsansar/const/app_color_const.dart';
 import 'package:shramsansar/core/dbclient.dart';
+import 'package:shramsansar/features/all_jobs/presentation/controller/latest_job_controller.dart';
 import 'package:shramsansar/features/all_jobs/presentation/views/all_jobs.dart';
 import 'package:shramsansar/features/auth/presentation/views/login/loginScreen.dart';
 import 'package:shramsansar/features/trainings/presentation/views/training_page.dart';
@@ -45,6 +48,7 @@ class _DashboardState extends ConsumerState<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
+    final latestJobs = ref.watch(latestJobControllerProvider);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColorConst.BUTTON_BLUE_COLOR,
@@ -82,6 +86,7 @@ class _DashboardState extends ConsumerState<Dashboard> {
       body: Padding(
         padding: const EdgeInsets.all(12),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
@@ -133,6 +138,28 @@ class _DashboardState extends ConsumerState<Dashboard> {
                       child: const Center(child: Text('Training\nCenters'))),
                 ),
               ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text('Latest Jobs'),
+            Divider(
+              color: Colors.black,
+            ),
+            Expanded(
+              child: latestJobs.when(
+                  data: (data) {
+                    return ListView.builder(
+                        itemCount: 5,
+                        itemBuilder: (context, index) {
+                          return LatestJobCard(data: data.data![index]);
+                        });
+                  },
+                  error: (_, __) {
+                    return Text("he");
+                  },
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator())),
             )
           ],
         ),

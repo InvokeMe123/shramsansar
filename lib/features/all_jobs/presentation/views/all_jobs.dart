@@ -10,7 +10,7 @@ import 'package:shramsansar/const/app_const.dart';
 import 'package:shramsansar/features/all_jobs/data/models/all_jobs_model.dart';
 import 'package:shramsansar/features/all_jobs/presentation/controller/all_jobs_controller.dart';
 import 'package:shramsansar/features/all_jobs/presentation/views/all_jobs_list.dart';
-import 'package:shramsansar/features/all_jobs/presentation/views/widgets/job_card.dart';
+import 'package:shramsansar/commons/job_card.dart';
 import 'package:shramsansar/features/all_jobs/provider/filtered_provider.dart';
 import 'package:shramsansar/features/all_jobs/provider/page_index_provider.dart';
 import 'package:shramsansar/features/getDistricts/data/models/district_model.dart';

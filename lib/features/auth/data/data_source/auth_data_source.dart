@@ -7,7 +7,6 @@ import 'package:shramsansar/core/dbclient.dart';
 import 'package:shramsansar/features/auth/data/models/login_model.dart/login_request_model.dart';
 import 'package:shramsansar/features/auth/data/models/login_model.dart/login_response_model.dart';
 import 'package:shramsansar/features/auth/data/models/register_model.dart/register_request_model.dart';
-import 'package:shramsansar/features/auth/data/models/register_model.dart/register_response_model.dart';
 
 abstract class AuthDataSource {
   Future<LoginResponseModel> loginDS(

@@ -28,6 +28,7 @@ class ApiConst {
   static String JOB_APPLAY_F = 'job/';
   static String JOB_APPLAY_L = '/apply';
   static String CATEGORY = 'category';
+  static String Latest_Job = 'latest/jobs';
 
   ///Location
   static String PRODESH = 'pradesh';

@@ -48,6 +48,7 @@ class _LatestJobDisplayState extends State<LatestJobDisplay> {
   void applyForJob() async {
     log(filePath1);
     if (filePath1.isEmpty) {
+      showCustomSnackBar('Please Upload the CV first', context);
     } else {
       formData.files.add(MapEntry(
           'cv', MultipartFile.fromFileSync(filePath1, filename: fileName)));

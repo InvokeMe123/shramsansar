@@ -12,7 +12,7 @@ abstract class AuthDataSource {
   Future<LoginResponseModel> loginDS(
       LoginRequestModel loginRequestModel, String token);
   Future<LoginResponseModel> registerDS(
-      RegisterRequestModel registerRequestModel, String token);
+      RegisterRequestModel registerRequestModel);
 }
 
 class AuthDataSourceImp implements AuthDataSource {
@@ -36,12 +36,12 @@ class AuthDataSourceImp implements AuthDataSource {
 
   @override
   Future<LoginResponseModel> registerDS(
-      RegisterRequestModel registerRequestModel, String token) async {
+      RegisterRequestModel registerRequestModel) async {
     final result = await apiClient.request(
         path: ApiConst.REGISTER,
-        token: token,
         type: 'post',
         data: registerRequestModel.toMap());
+    DbClient().setData(dbKey: 'token', value: result['token']);
     return LoginResponseModel.fromJson(result['token']);
   }
 }

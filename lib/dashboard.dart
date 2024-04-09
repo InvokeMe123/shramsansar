@@ -13,6 +13,8 @@ import 'package:shramsansar/features/all_jobs/presentation/controller/latest_job
 import 'package:shramsansar/features/all_jobs/presentation/views/all_jobs.dart';
 import 'package:shramsansar/features/auth/presentation/views/login/loginScreen.dart';
 import 'package:shramsansar/features/latest_training/presentation/views/latest_training.dart';
+import 'package:shramsansar/features/profile/presentation/views/profile_edit_page.dart';
+import 'package:shramsansar/features/profile/presentation/views/profile_page.dart';
 import 'package:shramsansar/features/trainings/presentation/views/training_page.dart';
 import 'package:shramsansar/training_center/presentation/views/training_center.dart';
 import 'package:shramsansar/utils/navigation/nav_app.dart';
@@ -52,6 +54,39 @@ class _DashboardState extends ConsumerState<Dashboard> {
   Widget build(BuildContext context) {
     final latestJobs = ref.watch(latestJobControllerProvider);
     return Scaffold(
+      drawer: Drawer(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 40,
+            ),
+            Text(
+              'Profile',
+              style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 0.5),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+              child: Row(
+                children: [CircleAvatar(), Text('')],
+              ),
+            ),
+            Divider(),
+            TextButton(
+                onPressed: () {
+                  normalNav(context, ProfilePage());
+                },
+                child: Text('View Profile')),
+            TextButton(
+                onPressed: () {
+                  normalNav(context, ProfileEditPage());
+                },
+                child: Text('Edit Profile'))
+          ],
+        ),
+      ),
       appBar: AppBar(
         backgroundColor: AppColorConst.BUTTON_BLUE_COLOR,
         title: const Text(
@@ -77,13 +112,6 @@ class _DashboardState extends ConsumerState<Dashboard> {
                     style: TextStyle(color: Colors.white),
                   ))
         ],
-        leading: IconButton(
-          icon: const Icon(
-            Icons.menu,
-            color: Colors.white,
-          ),
-          onPressed: () {},
-        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(12),
@@ -155,7 +183,7 @@ class _DashboardState extends ConsumerState<Dashboard> {
               child: latestJobs.when(
                   data: (data) {
                     return ListView.builder(
-                        itemCount: 5,
+                        itemCount: 10,
                         itemBuilder: (context, index) {
                           return LatestJobCard(data: data.data![index]);
                         });
@@ -165,6 +193,16 @@ class _DashboardState extends ConsumerState<Dashboard> {
                   },
                   loading: () =>
                       const Center(child: CircularProgressIndicator())),
+            ),
+            Row(
+              children: [
+                Spacer(),
+                TextButton(
+                    onPressed: () {
+                      normalNav(context, AllJobs());
+                    },
+                    child: Text('See All Jobs '))
+              ],
             )
           ],
         ),

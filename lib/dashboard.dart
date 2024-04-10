@@ -12,8 +12,12 @@ import 'package:shramsansar/core/dbclient.dart';
 import 'package:shramsansar/features/all_jobs/presentation/controller/latest_job_controller.dart';
 import 'package:shramsansar/features/all_jobs/presentation/views/all_jobs.dart';
 import 'package:shramsansar/features/auth/presentation/views/login/loginScreen.dart';
+
+import 'package:shramsansar/features/edit_profile/presentation/views/profile_edit_page.dart';
+
 import 'package:shramsansar/features/latest_training/presentation/views/latest_training.dart';
 import 'package:shramsansar/features/profile/presentation/views/profile_edit_page.dart';
+
 import 'package:shramsansar/features/profile/presentation/views/profile_page.dart';
 import 'package:shramsansar/features/trainings/presentation/views/training_page.dart';
 import 'package:shramsansar/training_center/presentation/views/training_center.dart';

@@ -18,6 +18,7 @@ dependencies:
   flutter_responsive_helper: ^1.0.2
   flutter_riverpod: ^2.5.1
   freezed_annotation: ^2.4.1
+  image_picker: ^1.0.7
   json_annotation: ^4.8.1
   logger: ^2.2.0
   number_pagination: ^1.0.3

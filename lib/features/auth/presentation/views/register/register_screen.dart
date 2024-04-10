@@ -7,6 +7,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shramsansar/const/app_color_const.dart';
 import 'package:shramsansar/features/auth/data/models/register_model.dart/register_request_model.dart';
 import 'package:shramsansar/features/auth/presentation/controller/register_controller.dart/register_controller.dart';
+import 'package:shramsansar/features/auth/presentation/views/register/widgets/national_id_card_button.dart';
 import 'package:shramsansar/features/caste/presentation/controller/caste_controller.dart';
 import 'package:shramsansar/features/gender/presentation/controller/gender_controller.dart';
 import 'package:shramsansar/features/getDistricts/presentation/controller/district_controller.dart';
@@ -127,6 +128,12 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         SizedBox(
                           height: 2.1.h,
                         ),
+
+                        // National ID card
+                        const NationalIdCardButton(),
+
+                        SizedBox(height: 2.1.h),
+
                         const Text(
                           'Permanent address Details *',
                           style: TextStyle(color: Colors.black, fontSize: 20),

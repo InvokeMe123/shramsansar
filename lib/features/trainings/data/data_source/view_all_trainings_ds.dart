@@ -38,5 +38,5 @@ class ViewAllTrainingDSImpl implements ViewAllTrainingDS {
   }
 }
 
-final viewAllTrainingProvider = Provider<ViewAllTrainingDS>(
+final viewAllTrainingDSProvider = Provider<ViewAllTrainingDS>(
     (ref) => ViewAllTrainingDSImpl(ref.read(apiClientProvider)));

@@ -16,6 +16,9 @@ class RegisterRequestModel {
   int muni_id;
   int ward;
   int mobile;
+  int preferredJobCateogryId;
+  int casteId;
+
   RegisterRequestModel({
     required this.name,
     required this.email,
@@ -31,6 +34,8 @@ class RegisterRequestModel {
     required this.muni_id,
     required this.ward,
     required this.mobile,
+    required this.preferredJobCateogryId,
+    required this.casteId,
   });
 
   RegisterRequestModel copyWith({
@@ -48,12 +53,15 @@ class RegisterRequestModel {
     int? muni_id,
     int? ward,
     int? mobile,
+    int? preferredJobCateogryId,
+    int? casteId,
   }) {
     return RegisterRequestModel(
       name: name ?? this.name,
       email: email ?? this.email,
       password: password ?? this.password,
-      password_confirmation: password_confirmation ?? this.password_confirmation,
+      password_confirmation:
+          password_confirmation ?? this.password_confirmation,
       gender: gender ?? this.gender,
       per_pradesh_id: per_pradesh_id ?? this.per_pradesh_id,
       per_district_id: per_district_id ?? this.per_district_id,
@@ -64,6 +72,9 @@ class RegisterRequestModel {
       muni_id: muni_id ?? this.muni_id,
       ward: ward ?? this.ward,
       mobile: mobile ?? this.mobile,
+      preferredJobCateogryId:
+          preferredJobCateogryId ?? this.preferredJobCateogryId,
+      casteId: casteId ?? this.casteId,
     );
   }
 
@@ -83,6 +94,8 @@ class RegisterRequestModel {
       'muni_id': muni_id,
       'ward': ward,
       'mobile': mobile,
+      'preference_job_cat[0]': preferredJobCateogryId,
+      'ethnicity_type': casteId,
     };
   }
 
@@ -102,12 +115,15 @@ class RegisterRequestModel {
       muni_id: map['muni_id'] as int,
       ward: map['ward'] as int,
       mobile: map['mobile'] as int,
+      preferredJobCateogryId: map['preference_job_cat[0]'] as int,
+      casteId: map["caste"] as int,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory RegisterRequestModel.fromJson(String source) => RegisterRequestModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory RegisterRequestModel.fromJson(String source) =>
+      RegisterRequestModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
@@ -117,39 +133,38 @@ class RegisterRequestModel {
   @override
   bool operator ==(covariant RegisterRequestModel other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.name == name &&
-      other.email == email &&
-      other.password == password &&
-      other.password_confirmation == password_confirmation &&
-      other.gender == gender &&
-      other.per_pradesh_id == per_pradesh_id &&
-      other.per_district_id == per_district_id &&
-      other.per_muni_id == per_muni_id &&
-      other.per_ward == per_ward &&
-      other.pradesh_id == pradesh_id &&
-      other.district_id == district_id &&
-      other.muni_id == muni_id &&
-      other.ward == ward &&
-      other.mobile == mobile;
+
+    return other.name == name &&
+        other.email == email &&
+        other.password == password &&
+        other.password_confirmation == password_confirmation &&
+        other.gender == gender &&
+        other.per_pradesh_id == per_pradesh_id &&
+        other.per_district_id == per_district_id &&
+        other.per_muni_id == per_muni_id &&
+        other.per_ward == per_ward &&
+        other.pradesh_id == pradesh_id &&
+        other.district_id == district_id &&
+        other.muni_id == muni_id &&
+        other.ward == ward &&
+        other.mobile == mobile;
   }
 
   @override
   int get hashCode {
     return name.hashCode ^
-      email.hashCode ^
-      password.hashCode ^
-      password_confirmation.hashCode ^
-      gender.hashCode ^
-      per_pradesh_id.hashCode ^
-      per_district_id.hashCode ^
-      per_muni_id.hashCode ^
-      per_ward.hashCode ^
-      pradesh_id.hashCode ^
-      district_id.hashCode ^
-      muni_id.hashCode ^
-      ward.hashCode ^
-      mobile.hashCode;
+        email.hashCode ^
+        password.hashCode ^
+        password_confirmation.hashCode ^
+        gender.hashCode ^
+        per_pradesh_id.hashCode ^
+        per_district_id.hashCode ^
+        per_muni_id.hashCode ^
+        per_ward.hashCode ^
+        pradesh_id.hashCode ^
+        district_id.hashCode ^
+        muni_id.hashCode ^
+        ward.hashCode ^
+        mobile.hashCode;
   }
 }

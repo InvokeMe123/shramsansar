@@ -7,13 +7,12 @@ import 'package:shramsansar/core/dbclient.dart';
 import 'package:shramsansar/features/auth/data/models/login_model.dart/login_request_model.dart';
 import 'package:shramsansar/features/auth/data/models/login_model.dart/login_response_model.dart';
 import 'package:shramsansar/features/auth/data/models/register_model.dart/register_request_model.dart';
-import 'package:shramsansar/features/auth/data/models/register_model.dart/register_response_model.dart';
 
 abstract class AuthDataSource {
   Future<LoginResponseModel> loginDS(
       LoginRequestModel loginRequestModel, String token);
   Future<LoginResponseModel> registerDS(
-      RegisterRequestModel registerRequestModel, String token);
+      RegisterRequestModel registerRequestModel);
 }
 
 class AuthDataSourceImp implements AuthDataSource {
@@ -37,12 +36,12 @@ class AuthDataSourceImp implements AuthDataSource {
 
   @override
   Future<LoginResponseModel> registerDS(
-      RegisterRequestModel registerRequestModel, String token) async {
+      RegisterRequestModel registerRequestModel) async {
     final result = await apiClient.request(
         path: ApiConst.REGISTER,
-        token: token,
         type: 'post',
         data: registerRequestModel.toMap());
+    DbClient().setData(dbKey: 'token', value: result['token']);
     return LoginResponseModel.fromJson(result['token']);
   }
 }

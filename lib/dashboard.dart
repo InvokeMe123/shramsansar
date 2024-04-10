@@ -20,7 +20,7 @@ import 'package:shramsansar/features/profile/presentation/views/profile_edit_pag
 
 import 'package:shramsansar/features/profile/presentation/views/profile_page.dart';
 import 'package:shramsansar/features/trainings/presentation/views/training_page.dart';
-import 'package:shramsansar/training_center/presentation/views/training_center.dart';
+import 'package:shramsansar/features/training_center/presentation/views/training_center.dart';
 import 'package:shramsansar/utils/navigation/nav_app.dart';
 
 class Dashboard extends ConsumerStatefulWidget {

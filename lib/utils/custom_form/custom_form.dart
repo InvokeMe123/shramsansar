@@ -23,7 +23,7 @@ class CustomTextformFormField extends StatelessWidget {
   final String? label;
   final String? hintText;
   final bool? enabledTextformField;
-  final bool? isFieldrequired;
+  final bool isFieldrequired;
   final Widget? issuffixIconrequired;
   final bool ismaxLength;
   final IconData? iconData;
@@ -77,7 +77,7 @@ class CustomTextformFormField extends StatelessWidget {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
                 suffix: suffixWidget,
-                hintText: hintText,
+                hintText: "$hintText ${isFieldrequired ? ' *' : ''}",
                 suffixIcon: issuffixIconrequired,
                 fillColor: const Color(0xffF1F1F1),
                 filled: true,

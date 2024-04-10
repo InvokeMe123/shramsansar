@@ -57,6 +57,7 @@ class ApiConst {
   static String VIEW_SEARCH_TRAINING = 'search/trainings';
   static String MUNICIPALITIES = 'municipalities/';
   static String MUNICIPALITIES_All = 'municipalities';
+  static String LATEST_TRAINING = 'latest/trainings';
 
   ///Notification
   static String NOTIFICATION_URI = 'notifications';

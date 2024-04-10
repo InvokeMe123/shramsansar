@@ -12,9 +12,15 @@ import 'package:shramsansar/core/dbclient.dart';
 import 'package:shramsansar/features/all_jobs/presentation/controller/latest_job_controller.dart';
 import 'package:shramsansar/features/all_jobs/presentation/views/all_jobs.dart';
 import 'package:shramsansar/features/auth/presentation/views/login/loginScreen.dart';
+
 import 'package:shramsansar/features/edit_profile/presentation/views/profile_edit_page.dart';
+
+import 'package:shramsansar/features/latest_training/presentation/views/latest_training.dart';
+import 'package:shramsansar/features/profile/presentation/views/profile_edit_page.dart';
+
 import 'package:shramsansar/features/profile/presentation/views/profile_page.dart';
 import 'package:shramsansar/features/trainings/presentation/views/training_page.dart';
+import 'package:shramsansar/training_center/presentation/views/training_center.dart';
 import 'package:shramsansar/utils/navigation/nav_app.dart';
 
 class Dashboard extends ConsumerStatefulWidget {
@@ -156,24 +162,27 @@ class _DashboardState extends ConsumerState<Dashboard> {
                           BoxDecoration(color: AppColorConst.PRAYMERY_COLOR),
                       child: const Center(child: Text('Notice and\nNews'))),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 7.0),
-                  child: Container(
-                      height: 18.h,
-                      width: 22.w,
-                      decoration:
-                          BoxDecoration(color: AppColorConst.PRAYMERY_COLOR),
-                      child: const Center(child: Text('Training\nCenters'))),
+                GestureDetector(
+                  onTap: () => normalNav(context, const TrainingCenters()),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 7.0),
+                    child: Container(
+                        height: 18.h,
+                        width: 22.w,
+                        decoration:
+                            BoxDecoration(color: AppColorConst.PRAYMERY_COLOR),
+                        child: const Center(child: Text('Training\nCenters'))),
+                  ),
                 ),
               ],
             ),
-            SizedBox(
+            const Text("Latest Training"),
+            const LatestTraining(),
+            const SizedBox(
               height: 10,
             ),
-            Text('Latest Jobs'),
-            Divider(
-              color: Colors.black,
-            ),
+            const Text('Latest Jobs'),
+            const Divider(color: Colors.black),
             Expanded(
               child: latestJobs.when(
                   data: (data) {

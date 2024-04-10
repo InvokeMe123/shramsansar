@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shramsansar/const/app_color_const.dart';
+import 'package:shramsansar/features/auth/data/models/register_model.dart/register_request_model.dart';
+import 'package:shramsansar/features/auth/presentation/controller/register_controller.dart/register_controller.dart';
 import 'package:shramsansar/features/caste/presentation/controller/caste_controller.dart';
 import 'package:shramsansar/features/gender/presentation/controller/gender_controller.dart';
 import 'package:shramsansar/features/getDistricts/presentation/controller/district_controller.dart';
@@ -23,26 +25,18 @@ class RegisterScreen extends ConsumerStatefulWidget {
 }
 
 class _RegisterScreenState extends ConsumerState<RegisterScreen> {
-  late final TextEditingController _emailController = TextEditingController();
-  late final TextEditingController _passwordController =
-      TextEditingController();
-  late final TextEditingController _nameController = TextEditingController();
-  late final TextEditingController _numberController = TextEditingController();
-  late final TextEditingController _passwordConfirmationController =
-      TextEditingController();
-
   String? selectedGender;
   int selectedGenderId = 0;
 
   String? selectedJobCategory;
-  int? selectedJobCategoryId;
+  int selectedJobCategoryId = -1;
 
   String? selectedCaste;
-  int? selectedCasteId = 0;
+  int selectedCasteId = 0;
 
   //permanent address
   String? selectedPradesh;
-  int selectedPradeshId = 0;
+  int selectedPradeshId = -1;
 
   String? selectedDistrict;
   int selectedDistrictId = 0;
@@ -70,7 +64,16 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   //check box
   bool isCheckBoxSelected = false;
 
-  //
+  // required text field
+  List<Map<String, dynamic>> requiredTextField = [
+    {"title": "Name", "controller": TextEditingController()},
+    {"title": "Email", "controller": TextEditingController()},
+    {"title": "Password", "controller": TextEditingController()},
+    {"title": "Confirm Password", "controller": TextEditingController()},
+    {"title": "Mobile Number", "controller": TextEditingController()},
+  ];
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -83,201 +86,191 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           future: null,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator(); // Placeholder for loading state
+              return const CircularProgressIndicator(); // Placeholder for loading state
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}'); // Handle error state
             } else {
               return SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(12),
-                  child: Column(
-                    children: [
-                      CustomTextformFormField(
-                        keyboardType: TextInputType.name,
-                        controller: _nameController,
-                        textInputAction: TextInputAction.next,
-                        isLablerequire: true,
-                        hintText: 'Name',
-                        isFieldrequired: true,
-                      ),
-                      CustomTextformFormField(
-                        keyboardType: TextInputType.emailAddress,
-                        controller: _emailController,
-                        textInputAction: TextInputAction.next,
-                        isLablerequire: true,
-                        hintText: 'E-mail',
-                        isFieldrequired: true,
-                      ),
-                      CustomTextformFormField(
-                        keyboardType: TextInputType.visiblePassword,
-                        controller: _passwordController,
-                        textInputAction: TextInputAction.next,
-                        isLablerequire: true,
-                        hintText: 'Password',
-                        isFieldrequired: true,
-                      ),
-                      CustomTextformFormField(
-                        keyboardType: TextInputType.visiblePassword,
-                        controller: _passwordConfirmationController,
-                        textInputAction: TextInputAction.next,
-                        isLablerequire: true,
-                        hintText: 'Confirm Password',
-                        isFieldrequired: true,
-                      ),
-                      CustomTextformFormField(
-                        keyboardType: TextInputType.number,
-                        controller: _numberController,
-                        textInputAction: TextInputAction.next,
-                        isLablerequire: true,
-                        hintText: 'Mobile Number',
-                        isFieldrequired: true,
-                      ),
-                      SizedBox(
-                        height: 1.2.h,
-                      ),
-                      genderDropDown(context),
-                      SizedBox(
-                        height: 2.1.h,
-                      ),
-                      jobCategoryDropDown(context),
-                      SizedBox(
-                        height: 2.1.h,
-                      ),
-                      casteDropDown(context),
-                      SizedBox(
-                        height: 2.1.h,
-                      ),
-                      const Text(
-                        'Permanent address Details',
-                        style: TextStyle(color: Colors.black, fontSize: 20),
-                      ),
-                      SizedBox(
-                        height: 2.1.h,
-                      ),
-                      getPradesh(context),
-                      SizedBox(
-                        height: 2.1.h,
-                      ),
-                      districtsDropDown(context),
-                      SizedBox(
-                        height: 2.1.h,
-                      ),
-                      getMuni(context),
-                      SizedBox(
-                        height: 2.1.h,
-                      ),
-                      getWard(context),
-                      SizedBox(
-                        height: 2.1.h,
-                      ),
-                      CheckboxListTile(
-                          title: Text('Same as permanent'),
-                          value: isCheckBoxSelected,
-                          onChanged: (value) {
-                            setState(() {
-                              isCheckBoxSelected = !isCheckBoxSelected;
-                              if (isCheckBoxSelected) {
-                                //clear the selected things first
-                                tSelectedPradesh = null;
-                                tSelectedDistrict = null;
-
-                                tSelectedMunicipality = null;
-                                tSelectedWard = null;
-
-                                tSelectedPradesh = selectedPradesh;
-                                tSelectedDistrict = selectedDistrict;
-                                tSelectedMunicipality = selectedMunicipality;
-                                tSelectedWard = selectedWard;
-                                tselectedPradeshId = selectedPradeshId;
-                                log(selectedDistrict.toString());
-                                log(tSelectedDistrict.toString());
-                                //log(selectedPradesh.toString());
-                                //log(selectedPradesh.toString());
-                              } else {
-                                tSelectedDistrict = null;
-                                tSelectedPradesh = null;
-                                tSelectedMunicipality = null;
-                                tSelectedWard = null;
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        for (var item in requiredTextField)
+                          CustomTextformFormField(
+                            keyboardType: TextInputType.name,
+                            controller: item['controller'],
+                            textInputAction: TextInputAction.next,
+                            isLablerequire: true,
+                            hintText: item['title'],
+                            isFieldrequired: true,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter ${item['title']}';
                               }
-                            });
-                          }),
-                      const Text(
-                        'Temporary address Details',
-                        style: TextStyle(color: Colors.black, fontSize: 20),
-                      ),
-                      SizedBox(
-                        height: 2.1.h,
-                      ),
-                      tgetPradesh(context),
-                      SizedBox(
-                        height: 2.1.h,
-                      ),
-                      tgetDistrict(context),
-                      SizedBox(
-                        height: 2.1.h,
-                      ),
-                      tgetMuni(context),
-                      SizedBox(
-                        height: 2.1.h,
-                      ),
-                      tgetWard(context),
-                      SizedBox(
-                        height: 2.1.h,
-                      ),
-                      InkWell(
-                          onTap: () async {
-                            String name = _nameController.text;
-                            String email = _emailController.text;
-                            String password = _passwordController.text;
-                            String password_confirmation =
-                                _passwordConfirmationController.text;
-                            String number = _numberController.text;
-                            int gender = selectedGenderId;
+                              return null;
+                            },
+                          ),
+                        SizedBox(
+                          height: 1.2.h,
+                        ),
+                        genderDropDown(context),
+                        SizedBox(
+                          height: 2.1.h,
+                        ),
+                        jobCategoryDropDown(context),
+                        SizedBox(
+                          height: 2.1.h,
+                        ),
+                        casteDropDown(context),
+                        SizedBox(
+                          height: 2.1.h,
+                        ),
+                        const Text(
+                          'Permanent address Details *',
+                          style: TextStyle(color: Colors.black, fontSize: 20),
+                        ),
+                        SizedBox(
+                          height: 2.1.h,
+                        ),
+                        getPradesh(context),
+                        SizedBox(
+                          height: 2.1.h,
+                        ),
+                        districtsDropDown(context),
+                        SizedBox(
+                          height: 2.1.h,
+                        ),
+                        getMuni(context),
+                        SizedBox(
+                          height: 2.1.h,
+                        ),
+                        getWard(context),
+                        SizedBox(
+                          height: 2.1.h,
+                        ),
+                        CheckboxListTile(
+                            title: Text('Same as permanent'),
+                            value: isCheckBoxSelected,
+                            onChanged: (value) {
+                              setState(() {
+                                isCheckBoxSelected = !isCheckBoxSelected;
+                                if (isCheckBoxSelected) {
+                                  //clear the selected things first
+                                  tSelectedPradesh = null;
+                                  tSelectedDistrict = null;
 
-                            //permanent address
-                            int per_pradesh_id = selectedPradeshId;
-                            int per_distric_id = selectedDistrictId;
-                            int per_muni_id = selectedMunicipalityId;
-                            int per_ward = selectedWardId;
+                                  tSelectedMunicipality = null;
+                                  tSelectedWard = null;
 
-                            if (name == '') {
-                              return showCustomSnackBar(
-                                  ' Please enter name', context);
-                            }
-                            if (password == '') {
-                              return showCustomSnackBar(
-                                  ' Please enter password', context);
-                            }
-                            if (password_confirmation == '') {
-                              return showCustomSnackBar(
-                                  ' Please re-enter password', context);
-                            }
-                            if (email == '') {
-                              return showCustomSnackBar(
-                                  ' Please enter email', context);
-                            }
-                            if (_numberController.text == '') {
-                              return showCustomSnackBar(
-                                  ' Please enter number', context);
-                            }
-                            if (number.length > 10) {
-                              return showCustomSnackBar(
-                                  'Number can not be greater than 10', context);
-                            }
-                          },
-                          child: Container(
-                            width: MediaQuery.sizeOf(context).width,
-                            padding: EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                color: AppColorConst.PRAYMARY_TEXT_COLOR),
-                            child: Center(
-                                child: Text(
-                              'REGISTER',
-                              style: TextStyle(color: Colors.white),
-                            )),
-                          ))
-                    ],
+                                  tSelectedPradesh = selectedPradesh;
+                                  tSelectedDistrict = selectedDistrict;
+                                  tSelectedMunicipality = selectedMunicipality;
+                                  tSelectedWard = selectedWard;
+
+                                  tselectedPradeshId = selectedPradeshId;
+                                  tSelectedDistrictId = selectedDistrictId;
+                                  tselectedMunicipalityId =
+                                      selectedMunicipalityId;
+                                  tselectedWardId = selectedWardId;
+                                } else {
+                                  tSelectedDistrict = null;
+                                  tSelectedPradesh = null;
+                                  tSelectedMunicipality = null;
+                                  tSelectedWard = null;
+                                }
+                              });
+                            }),
+                        const Text(
+                          'Temporary address Details',
+                          style: TextStyle(color: Colors.black, fontSize: 20),
+                        ),
+                        SizedBox(
+                          height: 2.1.h,
+                        ),
+                        tgetPradesh(context),
+                        SizedBox(
+                          height: 2.1.h,
+                        ),
+                        tgetDistrict(context),
+                        SizedBox(
+                          height: 2.1.h,
+                        ),
+                        tgetMuni(context),
+                        SizedBox(
+                          height: 2.1.h,
+                        ),
+                        tgetWard(context),
+                        SizedBox(
+                          height: 2.1.h,
+                        ),
+                        InkWell(
+                            onTap: () async {
+                              // loop over the required text field to find if the value is missing
+                              // for (var item in requiredTextField) {
+                              //   if (item['controller'].text == '') {
+                              //     return showCustomSnackBar(
+                              //         'Please enter ${item['title']}', context);
+                              //   }
+                              //   if (item["title"] == "Mobile Number") {
+                              //     if (item['controller'].text.length != 10) {
+                              //       return showCustomSnackBar(
+                              //           'Mobile number must be equal to 10 digit',
+                              //           context);
+                              //     }
+                              //   }
+                              // }
+
+                              bool isRequiredFieldValid = _formKey.currentState!
+                                  .validate(); // validate the form
+
+                              if (isRequiredFieldValid) {
+                                final RegisterRequestModel
+                                    registerRequestModel = RegisterRequestModel(
+                                  name: requiredTextField[0]['controller'].text,
+                                  email:
+                                      requiredTextField[1]['controller'].text,
+                                  password:
+                                      requiredTextField[2]['controller'].text,
+                                  password_confirmation:
+                                      requiredTextField[3]['controller'].text,
+                                  gender: selectedGenderId.toString(),
+                                  per_pradesh_id: selectedPradeshId,
+                                  per_district_id: selectedDistrictId,
+                                  per_muni_id: selectedMunicipalityId,
+                                  per_ward: selectedWardId,
+                                  pradesh_id: tselectedPradeshId,
+                                  district_id: tSelectedDistrictId,
+                                  muni_id: tselectedMunicipalityId,
+                                  ward: tselectedWardId,
+                                  mobile: int.parse(
+                                      requiredTextField[4]['controller'].text),
+                                  casteId: selectedCasteId,
+                                  preferredJobCateogryId: selectedJobCategoryId,
+                                );
+                                ref
+                                    .read(registerControllerProvider.notifier)
+                                    .register(
+                                        registerRequestModel:
+                                            registerRequestModel,
+                                        context: context);
+                              }
+                            },
+                            child: Container(
+                              width: MediaQuery.sizeOf(context).width,
+                              padding: EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: AppColorConst.PRAYMARY_TEXT_COLOR),
+                              child: Center(
+                                  child: Text(
+                                'REGISTER',
+                                style: TextStyle(color: Colors.white),
+                              )),
+                            ))
+                      ],
+                    ),
                   ),
                 ),
               );
@@ -310,8 +303,14 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     const Center(child: CircularProgressIndicator()));
             return Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: DropdownButton<String>(
+              child: DropdownButtonFormField<String>(
                   hint: const Text('Pradesh'),
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Please select pradesh';
+                    }
+                    return null;
+                  },
                   value:
                       selectedPradesh ?? (pradesh.isEmpty ? null : pradesh[0]),
                   items: pradesh.map((name) {
@@ -349,7 +348,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           getDistricts.when(
               data: (data) {
                 for (var model in data.data) {
-                  if (model.pradesh_id == selectedPradeshId.toString()) {
+                  if (model.pradesh_id == selectedPradeshId) {
                     districts.add(model.name);
                   }
                 }
@@ -358,9 +357,15 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               loading: () => const Center(child: CircularProgressIndicator()));
           return Container(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: DropdownButton<String>(
+            child: DropdownButtonFormField<String>(
               hint: const Text('Enter district'),
               value: selectedDistrict,
+              validator: (value) {
+                if (value == null) {
+                  return 'Please select district';
+                }
+                return null;
+              },
               items: districts.map((distict) {
                 return DropdownMenuItem(
                   value: distict,
@@ -396,7 +401,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             getMuni.when(
                 data: (data) {
                   for (var model in data.data) {
-                    if (model.district_id == selectedDistrictId.toString()) {
+                    if (model.district_id == selectedDistrictId) {
                       muni.add(model.name);
                     }
                   }
@@ -406,9 +411,15 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     const Center(child: CircularProgressIndicator()));
             return Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: DropdownButton<String>(
+              child: DropdownButtonFormField<String>(
                   hint: const Text('Municipality'),
                   value: selectedMunicipality,
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Please select Municipality';
+                    }
+                    return null;
+                  },
                   items: muni.map((name) {
                     return DropdownMenuItem(
                       value: name,
@@ -419,7 +430,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     setState(() {
                       selectedMunicipality = value;
                       selectedMunicipalityId =
-                          muni.indexOf(selectedMunicipality!)+1;
+                          muni.indexOf(selectedMunicipality!) + 1;
                     });
                   }),
             );
@@ -451,9 +462,15 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   ));
           return Container(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: DropdownButton<String>(
+            child: DropdownButtonFormField<String>(
                 hint: const Text('Ward'),
                 value: selectedWard,
+                validator: (value) {
+                  if (value == null) {
+                    return 'Please select Ward';
+                  }
+                  return null;
+                },
                 items: wardNo.map((name) {
                   return DropdownMenuItem(
                     value: name,
@@ -464,6 +481,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   setState(() {
                     selectedWard = value;
                   });
+                  selectedWardId = wardNo.indexOf(selectedWard!) + 1;
                 }),
           );
         },
@@ -495,9 +513,15 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     const Center(child: CircularProgressIndicator()));
             return Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: DropdownButton<String>(
+              child: DropdownButtonFormField<String>(
                   hint: const Text('Pradesh'),
                   value: tSelectedPradesh,
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Please select pradesh';
+                    }
+                    return null;
+                  },
                   items: pradesh.map((name) {
                     return DropdownMenuItem(
                       value: name,
@@ -537,7 +561,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           getDistricts.when(
               data: (data) {
                 for (var model in data.data) {
-                  if (model.pradesh_id == tselectedPradeshId.toString()) {
+                  if (model.pradesh_id == tselectedPradeshId) {
                     districts.add(model.name);
                   }
                 }
@@ -546,9 +570,15 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               loading: () => const Center(child: CircularProgressIndicator()));
           return Container(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: DropdownButton<String>(
+            child: DropdownButtonFormField<String>(
               hint: const Text('Enter district'),
               value: tSelectedDistrict,
+              validator: (value) {
+                if (value == null) {
+                  return 'Please select district';
+                }
+                return null;
+              },
               items: districts.map((distict) {
                 return DropdownMenuItem(
                   value: distict,
@@ -587,7 +617,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             getMuni.when(
                 data: (data) {
                   for (var model in data.data) {
-                    if (model.district_id == selectedDistrictId.toString()) {
+                    if (model.district_id == selectedDistrictId) {
                       muni.add(model.name);
                     }
                   }
@@ -597,9 +627,15 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     const Center(child: CircularProgressIndicator()));
             return Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: DropdownButton<String>(
+              child: DropdownButtonFormField<String>(
                   hint: const Text('Municipality'),
                   value: tSelectedMunicipality,
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Please select municipality';
+                    }
+                    return null;
+                  },
                   items: muni.map((name) {
                     return DropdownMenuItem(
                       value: name,
@@ -636,14 +672,20 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 }
               },
               error: (error, stack) => Text(error.toString()),
-              loading: () => Center(
+              loading: () => const Center(
                     child: CircularProgressIndicator(),
                   ));
           return Container(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: DropdownButton<String>(
+            child: DropdownButtonFormField<String>(
                 hint: const Text('Ward'),
                 value: tSelectedWard,
+                validator: (value) {
+                  if (value == null) {
+                    return 'Please select ward';
+                  }
+                  return null;
+                },
                 items: wardNo.map((name) {
                   return DropdownMenuItem(
                     value: name,
@@ -663,7 +705,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   }
 
   casteDropDown(BuildContext context) {
-    log(selectedPradeshId.toString());
     var getCaste = ref.watch(casteControllerProvicer);
     List<String> caste = [];
     return Container(
@@ -686,9 +727,15 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     const Center(child: CircularProgressIndicator()));
             return Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: DropdownButton<String>(
-                  hint: const Text('Caste'),
+              child: DropdownButtonFormField<String>(
+                  hint: const Text('Caste *'),
                   value: selectedCaste,
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Please select caste';
+                    }
+                    return null;
+                  },
                   items: caste.map((name) {
                     return DropdownMenuItem(
                       value: name,
@@ -699,6 +746,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     setState(() {
                       selectedCaste = value;
                     });
+
+                    selectedCasteId = caste.indexOf(selectedCaste!) + 1;
                   }),
             );
           },
@@ -720,7 +769,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           return jobCat.when(
             data: (data) {
               List<String> jobCate =
-                  data.data.map((model) => model.name).toList();
+                  data.data.map((model) => model.name).toSet().toList();
               return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: DropdownButton<String>(
@@ -729,9 +778,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     setState(() {
                       selectedJobCategory = value;
                     });
+                    selectedJobCategoryId = data.data
+                        .firstWhere((element) => element.name == value)
+                        .id;
                   },
-                  value: selectedJobCategory ??
-                      (jobCate.isEmpty ? jobCate[0] : null),
+                  value: selectedJobCategory,
                   items: jobCate.map((name) {
                     return DropdownMenuItem<String>(
                       value: name,
@@ -767,8 +818,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               for (var model in data.data) {
                 itemGender.add(model.gender);
               }
-              // log(itemGender
-              //     .toString()); // Optionally, you can log the itemGender list here
             },
             error: (error, stack) => Text(error.toString()),
             loading: () => const Center(child: CircularProgressIndicator()),
@@ -776,9 +825,15 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
           return Container(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: DropdownButton<String>(
-              hint: const Text('Gender'),
+            child: DropdownButtonFormField<String>(
+              hint: const Text('Gender *'),
               value: selectedGender,
+              validator: (value) {
+                if (value == null) {
+                  return 'Please select gender';
+                }
+                return null;
+              },
               items: itemGender.map((gender) {
                 return DropdownMenuItem<String>(
                   value: gender,
@@ -789,6 +844,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 setState(() {
                   selectedGender = value;
                 });
+                selectedGenderId = itemGender.indexOf(selectedGender!) + 1;
               },
             ),
           );

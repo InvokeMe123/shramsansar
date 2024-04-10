@@ -1,5 +1,3 @@
-
-
 class MyProfileModel {
   int? id;
   String? name;
@@ -203,31 +201,35 @@ class MyProfileModel {
     MyProfileModel['differently_able'] = this.differentlyAble;
     MyProfileModel['migrant_worker'] = this.migrantWorker;
     MyProfileModel['minority_group'] = this.minorityGroup;
-    MyProfileModel['file'] = this.file;
-    if (this.jobseekerPreferenceCategory != null) {
+    MyProfileModel['file'] = file;
+    if (jobseekerPreferenceCategory != null) {
       MyProfileModel['jobseeker_preference_category'] =
           this.jobseekerPreferenceCategory!.map((v) => v.toJson()).toList();
     }
-    if (this.educations != null) {
-      MyProfileModel['educations'] = this.educations!.map((v) => v.toJson()).toList();
+    if (educations != null) {
+      MyProfileModel['educations'] =
+          this.educations!.map((v) => v.toJson()).toList();
     }
     if (this.experiences != null) {
-      MyProfileModel['experiences'] = this.experiences!.map((v) => v.toJson()).toList();
+      MyProfileModel['experiences'] =
+          this.experiences!.map((v) => v.toJson()).toList();
     }
     if (this.trainings != null) {
-      MyProfileModel['trainings'] = this.trainings!.map((v) => v.toJson()).toList();
+      MyProfileModel['trainings'] =
+          this.trainings!.map((v) => v.toJson()).toList();
     }
     if (this.languages != null) {
-      MyProfileModel['languages'] = this.languages!.map((v) => v.toJson()).toList();
+      MyProfileModel['languages'] =
+          this.languages!.map((v) => v.toJson()).toList();
     }
-    if (this.locations != null) {
-      MyProfileModel['locations'] = this.locations!.map((v) => v.toJson()).toList();
+    if (locations != null) {
+      MyProfileModel['locations'] = locations!.map((v) => v.toJson()).toList();
     }
-    if (this.socialAccounts != null) {
+    if (socialAccounts != null) {
       MyProfileModel['socialAccounts'] =
-          this.socialAccounts!.map((v) => v.toJson()).toList();
+          socialAccounts!.map((v) => v.toJson()).toList();
     }
-    if (this.specialization != null) {
+    if (specialization != null) {
       MyProfileModel['specialization'] = this.specialization!.toJson();
     }
     if (this.aboutYourself != null) {

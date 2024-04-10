@@ -12,7 +12,7 @@ import 'package:shramsansar/core/dbclient.dart';
 import 'package:shramsansar/features/all_jobs/presentation/controller/latest_job_controller.dart';
 import 'package:shramsansar/features/all_jobs/presentation/views/all_jobs.dart';
 import 'package:shramsansar/features/auth/presentation/views/login/loginScreen.dart';
-import 'package:shramsansar/features/profile/presentation/views/profile_edit_page.dart';
+import 'package:shramsansar/features/edit_profile/presentation/views/profile_edit_page.dart';
 import 'package:shramsansar/features/profile/presentation/views/profile_page.dart';
 import 'package:shramsansar/features/trainings/presentation/views/training_page.dart';
 import 'package:shramsansar/utils/navigation/nav_app.dart';

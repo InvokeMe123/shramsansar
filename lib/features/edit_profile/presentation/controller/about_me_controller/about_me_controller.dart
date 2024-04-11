@@ -17,7 +17,7 @@ class AboutMeUpdateController
   }
 }
 
-final aboutMeUpdateControllerProvider = StateNotifierProvider.autoDispose<
+final aboutMeUpdateControllerProvider = StateNotifierProvider<
     AboutMeUpdateController, AsyncValue<AboutMeUpdateResModel>>((ref) {
   return AboutMeUpdateController(ref.read(aboutMeUpdateRepoProvider));
 });

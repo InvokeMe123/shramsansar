@@ -16,7 +16,6 @@ import 'package:shramsansar/features/auth/presentation/views/login/loginScreen.d
 import 'package:shramsansar/features/edit_profile/presentation/views/profile_edit_page.dart';
 
 import 'package:shramsansar/features/latest_training/presentation/views/latest_training.dart';
-import 'package:shramsansar/features/profile/presentation/views/profile_edit_page.dart';
 
 import 'package:shramsansar/features/profile/presentation/views/profile_page.dart';
 import 'package:shramsansar/features/trainings/presentation/views/training_page.dart';

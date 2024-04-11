@@ -25,10 +25,11 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
   Widget build(BuildContext context) {
     var profile = ref.watch(profileControllerProvider);
     var aboutYou = ref.watch(aboutYouControllerProvider);
+    ref.refresh(aboutMeUpdateControllerProvider);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColorConst.BUTTON_BLUE_COLOR,
-        title: Center(
+        title: const Center(
             child: Text(
           'Profile Edit Page',
           style: TextStyle(color: Colors.white),
@@ -49,7 +50,7 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Container(
-                        padding: EdgeInsets.all(7),
+                        padding: const EdgeInsets.all(7),
                         decoration: BoxDecoration(color: Colors.grey.shade300),
                         child: Column(
                           children: [
@@ -60,13 +61,14 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                   Container(
                                     height: 80,
                                     width: 80,
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                         shape: BoxShape.circle,
                                         color: Colors.blue),
                                   ),
-                                  Spacer(),
+                                  const Spacer(),
                                   IconButton(
-                                      onPressed: () {}, icon: Icon(Icons.edit))
+                                      onPressed: () {},
+                                      icon: const Icon(Icons.edit))
                                 ],
                               ),
                             ),
@@ -84,7 +86,7 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                               children: [
                                 Row(
                                   children: [
-                                    Icon(Icons.location_on),
+                                    const Icon(Icons.location_on),
                                     Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -115,7 +117,7 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                 ),
                                 Row(
                                   children: [
-                                    Icon(Icons.mail_outline),
+                                    const Icon(Icons.mail_outline),
                                     Text(
                                       data.email!,
                                       style: TextStyle(
@@ -127,7 +129,7 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                 ),
                                 Row(
                                   children: [
-                                    Icon(Icons.phone_outlined),
+                                    const Icon(Icons.phone_outlined),
                                     Text(
                                       data.mobile!,
                                       style: TextStyle(
@@ -142,28 +144,23 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                           ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Container(
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         width: MediaQuery.sizeOf(context).width,
                         decoration: BoxDecoration(
                           color: AppColorConst.BUTTON_BLUE_COLOR,
                         ),
                         child: Row(
                           children: [
-                            Text(
+                            const Text(
                               'About Me',
                               style: TextStyle(color: Colors.white),
                             ),
-                            Spacer(),
-                            GestureDetector(
-                              onTap: () {},
-                              child: Icon(Icons.delete_outline,
-                                  color: Colors.white),
-                            ),
-                            SizedBox(
+                            const Spacer(),
+                            const SizedBox(
                               width: 20,
                             ),
                             GestureDetector(
@@ -171,57 +168,54 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                 editAboutMe(
                                     context, data.aboutYourself!.description!);
                               },
-                              child: Icon(Icons.edit, color: Colors.white),
+                              child:
+                                  const Icon(Icons.edit, color: Colors.white),
                             )
                           ],
                         ),
                       ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Container(child: Text(data.aboutYourself!.description!)),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Container(
-                        padding: EdgeInsets.all(8),
+                          child: aboutYou.when(
+                              data: (data) {
+                                return Text(data.aboutYou!
+                                    .map((e) => e.aboutMe)
+                                    .join(''));
+                              },
+                              error: (_, __) {},
+                              loading: () =>
+                                  const CircularProgressIndicator())),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(8),
                         width: MediaQuery.sizeOf(context).width,
                         decoration: BoxDecoration(
                           color: AppColorConst.BUTTON_BLUE_COLOR,
                         ),
                         child: Row(
                           children: [
-                            Text(
+                            const Text(
                               'Education',
                               style: TextStyle(color: Colors.white),
                             ),
-                            Spacer(),
+                            const Spacer(),
                             GestureDetector(
-                              onTap: () {},
-                              child: Icon(
+                              onTap: () {
+                                educationAdd(context);
+                              },
+                              child: const Icon(
                                 Icons.add,
                                 color: Colors.white,
                               ),
                             ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            GestureDetector(
-                              onTap: () {},
-                              child: Icon(Icons.delete_outline,
-                                  color: Colors.white),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            GestureDetector(
-                              onTap: () {},
-                              child: Icon(Icons.edit, color: Colors.white),
-                            )
                           ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       ListView.builder(
@@ -231,13 +225,31 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  data.educations![index].levels!.name
-                                      .toString(),
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.bold),
+                                Row(
+                                  children: [
+                                    Text(
+                                      data.educations![index].levels!.name
+                                          .toString(),
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const Spacer(),
+                                    GestureDetector(
+                                      onTap: () {},
+                                      child: const Icon(Icons.delete_outline,
+                                          color: Colors.black),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {},
+                                      child: const Icon(Icons.edit,
+                                          color: Colors.black),
+                                    )
+                                  ],
                                 ),
                                 Text(
                                   data.educations![index].graduationYear
@@ -301,51 +313,39 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                         fontWeight: FontWeight.normal),
                                   )
                                 ])),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                               ],
                             );
                           }),
                       Container(
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         width: MediaQuery.sizeOf(context).width,
                         decoration: BoxDecoration(
                           color: AppColorConst.BUTTON_BLUE_COLOR,
                         ),
                         child: Row(
                           children: [
-                            Text(
+                            const Text(
                               'Experience',
                               style: TextStyle(color: Colors.white),
                             ),
-                            Spacer(),
+                            const Spacer(),
                             GestureDetector(
                               onTap: () {},
-                              child: Icon(
+                              child: const Icon(
                                 Icons.add,
                                 color: Colors.white,
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
-                            GestureDetector(
-                              onTap: () {},
-                              child: Icon(Icons.delete_outline,
-                                  color: Colors.white),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            GestureDetector(
-                              onTap: () {},
-                              child: Icon(Icons.edit, color: Colors.white),
-                            )
                           ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       ListView.builder(
@@ -355,12 +355,30 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  data.experiences![index].title.toString(),
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.bold),
+                                Row(
+                                  children: [
+                                    Text(
+                                      data.experiences![index].title.toString(),
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const Spacer(),
+                                    GestureDetector(
+                                      onTap: () {},
+                                      child: const Icon(Icons.delete_outline,
+                                          color: Colors.black),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {},
+                                      child: const Icon(Icons.edit,
+                                          color: Colors.black),
+                                    )
+                                  ],
                                 ),
                                 RichText(
                                     text: TextSpan(children: [
@@ -422,48 +440,49 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                               ],
                             );
                           }),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Container(
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         width: MediaQuery.sizeOf(context).width,
                         decoration: BoxDecoration(
                           color: AppColorConst.BUTTON_BLUE_COLOR,
                         ),
                         child: Row(
                           children: [
-                            Text(
+                            const Text(
                               'Training/Certifications',
                               style: TextStyle(color: Colors.white),
                             ),
-                            Spacer(),
+                            const Spacer(),
                             GestureDetector(
                               onTap: () {},
-                              child: Icon(
+                              child: const Icon(
                                 Icons.add,
                                 color: Colors.white,
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
                             GestureDetector(
                               onTap: () {},
-                              child: Icon(Icons.delete_outline,
+                              child: const Icon(Icons.delete_outline,
                                   color: Colors.white),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
                             GestureDetector(
                               onTap: () {},
-                              child: Icon(Icons.edit, color: Colors.white),
+                              child:
+                                  const Icon(Icons.edit, color: Colors.white),
                             )
                           ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       ListView.builder(
@@ -501,92 +520,94 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.normal),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                               ],
                             );
                           }),
                       Container(
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         width: MediaQuery.sizeOf(context).width,
                         decoration: BoxDecoration(
                           color: AppColorConst.BUTTON_BLUE_COLOR,
                         ),
                         child: Row(
                           children: [
-                            Text(
+                            const Text(
                               'Languages',
                               style: TextStyle(color: Colors.white),
                             ),
-                            Spacer(),
+                            const Spacer(),
                             GestureDetector(
                               onTap: () {},
-                              child: Icon(
+                              child: const Icon(
                                 Icons.add,
                                 color: Colors.white,
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
                             GestureDetector(
                               onTap: () {},
-                              child: Icon(Icons.delete_outline,
+                              child: const Icon(Icons.delete_outline,
                                   color: Colors.white),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
                             GestureDetector(
                               onTap: () {},
-                              child: Icon(Icons.edit, color: Colors.white),
+                              child:
+                                  const Icon(Icons.edit, color: Colors.white),
                             )
                           ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Container(
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         width: MediaQuery.sizeOf(context).width,
                         decoration: BoxDecoration(
                           color: AppColorConst.BUTTON_BLUE_COLOR,
                         ),
                         child: Row(
                           children: [
-                            Text(
+                            const Text(
                               'Social Media Accounts',
                               style: TextStyle(color: Colors.white),
                             ),
-                            Spacer(),
+                            const Spacer(),
                             GestureDetector(
                               onTap: () {},
-                              child: Icon(
+                              child: const Icon(
                                 Icons.add,
                                 color: Colors.white,
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
                             GestureDetector(
                               onTap: () {},
-                              child: Icon(Icons.delete_outline,
+                              child: const Icon(Icons.delete_outline,
                                   color: Colors.white),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
                             GestureDetector(
                               onTap: () {},
-                              child: Icon(Icons.edit, color: Colors.white),
+                              child:
+                                  const Icon(Icons.edit, color: Colors.white),
                             )
                           ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       ListView.builder(
@@ -600,30 +621,32 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                       ':' +
                                       data.socialAccounts![index].url
                                           .toString(),
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
                                 )
                               ],
                             );
                           }),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Container(
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         width: MediaQuery.sizeOf(context).width,
                         decoration: BoxDecoration(
                           color: AppColorConst.BUTTON_BLUE_COLOR,
                         ),
                         child: Row(
                           children: [
-                            Text(
+                            const Text(
                               'Characteristics',
                               style: TextStyle(color: Colors.white),
                             ),
-                            Spacer(),
+                            const Spacer(),
                             GestureDetector(
                               onTap: () {},
-                              child: Icon(Icons.edit, color: Colors.white),
+                              child:
+                                  const Icon(Icons.edit, color: Colors.white),
                             )
                           ],
                         ),
@@ -633,7 +656,7 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                 );
               },
               error: (_, __) {
-                return Text("he");
+                return const Text("he");
               },
               loading: () => const Center(child: CircularProgressIndicator()),
             )
@@ -643,28 +666,168 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
     );
   }
 
+  void educationAdd(BuildContext context) {
+    //var education = ref
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: MediaQuery.sizeOf(context).width,
+                  decoration:
+                      BoxDecoration(color: AppColorConst.BUTTON_BLUE_COLOR),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Add Education',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      Spacer(),
+                      GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Icon(Icons.close))
+                    ],
+                  ),
+                ),
+                Row(
+                  children: [
+                    Column(
+                      children: [
+                        Text('Level'),
+                        Container(
+                          height: 40,
+                          width: MediaQuery.sizeOf(context).width * 0.38,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    Column(
+                      children: [
+                        Text('Education Board'),
+                        Container(
+                          height: 40,
+                          width: MediaQuery.sizeOf(context).width * 0.38,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                          ),
+                          child: TextField(),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Column(
+                      children: [
+                        Text('Program'),
+                        Container(
+                          height: 40,
+                          width: MediaQuery.sizeOf(context).width * 0.38,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                          ),
+                          child: TextField(),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    Column(
+                      children: [
+                        Text('Institute'),
+                        Container(
+                          height: 40,
+                          width: MediaQuery.sizeOf(context).width * 0.38,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                          ),
+                          child: TextField(),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        DatePickerDialog(
+                          firstDate: DateTime.utc(2000),
+                          lastDate: DateTime.utc(2100),
+                          currentDate: DateTime.now(),
+                        );
+                      },
+                      child: Column(
+                        children: [
+                          Text('Graduate Year'),
+                          Container(
+                              height: 40,
+                              width: MediaQuery.sizeOf(context).width * 0.38,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                              ),
+                              child: Text(DateTime.now().toString()))
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    Column(
+                      children: [
+                        Text('Institute'),
+                        Container(
+                          height: 40,
+                          width: MediaQuery.sizeOf(context).width * 0.38,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                          ),
+                          child: TextField(),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
   void editAboutMe(BuildContext context, String data) {
-    var details = ref.refresh(aboutMeUpdateControllerProvider.notifier);
-    var profile = ref.watch(profileControllerProvider.notifier);
+    var details = ref.watch(aboutMeUpdateControllerProvider.notifier);
+
     TextEditingController aboutMe = TextEditingController();
     aboutMe.text = data;
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
-            contentPadding: EdgeInsets.all(15),
-            titlePadding: EdgeInsets.all(0),
+            contentPadding: const EdgeInsets.all(15),
+            titlePadding: const EdgeInsets.all(0),
             title: Container(
               decoration: BoxDecoration(color: AppColorConst.BUTTON_BLUE_COLOR),
               child: Row(
                 children: [
-                  Text('Edit About Me'),
-                  Spacer(),
+                  const Text('Edit About Me'),
+                  const Spacer(),
                   IconButton(
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: Icon(Icons.close))
+                      icon: const Icon(Icons.close))
                 ],
               ),
             ),
@@ -687,13 +850,14 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                       details.getAboutMe(aboutMeUpdateReqModel);
 
                       Navigator.of(context).pop();
+
                       ref.refresh(profileControllerProvider);
-                      profile.getMyProfile();
+                      ref.refresh(aboutMeUpdateControllerProvider);
 
                       showCustomSnackBar('Successfully Updated', context,
                           isError: false);
                     },
-                    child: Text(
+                    child: const Text(
                       'Update',
                       style: TextStyle(color: Colors.white),
                     ))

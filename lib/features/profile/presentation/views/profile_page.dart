@@ -33,9 +33,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
           children: [
             profile.when(
               data: (data) {
-                log(data.id.toString());
-                log(data.educations!.length.toString());
-
                 return Padding(
                   padding: const EdgeInsets.all(12),
                   child: Column(
@@ -147,7 +144,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                       SizedBox(
                         height: 10,
                       ),
-                      Container(child: Text(data.aboutYourself!.description!)),
+                      Container(
+                          child: Text(data.aboutYourself?.description ??
+                              "No description provided")),
                       SizedBox(
                         height: 10,
                       ),

@@ -167,7 +167,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                       ),
                       ListView.builder(
                           shrinkWrap: true,
-                          itemCount: data.educations!.length,
+                          itemCount: data.educations?.length,
                           itemBuilder: (context, index) {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,

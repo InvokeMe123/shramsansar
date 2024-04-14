@@ -7,10 +7,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shramsansar/const/app_color_const.dart';
 import 'package:shramsansar/features/edit_profile/data/models/about_me_update_model/about_me_update_req_model.dart';
+import 'package:shramsansar/features/edit_profile/data/models/education_model/education_model_req.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/about_me_controller/about_me_controller.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/about_me_controller/about_you_controller.dart';
+import 'package:shramsansar/features/edit_profile/presentation/controller/education_controller/educationAddController.dart';
+import 'package:shramsansar/features/edit_profile/presentation/controller/education_controller/education_controller.dart';
 import 'package:shramsansar/features/profile/presentation/controller/profile_controller.dart';
+import 'package:shramsansar/features/trainings/provider/filtered_provider.dart';
 import 'package:shramsansar/utils/snackbar/custome_snack_bar.dart';
+import 'package:provider/provider.dart' as providers;
+import 'package:intl/intl.dart';
 
 class ProfileEditPage extends ConsumerStatefulWidget {
   const ProfileEditPage({super.key});
@@ -21,10 +27,19 @@ class ProfileEditPage extends ConsumerStatefulWidget {
 }
 
 class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
+  DateTime selectedDate = DateTime.now();
+
+  String _formatDate(DateTime? date) {
+    return date != null ? DateFormat('yyyy-MM-dd').format(date) : 'Select Date';
+  }
+
   @override
   Widget build(BuildContext context) {
     var profile = ref.watch(profileControllerProvider);
+
     var aboutYou = ref.watch(aboutYouControllerProvider);
+    var education = ref.watch(educationAddControllerProvider.notifier);
+
     ref.refresh(aboutMeUpdateControllerProvider);
     return Scaffold(
       appBar: AppBar(
@@ -237,7 +252,11 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                     ),
                                     const Spacer(),
                                     GestureDetector(
-                                      onTap: () {},
+                                      onTap: () {
+                                        education.deleteEducationn(
+                                            data.educations![index].id!);
+                                        //profile1.getMyProfile();
+                                      },
                                       child: const Icon(Icons.delete_outline,
                                           color: Colors.black),
                                     ),
@@ -667,141 +686,254 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
   }
 
   void educationAdd(BuildContext context) {
-    //var education = ref
+    var education = ref.watch(educationControllerProvider);
+    var educationAdd = ref.watch(educationAddControllerProvider.notifier);
+    int level_id = 0;
+    List<String> educationName = [];
+    TextEditingController program = TextEditingController();
+    TextEditingController educationBoard = TextEditingController();
+    TextEditingController institute = TextEditingController();
+    TextEditingController obtainedMarks = TextEditingController();
+    var profile = ref.watch(profileControllerProvider.notifier);
+    String ed = 'Education';
+    String? educ;
     showDialog(
         context: context,
         builder: (context) {
-          return Dialog(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: MediaQuery.sizeOf(context).width,
-                  decoration:
-                      BoxDecoration(color: AppColorConst.BUTTON_BLUE_COLOR),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Add Education',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      Spacer(),
-                      GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: Icon(Icons.close))
-                    ],
-                  ),
-                ),
-                Row(
+          return providers.Consumer<DateChange>(
+            builder: (context, dateChange, _) {
+              return AlertDialog(
+                contentPadding: EdgeInsets.all(0),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Column(
-                      children: [
-                        Text('Level'),
-                        Container(
-                          height: 40,
-                          width: MediaQuery.sizeOf(context).width * 0.38,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    Column(
-                      children: [
-                        Text('Education Board'),
-                        Container(
-                          height: 40,
-                          width: MediaQuery.sizeOf(context).width * 0.38,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                          ),
-                          child: TextField(),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Column(
-                      children: [
-                        Text('Program'),
-                        Container(
-                          height: 40,
-                          width: MediaQuery.sizeOf(context).width * 0.38,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                          ),
-                          child: TextField(),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    Column(
-                      children: [
-                        Text('Institute'),
-                        Container(
-                          height: 40,
-                          width: MediaQuery.sizeOf(context).width * 0.38,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                          ),
-                          child: TextField(),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        DatePickerDialog(
-                          firstDate: DateTime.utc(2000),
-                          lastDate: DateTime.utc(2100),
-                          currentDate: DateTime.now(),
-                        );
-                      },
-                      child: Column(
+                    Container(
+                      padding: EdgeInsets.all(4),
+                      width: MediaQuery.sizeOf(context).width,
+                      decoration:
+                          BoxDecoration(color: AppColorConst.BUTTON_BLUE_COLOR),
+                      child: Row(
                         children: [
-                          Text('Graduate Year'),
-                          Container(
-                              height: 40,
-                              width: MediaQuery.sizeOf(context).width * 0.38,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                              ),
-                              child: Text(DateTime.now().toString()))
+                          const Text(
+                            'Add Education',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          const Spacer(),
+                          GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child:
+                                  const Icon(Icons.close, color: Colors.white))
                         ],
                       ),
                     ),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    Column(
+                    Row(
                       children: [
-                        Text('Institute'),
-                        Container(
-                          height: 40,
-                          width: MediaQuery.sizeOf(context).width * 0.38,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                          ),
-                          child: TextField(),
-                        )
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text('Level'),
+                            Container(
+                              height: 40,
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                              ),
+                              child: education.when(
+                                  data: (data) {
+                                    for (var model in data.data!) {
+                                      educationName.add(model.name!);
+                                    }
+                                    educationName =
+                                        educationName.toSet().toList();
+                                    return DropdownButton<String>(
+                                      hint: const Text('Education'),
+                                      value: educ ??
+                                          (educationName.isEmpty
+                                              ? null
+                                              : educationName[0]),
+                                      items: educationName.map((eduList) {
+                                        return DropdownMenuItem<String>(
+                                          value: eduList,
+                                          child: Text(
+                                            eduList,
+                                            style: TextStyle(fontSize: 10),
+                                          ),
+                                        );
+                                      }).toList(),
+                                      onChanged: (newValue) {
+                                        setState(() {
+                                          educ = newValue;
+                                          level_id =
+                                              educationName.indexOf(educ!) + 1;
+                                        });
+                                      },
+                                    );
+                                  },
+                                  error: (_, __) {
+                                    return Text('error');
+                                  },
+                                  loading: () => Container(
+                                        width:
+                                            MediaQuery.sizeOf(context).width *
+                                                0.28,
+                                        height: 40,
+                                        decoration: const BoxDecoration(
+                                            color: Colors.white),
+                                        child: CircularProgressIndicator(),
+                                      )),
+                            )
+                          ],
+                        ),
+                        const SizedBox(
+                          width: 15,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Education Board'),
+                            Container(
+                              height: 40,
+                              width: MediaQuery.sizeOf(context).width * 0.38,
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                              ),
+                              child: TextField(
+                                controller: educationBoard,
+                                textInputAction: TextInputAction.next,
+                                keyboardType: TextInputType.name,
+                              ),
+                            )
+                          ],
+                        ),
                       ],
                     ),
+                    Row(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Program'),
+                            Container(
+                              height: 40,
+                              width: MediaQuery.sizeOf(context).width * 0.38,
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                              ),
+                              child: TextField(
+                                controller: program,
+                                textInputAction: TextInputAction.next,
+                                keyboardType: TextInputType.name,
+                              ),
+                            )
+                          ],
+                        ),
+                        const SizedBox(
+                          width: 15,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Institute'),
+                            Container(
+                              height: 40,
+                              width: MediaQuery.sizeOf(context).width * 0.38,
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                              ),
+                              child: TextField(
+                                controller: institute,
+                                textInputAction: TextInputAction.next,
+                                keyboardType: TextInputType.name,
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () async {
+                            DateTime? picked = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2015, 8),
+                                lastDate: DateTime(2101));
+                            if (picked != null) {
+                              dateChange.changeDate(picked);
+                            }
+                          },
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Graduate Year'),
+                              Container(
+                                  height: 40,
+                                  width:
+                                      MediaQuery.sizeOf(context).width * 0.38,
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                  ),
+                                  child: Text(
+                                      '${_formatDate(dateChange.changedDate)}')),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Column(
+                          children: [
+                            Text('Obtained Marks'),
+                            Container(
+                              height: 40,
+                              width: MediaQuery.sizeOf(context).width * 0.38,
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                              ),
+                              child: TextField(
+                                controller: obtainedMarks,
+                                textInputAction: TextInputAction.next,
+                                keyboardType: TextInputType.name,
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Spacer(),
+                        TextButton(
+                            onPressed: () {
+                              if (program.text.isEmpty ||
+                                  educationBoard.text.isEmpty ||
+                                  institute.text.isEmpty ||
+                                  '${_formatDate(dateChange.changedDate)}'
+                                      .isEmpty) {
+                                return showCustomSnackBar(
+                                    'Fields Cant be empty', context);
+                              }
+                              EducationReqModel educationReqModel =
+                                  EducationReqModel(
+                                      level_id: level_id.toString(),
+                                      program: program.text,
+                                      board: educationBoard.text,
+                                      institute: institute.text,
+                                      graduation_year:
+                                          '${_formatDate(dateChange.changedDate)}',
+                                      marks_secured: obtainedMarks.text);
+                              educationAdd.addEducation(educationReqModel);
+                              profile.getMyProfile();
+                            },
+                            child: Text('Save'))
+                      ],
+                    )
                   ],
                 ),
-              ],
-            ),
+              );
+            },
           );
         });
   }
@@ -865,5 +997,14 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
             ),
           );
         });
+  }
+}
+
+class DateChange extends ChangeNotifier {
+  DateTime changedDate = DateTime.now();
+
+  void changeDate(DateTime newDate) {
+    changedDate = newDate;
+    notifyListeners();
   }
 }

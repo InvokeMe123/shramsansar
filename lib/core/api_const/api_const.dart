@@ -67,6 +67,8 @@ class ApiConst {
   static String SKILLS = "skills";
   static String EDUCATION = "education";
 
+  static String VIEW_ABOUT_YOU = 'view/aboutYou';
+
   static String POST_ABOUT_ME = "store/aboutYou";
 
   static String POST_EDUCATION = "store/education";

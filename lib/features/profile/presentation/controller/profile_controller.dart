@@ -13,15 +13,15 @@ class ProfileController extends StateNotifier<AsyncValue<MyProfileModel>> {
   getMyProfile() async {
     print('profile controller');
     final result = await profileRepo.profileRepo();
-    log(result.toString());
+    //log(result.toString());
     result.fold(
         (l) => state =
             AsyncValue.error(l.message, StackTrace.fromString(l.message)),
-        (r) => state =  AsyncValue.data(r));
+        (r) => state = AsyncValue.data(r));
   }
 }
 
-final profileControllerProvider =
-    StateNotifierProvider.autoDispose<ProfileController, AsyncValue<MyProfileModel>>((ref) {
+final profileControllerProvider = StateNotifierProvider.autoDispose<
+    ProfileController, AsyncValue<MyProfileModel>>((ref) {
   return ProfileController(ref.read(profileRepoProvider));
 });

@@ -12,7 +12,8 @@ class ProfileEditPage extends ConsumerStatefulWidget {
   const ProfileEditPage({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _ProfileEditPageState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _ProfileEditPageState();
 }
 
 class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
@@ -147,7 +148,9 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                       SizedBox(
                         height: 10,
                       ),
-                      Container(child: Text(data.aboutYourself!.description!)),
+                      Container(
+                          child: Text(data.aboutYourself?.description ??
+                              "Empty description")),
                       SizedBox(
                         height: 10,
                       ),

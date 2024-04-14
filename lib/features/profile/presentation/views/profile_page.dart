@@ -22,7 +22,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColorConst.BUTTON_BLUE_COLOR,
-        title: Center(
+        title: const Center(
             child: Text(
           'Profile Page',
           style: TextStyle(color: Colors.white),
@@ -43,7 +43,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                         child: Container(
                           height: 80,
                           width: 80,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                               shape: BoxShape.circle, color: Colors.blue),
                         ),
                       ),
@@ -59,12 +59,12 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                       Center(
                         child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                                padding: EdgeInsets.all(6),
-                                shape: RoundedRectangleBorder(),
+                                padding: const EdgeInsets.all(6),
+                                shape: const RoundedRectangleBorder(),
                                 backgroundColor:
                                     AppColorConst.BUTTON_BLUE_COLOR),
                             onPressed: () {},
-                            child: Text(
+                            child: const Text(
                               'Generate CV',
                               style: TextStyle(color: Colors.white),
                             )),
@@ -74,7 +74,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                         children: [
                           Row(
                             children: [
-                              Icon(Icons.location_on),
+                              const Icon(Icons.location_on),
                               Column(
                                 children: [
                                   Text(
@@ -103,7 +103,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                           ),
                           Row(
                             children: [
-                              Icon(Icons.mail_outline),
+                              const Icon(Icons.mail_outline),
                               Text(
                                 data.email!,
                                 style: TextStyle(
@@ -127,29 +127,23 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                           )
                         ],
                       ),
-                      SizedBox(
-                        height: 10,
-                      ),
+                      SizedBox(height: 10),
                       Container(
                         padding: EdgeInsets.all(8),
                         width: MediaQuery.sizeOf(context).width,
                         decoration: BoxDecoration(
                           color: AppColorConst.BUTTON_BLUE_COLOR,
                         ),
-                        child: Text(
+                        child: const Text(
                           'About Me',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
-                      SizedBox(
-                        height: 10,
-                      ),
+                      SizedBox(height: 10),
                       Container(
                           child: Text(data.aboutYourself?.description ??
                               "No description provided")),
-                      SizedBox(
-                        height: 10,
-                      ),
+                      SizedBox(height: 10),
                       Container(
                         padding: EdgeInsets.all(8),
                         width: MediaQuery.sizeOf(context).width,
@@ -161,9 +155,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
-                      SizedBox(
-                        height: 10,
-                      ),
+                      SizedBox(height: 10),
                       ListView.builder(
                           shrinkWrap: true,
                           itemCount: data.educations!.length,

@@ -15,6 +15,9 @@ abstract class AuthRepo {
       LoginRequestModel loginRequestModel, String token);
   Future<Either<AppError, LoginResponseModel>> registerRepo(
       RegisterRequestModel registerRequestModel);
+
+  Future<Either<AppError, LoginResponseModel>> registerWithFormData(
+      FormData formData);
 }
 
 class AuthRepoImp implements AuthRepo {
@@ -39,6 +42,17 @@ class AuthRepoImp implements AuthRepo {
       RegisterRequestModel registerRequestModel) async {
     try {
       final result = await authDataSource.registerDS(registerRequestModel);
+      return Right(result);
+    } on DioException catch (e) {
+      return Left(AppError(e.message!));
+    }
+  }
+
+  @override
+  Future<Either<AppError, LoginResponseModel>> registerWithFormData(
+      FormData formData) async {
+    try {
+      final result = await authDataSource.registerWithFormData(formData);
       return Right(result);
     } on DioException catch (e) {
       return Left(AppError(e.message!));

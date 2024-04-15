@@ -1,23 +1,18 @@
 import 'dart:developer';
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shramsansar/const/app_color_const.dart';
-import 'package:shramsansar/features/edit_profile/data/models/about_me_update_model/about_me_update_req_model.dart';
 import 'package:shramsansar/features/edit_profile/data/models/education_model/education_model_req.dart';
-import 'package:shramsansar/features/edit_profile/presentation/controller/about_me_controller/about_me_controller.dart';
-import 'package:shramsansar/features/edit_profile/presentation/controller/about_me_controller/about_you_controller.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/education_controller/educationAddController.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/education_controller/education_controller.dart';
+import 'package:shramsansar/features/edit_profile/presentation/views/widgets/add_education.dart';
 import 'package:shramsansar/features/profile/data/model/profile_model.dart';
 import 'package:shramsansar/features/profile/presentation/controller/profile_controller.dart';
-import 'package:shramsansar/features/trainings/provider/filtered_provider.dart';
 import 'package:shramsansar/utils/snackbar/custome_snack_bar.dart';
-import 'package:provider/provider.dart' as providers;
+
 import 'package:intl/intl.dart';
 
 class ProfileEditPage extends ConsumerStatefulWidget {
@@ -37,11 +32,22 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
 
   MyProfileModel myProfileModel = MyProfileModel();
 
+  // List of education levels
+  List<String> educationLevels = [];
+
   @override
   Widget build(BuildContext context) {
     var profileProvider = ref.watch(profileControllerProvider);
 
-    var aboutYou = ref.watch(aboutYouControllerProvider);
+    ref.watch(educationControllerProvider).when(
+        data: (data) {
+          for (var model in data.data!) {
+            educationLevels.add(model.name!);
+          }
+        },
+        error: (_, __) {},
+        loading: () {});
+
     var education = ref.watch(educationAddControllerProvider.notifier);
 
     // ref.refresh(aboutMeUpdateControllerProvider);
@@ -101,33 +107,18 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Row(
+                                  mainAxisSize: MainAxisSize.min,
                                   children: [
                                     const Icon(Icons.location_on),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          myProfileModel.locations!
-                                              .map((e) => e.districtName)
-                                              .join('')
-                                              .toString(),
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 14.sp,
-                                              fontWeight: FontWeight.normal),
-                                        ),
-                                        Text(
-                                          myProfileModel.locations!
-                                              .map((e) => e.pradeshName)
-                                              .join('')
-                                              .toString(),
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 14.sp,
-                                              fontWeight: FontWeight.normal),
-                                        ),
-                                      ],
+                                    SizedBox(
+                                      width: 100,
+                                      child: Text(
+                                        "${myProfileModel.perDistrictName}, ${myProfileModel.perMuniName}, ${myProfileModel.perWard}",
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 14.sp,
+                                            fontWeight: FontWeight.normal),
+                                      ),
                                     )
                                   ],
                                 ),
@@ -215,7 +206,16 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                             const Spacer(),
                             GestureDetector(
                               onTap: () {
-                                educationAdd(context);
+                                log("Hello world");
+                                // educationAdd(context, educationLevels);
+
+                                showDialog(
+                                    context: context,
+                                    builder: (_) {
+                                      return AddEducation(
+                                          educationLevel:
+                                              educationLevels.toSet().toList());
+                                    });
                               },
                               child: const Icon(
                                 Icons.add,
@@ -645,11 +645,7 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                             return Column(
                               children: [
                                 Text(
-                                  myProfileModel.socialAccounts![index].name
-                                          .toString() +
-                                      ':' +
-                                      myProfileModel.socialAccounts![index].url
-                                          .toString(),
+                                  '${myProfileModel.socialAccounts![index].name}:${myProfileModel.socialAccounts![index].url}',
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold),
                                 )
@@ -693,259 +689,6 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
         ),
       ),
     );
-  }
-
-  void educationAdd(BuildContext context) {
-    var education = ref.watch(educationControllerProvider);
-    var educationAdd = ref.watch(educationAddControllerProvider.notifier);
-    int level_id = 0;
-    List<String> educationName = [];
-    TextEditingController program = TextEditingController();
-    TextEditingController educationBoard = TextEditingController();
-    TextEditingController institute = TextEditingController();
-    TextEditingController obtainedMarks = TextEditingController();
-    var profile = ref.watch(profileControllerProvider.notifier);
-    String ed = 'Education';
-    String? educ;
-    showDialog(
-        context: context,
-        builder: (context) {
-          return providers.Consumer<DateChange>(
-            builder: (context, dateChange, _) {
-              return AlertDialog(
-                contentPadding: EdgeInsets.all(0),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(4),
-                      width: MediaQuery.sizeOf(context).width,
-                      decoration:
-                          BoxDecoration(color: AppColorConst.BUTTON_BLUE_COLOR),
-                      child: Row(
-                        children: [
-                          const Text(
-                            'Add Education',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          const Spacer(),
-                          GestureDetector(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                              child:
-                                  const Icon(Icons.close, color: Colors.white))
-                        ],
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text('Level'),
-                            Container(
-                              height: 40,
-                              decoration: const BoxDecoration(
-                                color: Colors.white,
-                              ),
-                              child: education.when(
-                                  data: (data) {
-                                    for (var model in data.data!) {
-                                      educationName.add(model.name!);
-                                    }
-                                    educationName =
-                                        educationName.toSet().toList();
-                                    return DropdownButton<String>(
-                                      hint: const Text('Education'),
-                                      value: educ ??
-                                          (educationName.isEmpty
-                                              ? null
-                                              : educationName[0]),
-                                      items: educationName.map((eduList) {
-                                        return DropdownMenuItem<String>(
-                                          value: eduList,
-                                          child: Text(
-                                            eduList,
-                                            style: TextStyle(fontSize: 10),
-                                          ),
-                                        );
-                                      }).toList(),
-                                      onChanged: (newValue) {
-                                        setState(() {
-                                          educ = newValue;
-                                          level_id =
-                                              educationName.indexOf(educ!) + 1;
-                                        });
-                                      },
-                                    );
-                                  },
-                                  error: (_, __) {
-                                    return Text('error');
-                                  },
-                                  loading: () => Container(
-                                        width:
-                                            MediaQuery.sizeOf(context).width *
-                                                0.28,
-                                        height: 40,
-                                        decoration: const BoxDecoration(
-                                            color: Colors.white),
-                                        child: CircularProgressIndicator(),
-                                      )),
-                            )
-                          ],
-                        ),
-                        const SizedBox(
-                          width: 15,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Education Board'),
-                            Container(
-                              height: 40,
-                              width: MediaQuery.sizeOf(context).width * 0.38,
-                              decoration: const BoxDecoration(
-                                color: Colors.white,
-                              ),
-                              child: TextField(
-                                controller: educationBoard,
-                                textInputAction: TextInputAction.next,
-                                keyboardType: TextInputType.name,
-                              ),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Program'),
-                            Container(
-                              height: 40,
-                              width: MediaQuery.sizeOf(context).width * 0.38,
-                              decoration: const BoxDecoration(
-                                color: Colors.white,
-                              ),
-                              child: TextField(
-                                controller: program,
-                                textInputAction: TextInputAction.next,
-                                keyboardType: TextInputType.name,
-                              ),
-                            )
-                          ],
-                        ),
-                        const SizedBox(
-                          width: 15,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Institute'),
-                            Container(
-                              height: 40,
-                              width: MediaQuery.sizeOf(context).width * 0.38,
-                              decoration: const BoxDecoration(
-                                color: Colors.white,
-                              ),
-                              child: TextField(
-                                controller: institute,
-                                textInputAction: TextInputAction.next,
-                                keyboardType: TextInputType.name,
-                              ),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () async {
-                            DateTime? picked = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(2015, 8),
-                                lastDate: DateTime(2101));
-                            if (picked != null) {
-                              dateChange.changeDate(picked);
-                            }
-                          },
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Graduate Year'),
-                              Container(
-                                  height: 40,
-                                  width:
-                                      MediaQuery.sizeOf(context).width * 0.38,
-                                  decoration: const BoxDecoration(
-                                    color: Colors.white,
-                                  ),
-                                  child: Text(
-                                      '${_formatDate(dateChange.changedDate)}')),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Column(
-                          children: [
-                            Text('Obtained Marks'),
-                            Container(
-                              height: 40,
-                              width: MediaQuery.sizeOf(context).width * 0.38,
-                              decoration: const BoxDecoration(
-                                color: Colors.white,
-                              ),
-                              child: TextField(
-                                controller: obtainedMarks,
-                                textInputAction: TextInputAction.next,
-                                keyboardType: TextInputType.name,
-                              ),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Spacer(),
-                        TextButton(
-                            onPressed: () {
-                              if (program.text.isEmpty ||
-                                  educationBoard.text.isEmpty ||
-                                  institute.text.isEmpty ||
-                                  '${_formatDate(dateChange.changedDate)}'
-                                      .isEmpty) {
-                                return showCustomSnackBar(
-                                    'Fields Cant be empty', context);
-                              }
-                              EducationReqModel educationReqModel =
-                                  EducationReqModel(
-                                      level_id: level_id.toString(),
-                                      program: program.text,
-                                      board: educationBoard.text,
-                                      institute: institute.text,
-                                      graduation_year:
-                                          '${_formatDate(dateChange.changedDate)}',
-                                      marks_secured: obtainedMarks.text);
-                              educationAdd.addEducation(educationReqModel);
-                              profile.getMyProfile();
-                            },
-                            child: Text('Save'))
-                      ],
-                    )
-                  ],
-                ),
-              );
-            },
-          );
-        });
   }
 
   void editAboutMe(BuildContext context, String data, MyProfileModel model) {
@@ -992,9 +735,6 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                               model: model, data: {"about_me": aboutMeUpdate});
 
                       Navigator.of(context).pop();
-
-                      // ref.refresh(profileControllerProvider);
-                      // ref.refresh(aboutMeUpdateControllerProvider);
 
                       showCustomSnackBar('Successfully Updated', context,
                           isError: false);

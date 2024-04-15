@@ -32,7 +32,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
         child: Column(
           children: [
             profile.when(
-              data: (data) {
+              data: (myProfileModel) {
                 return Padding(
                   padding: const EdgeInsets.all(12),
                   child: Column(
@@ -49,7 +49,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                       ),
                       Center(
                         child: Text(
-                          data.name!,
+                          myProfileModel.name!,
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 17.sp,
@@ -75,37 +75,20 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                           Row(
                             children: [
                               const Icon(Icons.location_on),
-                              Column(
-                                children: [
-                                  Text(
-                                    data.locations!
-                                        .map((e) => e.districtName)
-                                        .join('')
-                                        .toString(),
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.normal),
-                                  ),
-                                  Text(
-                                    data.locations!
-                                        .map((e) => e.pradeshName)
-                                        .join('')
-                                        .toString(),
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.normal),
-                                  ),
-                                ],
-                              )
+                              Text(
+                                "${myProfileModel.perDistrictId}, ${myProfileModel.perMuniName}, ${myProfileModel.perWard}",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.normal),
+                              ),
                             ],
                           ),
                           Row(
                             children: [
                               const Icon(Icons.mail_outline),
                               Text(
-                                data.email!,
+                                myProfileModel.email!,
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 14.sp,
@@ -117,7 +100,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                             children: [
                               Icon(Icons.phone_outlined),
                               Text(
-                                data.mobile!,
+                                myProfileModel.mobile!,
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 14.sp,
@@ -141,8 +124,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                       ),
                       SizedBox(height: 10),
                       Container(
-                          child: Text(data.aboutYourself?.description ??
-                              "No description provided")),
+                          child: Text(
+                              myProfileModel.aboutYourself?.description ??
+                                  "No description provided")),
                       SizedBox(height: 10),
                       Container(
                         padding: EdgeInsets.all(8),
@@ -158,13 +142,13 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                       SizedBox(height: 10),
                       ListView.builder(
                           shrinkWrap: true,
-                          itemCount: data.educations?.length,
+                          itemCount: myProfileModel.educations?.length,
                           itemBuilder: (context, index) {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  data.educations![index].levels!.name
+                                  myProfileModel.educations![index].levels!.name
                                       .toString(),
                                   style: TextStyle(
                                       color: Colors.black,
@@ -172,7 +156,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Text(
-                                  data.educations![index].graduationYear
+                                  myProfileModel
+                                      .educations![index].graduationYear
                                       .toString(),
                                   style: TextStyle(
                                       color: Colors.black,
@@ -189,7 +174,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   TextSpan(
-                                    text: data.educations![index].program
+                                    text: myProfileModel
+                                        .educations![index].program
                                         .toString(),
                                     style: TextStyle(
                                         color: Colors.black,
@@ -207,7 +193,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   TextSpan(
-                                    text: data.educations![index].board
+                                    text: myProfileModel
+                                        .educations![index].board
                                         .toString(),
                                     style: TextStyle(
                                         color: Colors.black,
@@ -225,7 +212,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   TextSpan(
-                                    text: data.educations![index].institute
+                                    text: myProfileModel
+                                        .educations![index].institute
                                         .toString(),
                                     style: TextStyle(
                                         color: Colors.black,
@@ -254,14 +242,15 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                         height: 10,
                       ),
                       ListView.builder(
-                          itemCount: data.experiences!.length,
+                          itemCount: myProfileModel.experiences!.length,
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  data.experiences![index].title.toString(),
+                                  myProfileModel.experiences![index].title
+                                      .toString(),
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 16.sp,
@@ -277,7 +266,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   TextSpan(
-                                    text: data.experiences![index].startDate
+                                    text: myProfileModel
+                                        .experiences![index].startDate
                                         .toString(),
                                     style: TextStyle(
                                         color: Colors.black,
@@ -295,7 +285,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   TextSpan(
-                                    text: data.experiences![index].endDate
+                                    text: myProfileModel
+                                        .experiences![index].endDate
                                         .toString(),
                                     style: TextStyle(
                                         color: Colors.black,
@@ -313,7 +304,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   TextSpan(
-                                    text: data.experiences![index].organization
+                                    text: myProfileModel
+                                        .experiences![index].organization
                                         .toString(),
                                     style: TextStyle(
                                         color: Colors.black,
@@ -346,34 +338,38 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                       ),
                       ListView.builder(
                           shrinkWrap: true,
-                          itemCount: data.trainings!.length,
+                          itemCount: myProfileModel.trainings!.length,
                           itemBuilder: (context, index) {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  data.trainings![index].title.toString(),
+                                  myProfileModel.trainings![index].title
+                                      .toString(),
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Text(
-                                  data.trainings![index].year.toString(),
+                                  myProfileModel.trainings![index].year
+                                      .toString(),
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.normal),
                                 ),
                                 Text(
-                                  data.trainings![index].provider.toString(),
+                                  myProfileModel.trainings![index].provider
+                                      .toString(),
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.normal),
                                 ),
                                 Text(
-                                  data.trainings![index].details.toString(),
+                                  myProfileModel.trainings![index].details
+                                      .toString(),
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 14.sp,

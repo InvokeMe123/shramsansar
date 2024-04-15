@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,6 +13,7 @@ import 'package:shramsansar/features/edit_profile/presentation/controller/about_
 import 'package:shramsansar/features/edit_profile/presentation/controller/about_me_controller/about_you_controller.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/education_controller/educationAddController.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/education_controller/education_controller.dart';
+import 'package:shramsansar/features/profile/data/model/profile_model.dart';
 import 'package:shramsansar/features/profile/presentation/controller/profile_controller.dart';
 import 'package:shramsansar/features/trainings/provider/filtered_provider.dart';
 import 'package:shramsansar/utils/snackbar/custome_snack_bar.dart';
@@ -33,14 +35,16 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
     return date != null ? DateFormat('yyyy-MM-dd').format(date) : 'Select Date';
   }
 
+  MyProfileModel myProfileModel = MyProfileModel();
+
   @override
   Widget build(BuildContext context) {
-    var profile = ref.watch(profileControllerProvider);
+    var profileProvider = ref.watch(profileControllerProvider);
 
     var aboutYou = ref.watch(aboutYouControllerProvider);
     var education = ref.watch(educationAddControllerProvider.notifier);
 
-    ref.refresh(aboutMeUpdateControllerProvider);
+    // ref.refresh(aboutMeUpdateControllerProvider);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColorConst.BUTTON_BLUE_COLOR,
@@ -53,11 +57,8 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            profile.when(
-              data: (data) {
-                log(data.id.toString());
-                log(data.educations!.length.toString());
-
+            profileProvider.when(
+              data: (myProfileModel) {
                 return Padding(
                   padding: const EdgeInsets.all(12),
                   child: Column(
@@ -89,7 +90,7 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                             ),
                             Center(
                               child: Text(
-                                data.name!,
+                                myProfileModel.name!,
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 17.sp,
@@ -107,7 +108,7 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          data.locations!
+                                          myProfileModel.locations!
                                               .map((e) => e.districtName)
                                               .join('')
                                               .toString(),
@@ -117,7 +118,7 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                               fontWeight: FontWeight.normal),
                                         ),
                                         Text(
-                                          data.locations!
+                                          myProfileModel.locations!
                                               .map((e) => e.pradeshName)
                                               .join('')
                                               .toString(),
@@ -134,7 +135,7 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                   children: [
                                     const Icon(Icons.mail_outline),
                                     Text(
-                                      data.email!,
+                                      myProfileModel.email!,
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 14.sp,
@@ -146,7 +147,7 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                   children: [
                                     const Icon(Icons.phone_outlined),
                                     Text(
-                                      data.mobile!,
+                                      myProfileModel.mobile!,
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 14.sp,
@@ -180,8 +181,11 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                editAboutMe(context,
-                                    data.aboutYourself?.description ?? "");
+                                editAboutMe(
+                                    context,
+                                    myProfileModel.aboutYourself?.description ??
+                                        "",
+                                    myProfileModel);
                               },
                               child:
                                   const Icon(Icons.edit, color: Colors.white),
@@ -192,16 +196,7 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                       const SizedBox(
                         height: 10,
                       ),
-                      Container(
-                          child: aboutYou.when(
-                              data: (data) {
-                                return Text(data.aboutYou!
-                                    .map((e) => e.aboutMe)
-                                    .join(''));
-                              },
-                              error: (_, __) {},
-                              loading: () =>
-                                  const CircularProgressIndicator())),
+                      Text(myProfileModel.aboutYourself?.description ?? ""),
                       const SizedBox(
                         height: 10,
                       ),
@@ -235,7 +230,7 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                       ),
                       ListView.builder(
                           shrinkWrap: true,
-                          itemCount: data.educations!.length,
+                          itemCount: myProfileModel.educations!.length,
                           itemBuilder: (context, index) {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -243,7 +238,8 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                 Row(
                                   children: [
                                     Text(
-                                      data.educations![index].levels!.name
+                                      myProfileModel
+                                          .educations![index].levels!.name
                                           .toString(),
                                       style: TextStyle(
                                           color: Colors.black,
@@ -254,7 +250,8 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                     GestureDetector(
                                       onTap: () {
                                         education.deleteEducationn(
-                                            data.educations![index].id!);
+                                            myProfileModel
+                                                .educations![index].id!);
                                         //profile1.getMyProfile();
                                       },
                                       child: const Icon(Icons.delete_outline,
@@ -271,7 +268,8 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                   ],
                                 ),
                                 Text(
-                                  data.educations![index].graduationYear
+                                  myProfileModel
+                                      .educations![index].graduationYear
                                       .toString(),
                                   style: TextStyle(
                                       color: Colors.black,
@@ -288,7 +286,8 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   TextSpan(
-                                    text: data.educations![index].program
+                                    text: myProfileModel
+                                        .educations![index].program
                                         .toString(),
                                     style: TextStyle(
                                         color: Colors.black,
@@ -306,7 +305,8 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   TextSpan(
-                                    text: data.educations![index].board
+                                    text: myProfileModel
+                                        .educations![index].board
                                         .toString(),
                                     style: TextStyle(
                                         color: Colors.black,
@@ -324,7 +324,8 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   TextSpan(
-                                    text: data.educations![index].institute
+                                    text: myProfileModel
+                                        .educations![index].institute
                                         .toString(),
                                     style: TextStyle(
                                         color: Colors.black,
@@ -368,7 +369,7 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                         height: 10,
                       ),
                       ListView.builder(
-                          itemCount: data.experiences!.length,
+                          itemCount: myProfileModel.experiences!.length,
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
                             return Column(
@@ -377,7 +378,8 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                 Row(
                                   children: [
                                     Text(
-                                      data.experiences![index].title.toString(),
+                                      myProfileModel.experiences![index].title
+                                          .toString(),
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 16.sp,
@@ -409,7 +411,8 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   TextSpan(
-                                    text: data.experiences![index].startDate
+                                    text: myProfileModel
+                                        .experiences![index].startDate
                                         .toString(),
                                     style: TextStyle(
                                         color: Colors.black,
@@ -427,7 +430,8 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   TextSpan(
-                                    text: data.experiences![index].endDate
+                                    text: myProfileModel
+                                        .experiences![index].endDate
                                         .toString(),
                                     style: TextStyle(
                                         color: Colors.black,
@@ -445,7 +449,8 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   TextSpan(
-                                    text: data.experiences![index].organization
+                                    text: myProfileModel
+                                        .experiences![index].organization
                                         .toString(),
                                     style: TextStyle(
                                         color: Colors.black,
@@ -506,34 +511,38 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                       ),
                       ListView.builder(
                           shrinkWrap: true,
-                          itemCount: data.trainings!.length,
+                          itemCount: myProfileModel.trainings!.length,
                           itemBuilder: (context, index) {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  data.trainings![index].title.toString(),
+                                  myProfileModel.trainings![index].title
+                                      .toString(),
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Text(
-                                  data.trainings![index].year.toString(),
+                                  myProfileModel.trainings![index].year
+                                      .toString(),
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.normal),
                                 ),
                                 Text(
-                                  data.trainings![index].provider.toString(),
+                                  myProfileModel.trainings![index].provider
+                                      .toString(),
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.normal),
                                 ),
                                 Text(
-                                  data.trainings![index].details.toString(),
+                                  myProfileModel.trainings![index].details
+                                      .toString(),
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 14.sp,
@@ -631,14 +640,15 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                       ),
                       ListView.builder(
                           shrinkWrap: true,
-                          itemCount: data.socialAccounts!.length,
+                          itemCount: myProfileModel.socialAccounts!.length,
                           itemBuilder: (context, index) {
                             return Column(
                               children: [
                                 Text(
-                                  data.socialAccounts![index].name.toString() +
+                                  myProfileModel.socialAccounts![index].name
+                                          .toString() +
                                       ':' +
-                                      data.socialAccounts![index].url
+                                      myProfileModel.socialAccounts![index].url
                                           .toString(),
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold),
@@ -938,9 +948,7 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
         });
   }
 
-  void editAboutMe(BuildContext context, String data) {
-    var details = ref.watch(aboutMeUpdateControllerProvider.notifier);
-
+  void editAboutMe(BuildContext context, String data, MyProfileModel model) {
     TextEditingController aboutMe = TextEditingController();
     aboutMe.text = data;
     showDialog(
@@ -977,14 +985,16 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                     ),
                     onPressed: () {
                       String aboutMeUpdate = aboutMe.text;
-                      AboutMeUpdateReqModel aboutMeUpdateReqModel =
-                          AboutMeUpdateReqModel(about_me: aboutMeUpdate);
-                      details.getAboutMe(aboutMeUpdateReqModel);
+
+                      ref
+                          .watch(profileControllerProvider.notifier)
+                          .updateAboutMe(
+                              model: model, data: {"about_me": aboutMeUpdate});
 
                       Navigator.of(context).pop();
 
-                      ref.refresh(profileControllerProvider);
-                      ref.refresh(aboutMeUpdateControllerProvider);
+                      // ref.refresh(profileControllerProvider);
+                      // ref.refresh(aboutMeUpdateControllerProvider);
 
                       showCustomSnackBar('Successfully Updated', context,
                           isError: false);

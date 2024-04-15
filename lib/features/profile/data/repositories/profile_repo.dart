@@ -9,6 +9,7 @@ import 'package:shramsansar/features/profile/data/model/profile_model.dart';
 
 abstract class ProfileRepo {
   Future<Either<AppError, MyProfileModel>> profileRepo();
+  Future<Either<AppError, String>> updateAboutMe(Map<String, String> data);
 }
 
 class ProfileRepoImp implements ProfileRepo {
@@ -20,6 +21,17 @@ class ProfileRepoImp implements ProfileRepo {
       final result = await profileDataSource.getMyProfile();
 
       return Right(result);
+    } on DioException catch (e) {
+      return Left(AppError(e.message!.toString()));
+    }
+  }
+
+  @override
+  Future<Either<AppError, String>> updateAboutMe(
+      Map<String, String> data) async {
+    try {
+      await profileDataSource.updateAboutMe(data);
+      return Right(data["about_me"]!);
     } on DioException catch (e) {
       return Left(AppError(e.message!.toString()));
     }

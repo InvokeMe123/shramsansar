@@ -240,6 +240,93 @@ class MyProfileModel {
     }
     return MyProfileModel;
   }
+
+  MyProfileModel copyWith({
+    int? id,
+    String? name,
+    String? email,
+    int? perPradeshId,
+    String? perPradeshName,
+    int? perDistrictId,
+    String? perDistrictName,
+    int? perMuniId,
+    String? perMuniName,
+    String? perWard,
+    int? pradeshId,
+    String? tempPradeshName,
+    int? districtId,
+    String? tempDistrictName,
+    int? muniId,
+    String? tempMuniName,
+    String? ward,
+    String? dob,
+    String? gender,
+    String? mobile,
+    String? phone,
+    String? otherSkills,
+    String? citizenshipNo,
+    String? expectedSalary,
+    String? ethnicityType,
+    String? ethnicityName,
+    int? differentlyAble,
+    int? migrantWorker,
+    int? minorityGroup,
+    String? file,
+    List<JobseekerPreferenceCategory>? jobseekerPreferenceCategory,
+    List<Educations>? educations,
+    List<Experiences>? experiences,
+    List<Trainings>? trainings,
+    List<Languages>? languages,
+    List<Locations>? locations,
+    List<SocialAccounts>? socialAccounts,
+    Specialization? specialization,
+    AboutYourself? aboutYourself,
+    List<Skills>? skills,
+  }) {
+    return MyProfileModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      perPradeshId: perPradeshId ?? this.perPradeshId,
+      perPradeshName: perPradeshName ?? this.perPradeshName,
+      perDistrictId: perDistrictId ?? this.perDistrictId,
+      perDistrictName: perDistrictName ?? this.perDistrictName,
+      perMuniId: perMuniId ?? this.perMuniId,
+      perMuniName: perMuniName ?? this.perMuniName,
+      perWard: perWard ?? this.perWard,
+      pradeshId: pradeshId ?? this.pradeshId,
+      tempPradeshName: tempPradeshName ?? this.tempPradeshName,
+      districtId: districtId ?? this.districtId,
+      tempDistrictName: tempDistrictName ?? this.tempDistrictName,
+      muniId: muniId ?? this.muniId,
+      tempMuniName: tempMuniName ?? this.tempMuniName,
+      ward: ward ?? this.ward,
+      dob: dob ?? this.dob,
+      gender: gender ?? this.gender,
+      mobile: mobile ?? this.mobile,
+      phone: phone ?? this.phone,
+      otherSkills: otherSkills ?? this.otherSkills,
+      citizenshipNo: citizenshipNo ?? this.citizenshipNo,
+      expectedSalary: expectedSalary ?? this.expectedSalary,
+      ethnicityType: ethnicityType ?? this.ethnicityType,
+      ethnicityName: ethnicityName ?? this.ethnicityName,
+      differentlyAble: differentlyAble ?? this.differentlyAble,
+      migrantWorker: migrantWorker ?? this.migrantWorker,
+      minorityGroup: minorityGroup ?? this.minorityGroup,
+      file: file ?? this.file,
+      jobseekerPreferenceCategory:
+          jobseekerPreferenceCategory ?? this.jobseekerPreferenceCategory,
+      educations: educations ?? this.educations,
+      experiences: experiences ?? this.experiences,
+      trainings: trainings ?? this.trainings,
+      languages: languages ?? this.languages,
+      locations: locations ?? this.locations,
+      socialAccounts: socialAccounts ?? this.socialAccounts,
+      specialization: specialization ?? this.specialization,
+      aboutYourself: aboutYourself ?? this.aboutYourself,
+      skills: skills ?? this.skills,
+    );
+  }
 }
 
 class JobseekerPreferenceCategory {
@@ -568,6 +655,17 @@ class AboutYourself {
     MyProfileModel['id'] = this.id;
     MyProfileModel['description'] = this.description;
     return MyProfileModel;
+  }
+
+  // copy with
+  AboutYourself copyWith({
+    int? id,
+    String? description,
+  }) {
+    return AboutYourself(
+      id: id ?? this.id,
+      description: description ?? this.description,
+    );
   }
 }
 

@@ -1,7 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shramsansar/core/app_error/app_error.dart';
+
 import 'package:shramsansar/features/profile/data/model/profile_model.dart';
 import 'package:shramsansar/features/profile/data/repositories/profile_repo.dart';
 
@@ -18,6 +16,21 @@ class ProfileController extends StateNotifier<AsyncValue<MyProfileModel>> {
         (l) => state =
             AsyncValue.error(l.message, StackTrace.fromString(l.message)),
         (r) => state = AsyncValue.data(r));
+  }
+
+  updateAboutMe(
+      {required MyProfileModel model,
+      required Map<String, String> data}) async {
+    final result = await profileRepo.updateAboutMe(data);
+
+    result.fold((l) {
+      state = AsyncValue.error(l.message, StackTrace.fromString(l.message));
+    }, (r) {
+      final profileModel = model.copyWith(
+          aboutYourself:
+              AboutYourself().copyWith(description: data["about_me"]));
+      state = AsyncValue.data(profileModel);
+    });
   }
 }
 

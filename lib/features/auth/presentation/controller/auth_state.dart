@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:shramsansar/features/auth/data/models/login_model.dart/login_response_model.dart';
+import 'package:shramsansar/features/auth/data/models/login_model/login_response_model.dart';
 
 part 'auth_state.freezed.dart';
 

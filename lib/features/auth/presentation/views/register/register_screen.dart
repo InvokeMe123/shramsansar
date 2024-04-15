@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shramsansar/const/app_color_const.dart';
-import 'package:shramsansar/features/auth/data/models/register_model.dart/register_request_model.dart';
+import 'package:shramsansar/features/auth/data/models/register_model/register_request_model.dart';
 import 'package:shramsansar/features/auth/presentation/controller/register_controller.dart/register_controller.dart';
 import 'package:shramsansar/features/auth/presentation/views/register/widgets/national_id_card_button.dart';
 import 'package:shramsansar/features/caste/presentation/controller/caste_controller.dart';

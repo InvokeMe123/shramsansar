@@ -2,8 +2,8 @@ import 'dart:developer';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shramsansar/dashboard.dart';
-import 'package:shramsansar/features/auth/data/models/login_model.dart/login_response_model.dart';
-import 'package:shramsansar/features/auth/data/models/register_model.dart/register_request_model.dart';
+import 'package:shramsansar/features/auth/data/models/login_model/login_response_model.dart';
+import 'package:shramsansar/features/auth/data/models/register_model/register_request_model.dart';
 import 'package:shramsansar/features/auth/data/repositories/auth_repository.dart';
 
 import 'package:shramsansar/utils/navigation/nav_app.dart';

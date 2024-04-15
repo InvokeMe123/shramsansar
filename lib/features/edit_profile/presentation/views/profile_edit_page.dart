@@ -108,9 +108,8 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                       children: [
                                         Text(
                                           data.locations!
-                                              .map((e) => e.districtName)
-                                              .join('')
-                                              .toString(),
+                                              .map((e) => e.muniName)
+                                              .join(''),
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 14.sp,
@@ -118,9 +117,8 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                         ),
                                         Text(
                                           data.locations!
-                                              .map((e) => e.pradeshName)
-                                              .join('')
-                                              .toString(),
+                                              .map((e) => e.districtName)
+                                              .join(''),
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 14.sp,

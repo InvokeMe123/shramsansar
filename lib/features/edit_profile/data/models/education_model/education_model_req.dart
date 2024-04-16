@@ -3,6 +3,7 @@ import 'dart:convert';
 
 class EducationReqModel {
   final String level_id;
+  final String levelName;
   final String program;
   final String board;
   final String institute;
@@ -10,6 +11,7 @@ class EducationReqModel {
   final String marks_secured;
   EducationReqModel({
     required this.level_id,
+    required this.levelName,
     required this.program,
     required this.board,
     required this.institute,
@@ -19,6 +21,7 @@ class EducationReqModel {
 
   EducationReqModel copyWith({
     String? level_id,
+    String? levelName,
     String? program,
     String? board,
     String? institute,
@@ -27,6 +30,7 @@ class EducationReqModel {
   }) {
     return EducationReqModel(
       level_id: level_id ?? this.level_id,
+      levelName: levelName ?? this.levelName,
       program: program ?? this.program,
       board: board ?? this.board,
       institute: institute ?? this.institute,
@@ -38,6 +42,7 @@ class EducationReqModel {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'level_id': level_id,
+      'level_name': levelName,
       'program': program,
       'board': board,
       'institute': institute,
@@ -49,6 +54,7 @@ class EducationReqModel {
   factory EducationReqModel.fromMap(Map<String, dynamic> map) {
     return EducationReqModel(
       level_id: map['level_id'] as String,
+      levelName: map['level_name'] as String,
       program: map['program'] as String,
       board: map['board'] as String,
       institute: map['institute'] as String,

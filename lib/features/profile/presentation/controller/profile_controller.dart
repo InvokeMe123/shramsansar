@@ -34,10 +34,12 @@ class ProfileController extends StateNotifier<AsyncValue<MyProfileModel>> {
     });
   }
 
-  addEducation(
+  /// Returns true if added successfully, false if not
+  Future<bool> addEducation(
       {required MyProfileModel profileModel,
       required EducationReqModel educationReqModel}) async {
     final result = await profileRepo.addEducation(educationReqModel);
+    bool flag = false;
 
     result.fold((l) {
       state = AsyncValue.error(l.message, StackTrace.fromString(l.message));
@@ -47,7 +49,10 @@ class ProfileController extends StateNotifier<AsyncValue<MyProfileModel>> {
         Educations.fromJson(educationReqModel.toMap())
       ]);
       state = AsyncValue.data(model);
+      flag = true;
     });
+
+    return flag;
   }
 }
 

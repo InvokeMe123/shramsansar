@@ -1,16 +1,9 @@
-import 'dart:developer';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:shramsansar/const/app_color_const.dart';
 import 'package:shramsansar/features/edit_profile/data/models/education_model/education_model_req.dart';
-import 'package:shramsansar/features/edit_profile/presentation/controller/education_controller/educationAddController.dart';
-import 'package:shramsansar/features/edit_profile/presentation/controller/education_controller/education_controller.dart';
 import 'package:shramsansar/features/profile/data/model/profile_model.dart';
-
 import 'package:shramsansar/features/profile/presentation/controller/profile_controller.dart';
 import 'package:shramsansar/utils/snackbar/custome_snack_bar.dart';
 
@@ -44,8 +37,6 @@ class _AddEducationState extends ConsumerState<AddEducation> {
 
   @override
   Widget build(BuildContext context) {
-    var educationAdd = ref.watch(educationAddControllerProvider.notifier);
-    var profile = ref.watch(profileControllerProvider.notifier);
     return AlertDialog(
       contentPadding: const EdgeInsets.all(0),
       content: Column(
@@ -234,17 +225,25 @@ class _AddEducationState extends ConsumerState<AddEducation> {
                     }
                     EducationReqModel educationReqModel = EducationReqModel(
                         level_id: levelID.toString(),
+                        levelName: widget.educationLevel.elementAt(levelID - 1),
                         program: program.text,
                         board: educationBoard.text,
                         institute: institute.text,
                         graduation_year: _formatDate(selectedDate),
                         marks_secured: obtainedMarks.text);
 
-                    ref.read(profileControllerProvider.notifier).addEducation(
-                        profileModel: widget.profileModel,
-                        educationReqModel: educationReqModel);
-
-                    profile.getMyProfile();
+                    ref
+                        .read(profileControllerProvider.notifier)
+                        .addEducation(
+                            profileModel: widget.profileModel,
+                            educationReqModel: educationReqModel)
+                        .then((value) {
+                      if (value) {
+                        Navigator.of(context).pop();
+                      } else {
+                        showCustomSnackBar('Failed to add education', context);
+                      }
+                    });
                   },
                   child: const Text('Save'))
             ],

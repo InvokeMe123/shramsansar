@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shramsansar/features/edit_profile/data/models/education_model/education_model.dart';
 import 'package:shramsansar/features/edit_profile/data/models/education_model/education_model_req.dart';
 
 import 'package:shramsansar/features/profile/data/model/profile_model.dart';
@@ -46,6 +47,20 @@ class ProfileController extends StateNotifier<AsyncValue<MyProfileModel>> {
       flag = true;
     });
 
+    return flag;
+  }
+
+  /// updating the education
+  Future<bool> updateEducation(
+      {required EducationReqModel educationReqModel, required int id}) async {
+    final result = await profileRepo.updateEducation(id, educationReqModel);
+    bool flag = false;
+
+    result.fold((l) {
+      state = AsyncValue.error(l.message, StackTrace.fromString(l.message));
+    }, (r) {
+      flag = true;
+    });
     return flag;
   }
 

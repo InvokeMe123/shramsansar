@@ -9,17 +9,25 @@ import 'package:shramsansar/features/profile/data/model/profile_model.dart';
 import 'package:shramsansar/features/profile/presentation/controller/profile_controller.dart';
 import 'package:shramsansar/utils/snackbar/custome_snack_bar.dart';
 
-class AddEducation extends ConsumerStatefulWidget {
+class EditEducation extends ConsumerStatefulWidget {
   final List<String> educationLevel;
   final MyProfileModel profileModel;
-  const AddEducation(
-      {super.key, required this.educationLevel, required this.profileModel});
+
+  /// selected fields are in this model
+  final Educations educationModel;
+
+  const EditEducation({
+    super.key,
+    required this.educationLevel,
+    required this.profileModel,
+    required this.educationModel,
+  });
 
   @override
-  ConsumerState<AddEducation> createState() => _AddEducationState();
+  ConsumerState<EditEducation> createState() => _AddEducationState();
 }
 
-class _AddEducationState extends ConsumerState<AddEducation> {
+class _AddEducationState extends ConsumerState<EditEducation> {
   int levelID = 0;
   TextEditingController program = TextEditingController();
   TextEditingController educationBoard = TextEditingController();
@@ -41,6 +49,8 @@ class _AddEducationState extends ConsumerState<AddEducation> {
 
   @override
   Widget build(BuildContext context) {
+    log("Selected fields data: ${widget.educationModel.toJson()}");
+
     return Form(
       key: _formKey,
       child: AlertDialog(
@@ -275,15 +285,10 @@ class _AddEducationState extends ConsumerState<AddEducation> {
                             .addEducation(educationReqModel: educationReqModel)
                             .then((value) {
                           if (value) {
-                            ref
-                                .read(profileControllerProvider.notifier)
-                                .getMyProfile()
-                                .then((value) {
-                              Navigator.pop(context);
-                              showCustomSnackBar(
-                                  'Education added successfully', context,
-                                  isError: false);
-                            });
+                            Navigator.of(context).pop();
+                            showCustomSnackBar(
+                                'Education added successfully', context,
+                                isError: false);
                           } else {
                             showCustomSnackBar(
                                 'Failed to add education', context);

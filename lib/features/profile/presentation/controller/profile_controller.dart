@@ -9,7 +9,7 @@ class ProfileController extends StateNotifier<AsyncValue<MyProfileModel>> {
   ProfileController(this.profileRepo) : super(AsyncValue.loading()) {
     getMyProfile();
   }
-  getMyProfile() async {
+  Future getMyProfile() async {
     print('profile controller');
     final result = await profileRepo.profileRepo();
     //log(result.toString());
@@ -36,19 +36,13 @@ class ProfileController extends StateNotifier<AsyncValue<MyProfileModel>> {
 
   /// Returns true if added successfully, false if not
   Future<bool> addEducation(
-      {required MyProfileModel profileModel,
-      required EducationReqModel educationReqModel}) async {
+      {required EducationReqModel educationReqModel}) async {
     final result = await profileRepo.addEducation(educationReqModel);
     bool flag = false;
 
     result.fold((l) {
       state = AsyncValue.error(l.message, StackTrace.fromString(l.message));
     }, (r) {
-      final model = profileModel.copyWith(educations: [
-        ...?profileModel.educations,
-        Educations.fromJson(educationReqModel.toMap())
-      ]);
-      state = AsyncValue.data(model);
       flag = true;
     });
 

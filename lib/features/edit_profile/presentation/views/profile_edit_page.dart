@@ -9,6 +9,7 @@ import 'package:shramsansar/features/edit_profile/data/models/education_model/ed
 import 'package:shramsansar/features/edit_profile/presentation/controller/education_controller/educationAddController.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/education_controller/education_controller.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/add_education.dart';
+import 'package:shramsansar/features/edit_profile/presentation/views/widgets/edit_education.dart';
 import 'package:shramsansar/features/profile/data/model/profile_model.dart';
 import 'package:shramsansar/features/profile/presentation/controller/profile_controller.dart';
 import 'package:shramsansar/utils/snackbar/custome_snack_bar.dart';
@@ -206,9 +207,6 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                             const Spacer(),
                             GestureDetector(
                               onTap: () {
-                                log("Hello world");
-                                // educationAdd(context, educationLevels);
-
                                 showDialog(
                                     context: context,
                                     builder: (_) {
@@ -265,7 +263,21 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                       width: 10,
                                     ),
                                     GestureDetector(
-                                      onTap: () {},
+                                      onTap: () {
+                                        log("Edit education");
+                                        showDialog(
+                                            context: context,
+                                            builder: (_) {
+                                              return EditEducation(
+                                                  profileModel: myProfileModel,
+                                                  educationModel: myProfileModel
+                                                      .educations![index],
+                                                  educationLevel:
+                                                      educationLevels
+                                                          .toSet()
+                                                          .toList());
+                                            });
+                                      },
                                       child: const Icon(Icons.edit,
                                           color: Colors.black),
                                     )

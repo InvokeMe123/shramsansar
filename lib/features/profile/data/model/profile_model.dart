@@ -360,6 +360,7 @@ class Educations {
   String? institute;
   String? graduationYear;
   String? marksSecured;
+
   Levels? levels;
 
   Educations(
@@ -373,9 +374,34 @@ class Educations {
       this.marksSecured,
       this.levels});
 
+  // CopyWith method implementation
+  Educations copyWith({
+    int? id,
+    int? levelId,
+    String? levelName,
+    String? program,
+    String? board,
+    String? institute,
+    String? graduationYear,
+    String? marksSecured,
+    Levels? levels,
+  }) {
+    return Educations(
+      id: id ?? this.id,
+      levelId: levelId ?? this.levelId,
+      levelName: levelName ?? this.levelName,
+      program: program ?? this.program,
+      board: board ?? this.board,
+      institute: institute ?? this.institute,
+      graduationYear: graduationYear ?? this.graduationYear,
+      marksSecured: marksSecured ?? this.marksSecured,
+      levels: levels ?? this.levels,
+    );
+  }
+
   Educations.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    levelId = json['level_id'];
+    levelId = int.tryParse(json['level_id'].toString());
     levelName = json['level_name'];
     program = json['program'];
     board = json['board'];

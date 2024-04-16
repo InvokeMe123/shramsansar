@@ -59,7 +59,8 @@ class EducationReqModel {
 
   String toJson() => json.encode(toMap());
 
-  factory EducationReqModel.fromJson(String source) => EducationReqModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory EducationReqModel.fromJson(String source) =>
+      EducationReqModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
@@ -69,23 +70,22 @@ class EducationReqModel {
   @override
   bool operator ==(covariant EducationReqModel other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.level_id == level_id &&
-      other.program == program &&
-      other.board == board &&
-      other.institute == institute &&
-      other.graduation_year == graduation_year &&
-      other.marks_secured == marks_secured;
+
+    return other.level_id == level_id &&
+        other.program == program &&
+        other.board == board &&
+        other.institute == institute &&
+        other.graduation_year == graduation_year &&
+        other.marks_secured == marks_secured;
   }
 
   @override
   int get hashCode {
     return level_id.hashCode ^
-      program.hashCode ^
-      board.hashCode ^
-      institute.hashCode ^
-      graduation_year.hashCode ^
-      marks_secured.hashCode;
+        program.hashCode ^
+        board.hashCode ^
+        institute.hashCode ^
+        graduation_year.hashCode ^
+        marks_secured.hashCode;
   }
 }

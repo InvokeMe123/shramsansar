@@ -5,9 +5,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shramsansar/core/api_client/api_client.dart';
 import 'package:shramsansar/core/api_const/api_const.dart';
 import 'package:shramsansar/core/dbclient.dart';
-import 'package:shramsansar/features/auth/data/models/login_model.dart/login_request_model.dart';
-import 'package:shramsansar/features/auth/data/models/login_model.dart/login_response_model.dart';
-import 'package:shramsansar/features/auth/data/models/register_model.dart/register_request_model.dart';
+import 'package:shramsansar/features/auth/data/models/change_password_model/change_password_req_model.dart';
+import 'package:shramsansar/features/auth/data/models/change_password_model/change_password_res_model.dart';
+import 'package:shramsansar/features/auth/data/models/login_model/login_request_model.dart';
+import 'package:shramsansar/features/auth/data/models/login_model/login_response_model.dart';
+import 'package:shramsansar/features/auth/data/models/register_model/register_request_model.dart';
 
 abstract class AuthDataSource {
   Future<LoginResponseModel> loginDS(
@@ -16,6 +18,8 @@ abstract class AuthDataSource {
       RegisterRequestModel registerRequestModel);
 
   Future<LoginResponseModel> registerWithFormData(FormData formData);
+  Future<ChangePasswordResModel> changePasswordDs(
+      ChangePasswordReqModel changePasswordReqModel);
 }
 
 class AuthDataSourceImp implements AuthDataSource {
@@ -57,6 +61,16 @@ class AuthDataSourceImp implements AuthDataSource {
     log("Registered success  : ${result['token']}");
 
     return LoginResponseModel.fromJson(result['token']);
+  }
+
+  @override
+  Future<ChangePasswordResModel> changePasswordDs(
+      ChangePasswordReqModel changePasswordReqModel) async {
+    final result = await apiClient.request(
+        path: ApiConst.CHNAGE_PASSWORD,
+        type: 'post',
+        data: changePasswordReqModel.toJson());
+    return ChangePasswordResModel.fromJson(result);
   }
 }
 

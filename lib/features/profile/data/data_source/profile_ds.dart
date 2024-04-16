@@ -3,11 +3,13 @@ import 'dart:developer';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shramsansar/core/api_client/api_client.dart';
 import 'package:shramsansar/core/api_const/api_const.dart';
+import 'package:shramsansar/features/edit_profile/data/models/education_model/education_model_req.dart';
 import 'package:shramsansar/features/profile/data/model/profile_model.dart';
 
 abstract class ProfileDataSource {
   Future<MyProfileModel> getMyProfile();
   Future<void> updateAboutMe(Map<String, String> data);
+  Future<void> addEducation(EducationReqModel data);
 }
 
 class ProfileDataSourceImp implements ProfileDataSource {
@@ -25,6 +27,12 @@ class ProfileDataSourceImp implements ProfileDataSource {
   Future<void> updateAboutMe(Map<String, String> data) async {
     await apiClient.request(
         type: 'post', path: ApiConst.POST_ABOUT_ME, data: data);
+  }
+
+  @override
+  Future<void> addEducation(EducationReqModel data) async {
+    await apiClient.request(
+        type: 'post', path: ApiConst.POST_EDUCATION, data: data.toMap());
   }
 }
 

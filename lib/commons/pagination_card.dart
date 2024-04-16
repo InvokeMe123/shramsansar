@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:number_pagination/number_pagination.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:shramsansar/const/app_color_const.dart';
 import 'package:shramsansar/features/trainings/provider/page_index_provider.dart';
 
 class PaginationCard extends ConsumerWidget {
@@ -23,16 +24,20 @@ class PaginationCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return NumberPagination(
-      onPageChanged: (int pageNumber) {
-        ref.read(pageIndexProvider.notifier).update((state) => pageNumber);
-      },
+    return SizedBox(
+      width: MediaQuery.sizeOf(context).width,
+      height: 7.h,
+      child: NumberPagination(
+        onPageChanged: (int pageNumber) {
+          ref.read(pageIndexProvider.notifier).update((state) => pageNumber);
+        },
 
-      threshold: perPage,
-      pageTotal: findTotalPage(),
-      pageInit: ref.watch(pageIndexProvider), // picked number when init page
-      colorPrimary: Colors.red,
-      colorSub: Colors.yellow,
+        threshold: perPage,
+        pageTotal: findTotalPage(),
+        pageInit: ref.watch(pageIndexProvider), // picked number when init page
+        colorPrimary: Colors.white,
+        colorSub: AppColorConst.BUTTON_BLUE_COLOR,
+      ),
     );
   }
 }

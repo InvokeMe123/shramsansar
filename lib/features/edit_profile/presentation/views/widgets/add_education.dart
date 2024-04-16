@@ -8,20 +8,24 @@ import 'package:intl/intl.dart';
 import 'package:shramsansar/const/app_color_const.dart';
 import 'package:shramsansar/features/edit_profile/data/models/education_model/education_model_req.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/education_controller/educationAddController.dart';
+import 'package:shramsansar/features/edit_profile/presentation/controller/education_controller/education_controller.dart';
+import 'package:shramsansar/features/profile/data/model/profile_model.dart';
 
 import 'package:shramsansar/features/profile/presentation/controller/profile_controller.dart';
 import 'package:shramsansar/utils/snackbar/custome_snack_bar.dart';
 
 class AddEducation extends ConsumerStatefulWidget {
   final List<String> educationLevel;
-  const AddEducation({super.key, required this.educationLevel});
+  final MyProfileModel profileModel;
+  const AddEducation(
+      {super.key, required this.educationLevel, required this.profileModel});
 
   @override
   ConsumerState<AddEducation> createState() => _AddEducationState();
 }
 
 class _AddEducationState extends ConsumerState<AddEducation> {
-  int level_id = 0;
+  int levelID = 0;
   TextEditingController program = TextEditingController();
   TextEditingController educationBoard = TextEditingController();
   TextEditingController institute = TextEditingController();
@@ -92,7 +96,7 @@ class _AddEducationState extends ConsumerState<AddEducation> {
                       onChanged: (newValue) {
                         setState(() {
                           educ = newValue;
-                          level_id = widget.educationLevel.indexOf(educ!) + 1;
+                          levelID = widget.educationLevel.indexOf(educ!) + 1;
                         });
                       },
                     ),
@@ -229,13 +233,17 @@ class _AddEducationState extends ConsumerState<AddEducation> {
                           'Fields Cant be empty', context);
                     }
                     EducationReqModel educationReqModel = EducationReqModel(
-                        level_id: level_id.toString(),
+                        level_id: levelID.toString(),
                         program: program.text,
                         board: educationBoard.text,
                         institute: institute.text,
                         graduation_year: _formatDate(selectedDate),
                         marks_secured: obtainedMarks.text);
-                    educationAdd.addEducation(educationReqModel);
+
+                    ref.read(profileControllerProvider.notifier).addEducation(
+                        profileModel: widget.profileModel,
+                        educationReqModel: educationReqModel);
+
                     profile.getMyProfile();
                   },
                   child: const Text('Save'))

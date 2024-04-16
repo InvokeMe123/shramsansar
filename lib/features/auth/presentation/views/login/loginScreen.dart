@@ -6,7 +6,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shramsansar/const/app_color_const.dart';
 import 'package:shramsansar/core/dbclient.dart';
-import 'package:shramsansar/features/auth/data/models/login_model.dart/login_request_model.dart';
+import 'package:shramsansar/features/auth/data/models/login_model/login_request_model.dart';
 import 'package:shramsansar/features/auth/presentation/controller/auth_controller.dart';
 import 'package:shramsansar/features/auth/presentation/controller/login_loading_controller.dart';
 import 'package:shramsansar/features/auth/presentation/views/register/register_screen.dart';

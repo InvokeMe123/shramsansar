@@ -213,6 +213,7 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                     context: context,
                                     builder: (_) {
                                       return AddEducation(
+                                          profileModel: myProfileModel,
                                           educationLevel:
                                               educationLevels.toSet().toList());
                                     });
@@ -239,8 +240,8 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                   children: [
                                     Text(
                                       myProfileModel
-                                          .educations![index].levels!.name
-                                          .toString(),
+                                              .educations![index].levelName ??
+                                          "",
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 14.sp,

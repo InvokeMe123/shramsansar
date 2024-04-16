@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shramsansar/features/edit_profile/data/models/education_model/education_model_req.dart';
 
 import 'package:shramsansar/features/profile/data/model/profile_model.dart';
 import 'package:shramsansar/features/profile/data/repositories/profile_repo.dart';
@@ -30,6 +31,22 @@ class ProfileController extends StateNotifier<AsyncValue<MyProfileModel>> {
           aboutYourself:
               AboutYourself().copyWith(description: data["about_me"]));
       state = AsyncValue.data(profileModel);
+    });
+  }
+
+  addEducation(
+      {required MyProfileModel profileModel,
+      required EducationReqModel educationReqModel}) async {
+    final result = await profileRepo.addEducation(educationReqModel);
+
+    result.fold((l) {
+      state = AsyncValue.error(l.message, StackTrace.fromString(l.message));
+    }, (r) {
+      final model = profileModel.copyWith(educations: [
+        ...?profileModel.educations,
+        Educations.fromJson(educationReqModel.toMap())
+      ]);
+      state = AsyncValue.data(model);
     });
   }
 }

@@ -12,6 +12,7 @@ abstract class ProfileRepo {
   Future<Either<AppError, MyProfileModel>> profileRepo();
   Future<Either<AppError, String>> updateAboutMe(Map<String, String> data);
   Future<Either<AppError, void>> addEducation(EducationReqModel model);
+  Future<Either<AppError, void>> deleteEducation(int educationID);
 }
 
 class ProfileRepoImp implements ProfileRepo {
@@ -43,6 +44,16 @@ class ProfileRepoImp implements ProfileRepo {
   Future<Either<AppError, void>> addEducation(EducationReqModel model) async {
     try {
       await profileDataSource.addEducation(model);
+      return const Right(null);
+    } on DioException catch (e) {
+      return Left(AppError(e.message!.toString()));
+    }
+  }
+
+  @override
+  Future<Either<AppError, void>> deleteEducation(int educationID) async {
+    try {
+      await profileDataSource.deleteEducation(educationID);
       return const Right(null);
     } on DioException catch (e) {
       return Left(AppError(e.message!.toString()));

@@ -250,10 +250,13 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                     const Spacer(),
                                     GestureDetector(
                                       onTap: () {
-                                        education.deleteEducationn(
-                                            myProfileModel
-                                                .educations![index].id!);
-                                        //profile1.getMyProfile();
+                                        ref
+                                            .read(profileControllerProvider
+                                                .notifier)
+                                            .deleteEducation(
+                                                profileModel: myProfileModel,
+                                                id: myProfileModel
+                                                    .educations![index].id!);
                                       },
                                       child: const Icon(Icons.delete_outline,
                                           color: Colors.black),

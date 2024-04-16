@@ -240,6 +240,8 @@ class _AddEducationState extends ConsumerState<AddEducation> {
                         .then((value) {
                       if (value) {
                         Navigator.of(context).pop();
+                        showCustomSnackBar(
+                            'Education added successfully', context);
                       } else {
                         showCustomSnackBar('Failed to add education', context);
                       }

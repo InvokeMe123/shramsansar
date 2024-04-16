@@ -54,6 +54,25 @@ class ProfileController extends StateNotifier<AsyncValue<MyProfileModel>> {
 
     return flag;
   }
+
+  // Delete education
+  Future<bool> deleteEducation(
+      {required MyProfileModel profileModel, required int id}) async {
+    final result = await profileRepo.deleteEducation(id);
+    bool flag = false;
+
+    result.fold((l) {
+      state = AsyncValue.error(l.message, StackTrace.fromString(l.message));
+    }, (r) {
+      final model = profileModel.copyWith(
+          educations: profileModel.educations!
+              .where((element) => element.id != id)
+              .toList());
+      state = AsyncValue.data(model);
+      flag = true;
+    });
+    return flag;
+  }
 }
 
 final profileControllerProvider = StateNotifierProvider.autoDispose<

@@ -10,6 +10,7 @@ abstract class ProfileDataSource {
   Future<MyProfileModel> getMyProfile();
   Future<void> updateAboutMe(Map<String, String> data);
   Future<void> addEducation(EducationReqModel data);
+  Future<void> deleteEducation(int educationID);
 }
 
 class ProfileDataSourceImp implements ProfileDataSource {
@@ -33,6 +34,12 @@ class ProfileDataSourceImp implements ProfileDataSource {
   Future<void> addEducation(EducationReqModel data) async {
     await apiClient.request(
         type: 'post', path: ApiConst.POST_EDUCATION, data: data.toMap());
+  }
+
+  @override
+  Future<void> deleteEducation(int educationID) async {
+    await apiClient.request(
+        type: "get", path: "${ApiConst.DELETE_EDUCATION}/$educationID");
   }
 }
 

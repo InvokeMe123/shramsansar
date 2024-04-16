@@ -3,7 +3,7 @@ import 'package:shramsansar/core/api_client/api_client.dart';
 import 'package:shramsansar/core/api_const/api_const.dart';
 import 'package:shramsansar/features/edit_profile/data/models/education_model/education_model.dart';
 import 'package:shramsansar/features/edit_profile/data/models/education_model/education_model_req.dart';
-import 'package:shramsansar/features/edit_profile/data/models/education_model/education_model_res.dart';
+import 'package:shramsansar/features/edit_profile/data/models/education_model/education_res_model.dart';
 
 abstract class EducationDs {
   Future<EducationModel> educationDropDs();
@@ -29,14 +29,14 @@ class EducationDsImp implements EducationDs {
         path: ApiConst.POST_EDUCATION,
         type: 'post',
         data: educationReqModel.toMap());
-    return EducationResModel.fromJson(result['message']);
+    return EducationResModel.fromJson(result);
   }
 
   @override
   Future<EducationResModel> educationDelete(int id) async {
     final result = await apiClient.request(
         path: '${ApiConst.DELETE_EDUCATION}$id', type: 'get');
-    return EducationResModel.fromJson(result['message']);
+    return EducationResModel.fromJson(result);
   }
 }
 

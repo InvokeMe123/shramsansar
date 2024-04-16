@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math';
 
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
@@ -17,6 +18,9 @@ abstract class AuthRepo {
       LoginRequestModel loginRequestModel, String token);
   Future<Either<AppError, LoginResponseModel>> registerRepo(
       RegisterRequestModel registerRequestModel);
+
+  Future<Either<AppError, LoginResponseModel>> registerWithFormData(
+      FormData formData);
   Future<Either<AppError, ChangePasswordResModel>> changePasswordRepo(
       ChangePasswordReqModel changePasswordReqModel);
 }
@@ -28,7 +32,6 @@ class AuthRepoImp implements AuthRepo {
   @override
   Future<Either<AppError, LoginResponseModel>> loginRepo(
       LoginRequestModel loginRequestModel, String token) async {
-    log('AuthRepo');
     try {
       final result = await authDataSource.loginDS(loginRequestModel, token);
 
@@ -50,6 +53,16 @@ class AuthRepoImp implements AuthRepo {
   }
 
   @override
+  Future<Either<AppError, LoginResponseModel>> registerWithFormData(
+      FormData formData) async {
+    try {
+      final result = await authDataSource.registerWithFormData(formData);
+      return Right(result);
+    } on DioException catch (e) {
+      return Left(AppError(e.message!));
+    }
+  }
+
   Future<Either<AppError, ChangePasswordResModel>> changePasswordRepo(
       ChangePasswordReqModel changePasswordReqModel) async {
     try {

@@ -217,6 +217,7 @@ class _DashboardState extends ConsumerState<Dashboard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 GestureDetector(
                   onTap: () {
@@ -227,7 +228,7 @@ class _DashboardState extends ConsumerState<Dashboard> {
                     padding: const EdgeInsets.only(left: 0),
                     child: Container(
                         height: 18.h,
-                        width: 22.w,
+                        width: 21.w,
                         decoration:
                             BoxDecoration(color: AppColorConst.PRAYMERY_COLOR),
                         child: const Center(child: Text('Jobs'))),
@@ -241,7 +242,7 @@ class _DashboardState extends ConsumerState<Dashboard> {
                     padding: const EdgeInsets.only(left: 7.0),
                     child: Container(
                         height: 18.h,
-                        width: 22.w,
+                        width: 21.w,
                         decoration:
                             BoxDecoration(color: AppColorConst.PRAYMERY_COLOR),
                         child: const Center(child: Text('Training'))),
@@ -251,7 +252,7 @@ class _DashboardState extends ConsumerState<Dashboard> {
                   padding: const EdgeInsets.only(left: 7.0),
                   child: Container(
                       height: 18.h,
-                      width: 22.w,
+                      width: 21.w,
                       decoration:
                           BoxDecoration(color: AppColorConst.PRAYMERY_COLOR),
                       child: const Center(child: Text('Notice and\nNews'))),
@@ -262,7 +263,7 @@ class _DashboardState extends ConsumerState<Dashboard> {
                     padding: const EdgeInsets.only(left: 7.0),
                     child: Container(
                         height: 18.h,
-                        width: 22.w,
+                        width: 21.w,
                         decoration:
                             BoxDecoration(color: AppColorConst.PRAYMERY_COLOR),
                         child: const Center(child: Text('Training\nCenters'))),

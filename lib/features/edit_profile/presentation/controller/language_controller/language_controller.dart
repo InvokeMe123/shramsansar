@@ -13,6 +13,14 @@ class LanguageController extends StateNotifier<AsyncValue<LanguageModel>> {
 
     return flag;
   }
+
+  Future<bool> deleteLanguage(int id) async {
+    final result = await languageRepo.deleteLanguage(id);
+    bool flag = false;
+    result.fold((l) {}, (r) => flag = true);
+
+    return flag;
+  }
 }
 
 final languageControllerProvider =

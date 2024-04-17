@@ -6,6 +6,7 @@ import 'package:shramsansar/features/edit_profile/data/models/language_model/lan
 
 abstract class LanguageRepo {
   Future<Either<AppError, void>> addLanguage(LanguageModel language);
+  Future<Either<AppError, void>> deleteLanguage(int id);
 }
 
 class LanguageRepoImpl implements LanguageRepo {
@@ -16,7 +17,17 @@ class LanguageRepoImpl implements LanguageRepo {
   @override
   Future<Either<AppError, void>> addLanguage(LanguageModel language) async {
     try {
-      final result = await languageDataSource.addLanguage(language);
+      await languageDataSource.addLanguage(language);
+      return const Right(null);
+    } catch (e) {
+      return Left(AppError(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<AppError, void>> deleteLanguage(int id) async {
+    try {
+      await languageDataSource.deleteLanguage(id);
       return const Right(null);
     } catch (e) {
       return Left(AppError(e.toString()));

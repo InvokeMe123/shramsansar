@@ -105,6 +105,7 @@ class _AddLanguageState extends ConsumerState<AddLanguage> {
                         .read(languageControllerProvider.notifier)
                         .addLanguage(
                           LanguageModel(
+                            id: 0, // id is not required when adding
                             name: _languageController.text,
                             speaking: _speakingController.text,
                             reading: _readingController.text,

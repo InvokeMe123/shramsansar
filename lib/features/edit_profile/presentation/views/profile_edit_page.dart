@@ -9,6 +9,7 @@ import 'package:shramsansar/features/edit_profile/data/models/education_model/ed
 import 'package:shramsansar/features/edit_profile/data/models/social_accounts_model/social_accounts_model.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/education_controller/educationAddController.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/education_controller/education_controller.dart';
+import 'package:shramsansar/features/edit_profile/presentation/controller/language_controller/language_controller.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/social_accounts_controller/social_accounts_controller.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/add_education.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/add_experience.dart';
@@ -617,11 +618,6 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                             const SizedBox(
                               width: 10,
                             ),
-                            GestureDetector(
-                              onTap: () {},
-                              child: const Icon(Icons.delete_outline,
-                                  color: Colors.white),
-                            ),
                             const SizedBox(
                               width: 10,
                             ),
@@ -640,6 +636,34 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    ref
+                                        .read(
+                                            languageControllerProvider.notifier)
+                                        .deleteLanguage(myProfileModel
+                                            .languages![index].id!)
+                                        .then((value) {
+                                      if (value) {
+                                        ref
+                                            .read(profileControllerProvider
+                                                .notifier)
+                                            .getMyProfile()
+                                            .then((value) {
+                                          showCustomSnackBar(
+                                              'Successfully Deleted', context,
+                                              isError: false);
+                                        });
+                                      } else {
+                                        showCustomSnackBar(
+                                            'Failed to delete', context,
+                                            isError: true);
+                                      }
+                                    });
+                                  },
+                                  child: const Icon(Icons.delete_outline,
+                                      color: Colors.black),
+                                ),
                                 Text(
                                   myProfileModel.languages![index].languageName
                                       .toString(),

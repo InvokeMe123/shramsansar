@@ -1,4 +1,5 @@
 class LanguageModel {
+  final int id;
   final String name;
   final String speaking;
   final String reading;
@@ -6,7 +7,8 @@ class LanguageModel {
   final String listening;
 
   LanguageModel(
-      {required this.name,
+      {required this.id,
+      required this.name,
       required this.speaking,
       required this.reading,
       required this.writing,
@@ -24,6 +26,7 @@ class LanguageModel {
 
   factory LanguageModel.fromMap(Map<String, dynamic> map) {
     return LanguageModel(
+      id: map['id'],
       name: map['language_name'],
       speaking: map['language_rating_speaking'],
       reading: map['language_rating_reading'],

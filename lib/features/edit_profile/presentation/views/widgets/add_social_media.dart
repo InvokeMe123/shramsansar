@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shramsansar/features/edit_profile/data/models/social_accounts_model/add_social_accounts.dart';
 import 'package:shramsansar/features/edit_profile/data/models/social_accounts_model/social_accounts_model.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/social_accounts_controller/social_accounts_controller.dart';
+import 'package:shramsansar/features/profile/presentation/controller/profile_controller.dart';
 
 class AddSocialMedia extends ConsumerStatefulWidget {
   final SocialAccountsModel socialAccountsModel;
@@ -73,7 +74,12 @@ class _AddSocialMediaState extends ConsumerState<AddSocialMedia> {
                     .addSocialAccounts(model)
                     .then((value) {
                   if (value) {
-                    Navigator.of(context).pop();
+                    ref
+                        .read(profileControllerProvider.notifier)
+                        .getMyProfile()
+                        .then((value) {
+                      Navigator.of(context).pop();
+                    });
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(

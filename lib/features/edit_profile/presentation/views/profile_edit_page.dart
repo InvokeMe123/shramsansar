@@ -9,6 +9,7 @@ import 'package:shramsansar/features/edit_profile/data/models/education_model/ed
 import 'package:shramsansar/features/edit_profile/presentation/controller/education_controller/educationAddController.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/education_controller/education_controller.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/add_education.dart';
+import 'package:shramsansar/features/edit_profile/presentation/views/widgets/add_experience.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/edit_education.dart';
 import 'package:shramsansar/features/profile/data/model/profile_model.dart';
 import 'package:shramsansar/features/profile/presentation/controller/profile_controller.dart';
@@ -369,7 +370,13 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                             ),
                             const Spacer(),
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (_) {
+                                      return AddExperience();
+                                    });
+                              },
                               child: const Icon(
                                 Icons.add,
                                 color: Colors.white,

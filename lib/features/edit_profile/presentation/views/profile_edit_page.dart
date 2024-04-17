@@ -9,6 +9,7 @@ import 'package:shramsansar/features/edit_profile/data/models/education_model/ed
 import 'package:shramsansar/features/edit_profile/presentation/controller/education_controller/educationAddController.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/education_controller/education_controller.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/add_education.dart';
+import 'package:shramsansar/features/edit_profile/presentation/views/widgets/add_social_media.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/edit_education.dart';
 import 'package:shramsansar/features/profile/data/model/profile_model.dart';
 import 'package:shramsansar/features/profile/presentation/controller/profile_controller.dart';
@@ -626,28 +627,16 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                             ),
                             const Spacer(),
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (_) => AddSocialMedia());
+                              },
                               child: const Icon(
                                 Icons.add,
                                 color: Colors.white,
                               ),
                             ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            GestureDetector(
-                              onTap: () {},
-                              child: const Icon(Icons.delete_outline,
-                                  color: Colors.white),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            GestureDetector(
-                              onTap: () {},
-                              child:
-                                  const Icon(Icons.edit, color: Colors.white),
-                            )
                           ],
                         ),
                       ),

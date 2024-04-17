@@ -6,10 +6,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shramsansar/const/app_color_const.dart';
 import 'package:shramsansar/features/edit_profile/data/models/education_model/education_model_req.dart';
+import 'package:shramsansar/features/edit_profile/data/models/social_accounts_model/social_accounts_model.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/education_controller/educationAddController.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/education_controller/education_controller.dart';
+import 'package:shramsansar/features/edit_profile/presentation/controller/social_accounts_controller/social_accounts_controller.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/add_education.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/add_experience.dart';
+import 'package:shramsansar/features/edit_profile/presentation/views/widgets/add_social_media.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/edit_education.dart';
 import 'package:shramsansar/features/profile/data/model/profile_model.dart';
 import 'package:shramsansar/features/profile/presentation/controller/profile_controller.dart';
@@ -37,10 +40,14 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
   // List of education levels
   List<String> educationLevels = [];
 
+  // for storing social accounts
+  SocialAccountsModel socialAccountsModel = SocialAccountsModel.empty();
+
   @override
   Widget build(BuildContext context) {
     var profileProvider = ref.watch(profileControllerProvider);
 
+    // adding education levels
     ref.watch(educationControllerProvider).when(
         data: (data) {
           for (var model in data.data!) {
@@ -50,9 +57,14 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
         error: (_, __) {},
         loading: () {});
 
-    var education = ref.watch(educationAddControllerProvider.notifier);
+    // adding social accounts data
+    ref.watch(socialAccountsControllerProvider).when(
+        data: (data) {
+          socialAccountsModel = data;
+        },
+        error: (_, __) {},
+        loading: () {});
 
-    // ref.refresh(aboutMeUpdateControllerProvider);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColorConst.BUTTON_BLUE_COLOR,
@@ -633,28 +645,19 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                             ),
                             const Spacer(),
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (_) => AddSocialMedia(
+                                          socialAccountsModel:
+                                              socialAccountsModel,
+                                        ));
+                              },
                               child: const Icon(
                                 Icons.add,
                                 color: Colors.white,
                               ),
                             ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            GestureDetector(
-                              onTap: () {},
-                              child: const Icon(Icons.delete_outline,
-                                  color: Colors.white),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            GestureDetector(
-                              onTap: () {},
-                              child:
-                                  const Icon(Icons.edit, color: Colors.white),
-                            )
                           ],
                         ),
                       ),

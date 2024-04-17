@@ -14,6 +14,7 @@ import 'package:shramsansar/features/edit_profile/presentation/views/widgets/add
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/add_experience.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/add_social_media.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/edit_education.dart';
+import 'package:shramsansar/features/edit_profile/presentation/views/widgets/language_related/add_language.dart';
 import 'package:shramsansar/features/profile/data/model/profile_model.dart';
 import 'package:shramsansar/features/profile/presentation/controller/profile_controller.dart';
 import 'package:shramsansar/utils/snackbar/custome_snack_bar.dart';
@@ -603,7 +604,11 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                             ),
                             const Spacer(),
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (_) => const AddLanguage());
+                              },
                               child: const Icon(
                                 Icons.add,
                                 color: Colors.white,

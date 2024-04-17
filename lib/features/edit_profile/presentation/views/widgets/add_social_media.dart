@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shramsansar/features/edit_profile/data/models/social_accounts_model/social_accounts_model.dart';
 
 class AddSocialMedia extends ConsumerStatefulWidget {
-  const AddSocialMedia({super.key});
+  final SocialAccountsModel socialAccountsModel;
+  const AddSocialMedia({super.key, required this.socialAccountsModel});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _AddSocialMediaState();
 }
 
 class _AddSocialMediaState extends ConsumerState<AddSocialMedia> {
-  final List<TextEditingController> _controllers = [
-    TextEditingController(),
-    TextEditingController(),
-    TextEditingController(),
-  ];
+  List<TextEditingController> _controllers = [];
 
-  final List<String> _socialMedia = ['Facebook', 'Twitter', 'Linkedin'];
+  @override
+  void initState() {
+    super.initState();
+    _controllers = widget.socialAccountsModel.accounts
+        .map((e) => TextEditingController())
+        .toList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +31,8 @@ class _AddSocialMediaState extends ConsumerState<AddSocialMedia> {
             TextFormField(
               controller: _controllers[a],
               decoration: InputDecoration(
-                labelText: _socialMedia[a],
+                labelText:
+                    widget.socialAccountsModel.accounts[a].name.toString(),
               ),
             ),
 

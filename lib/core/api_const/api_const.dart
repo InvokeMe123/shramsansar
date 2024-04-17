@@ -1,6 +1,6 @@
 class ApiConst {
   // static String BASE_URL = 'http://103.175.192.138/api/';
-  static String BASE_URL = 'http://shramsansar.palikaijalash.com/api/';
+  // static String BASE_URL = 'http://shramsansar.palikaijalash.com/api/';
   static String IMAGE_URL = 'https://shramsansar.koshi.gov.np/';
   static String URL = 'https://shramsansar.koshi.gov.np/api/';
   // static String latestJoburl = "http://139.59.21.174/api/latest/trainings";

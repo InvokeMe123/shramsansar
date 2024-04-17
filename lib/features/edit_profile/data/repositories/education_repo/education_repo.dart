@@ -7,7 +7,7 @@ import 'package:shramsansar/core/app_error/app_error.dart';
 import 'package:shramsansar/features/edit_profile/data/data_source/education_data_source/education_drop_data_source.dart';
 import 'package:shramsansar/features/edit_profile/data/models/education_model/education_model.dart';
 import 'package:shramsansar/features/edit_profile/data/models/education_model/education_model_req.dart';
-import 'package:shramsansar/features/edit_profile/data/models/education_model/education_model_res.dart';
+import 'package:shramsansar/features/edit_profile/data/models/education_model/education_res_model.dart';
 
 abstract class EducationRepo {
   Future<Either<AppError, EducationModel>> educationDropRepo();

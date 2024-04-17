@@ -1,12 +1,16 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
+
 class RegisterRequestModel {
   String name;
   String email;
   String password;
   String password_confirmation;
   String gender;
+  FormData document;
+  int documentType;
   int per_pradesh_id;
   int per_district_id;
   int per_muni_id;
@@ -36,6 +40,8 @@ class RegisterRequestModel {
     required this.mobile,
     required this.preferredJobCateogryId,
     required this.casteId,
+    required this.document,
+    required this.documentType,
   });
 
   RegisterRequestModel copyWith({
@@ -55,6 +61,8 @@ class RegisterRequestModel {
     int? mobile,
     int? preferredJobCateogryId,
     int? casteId,
+    FormData? document,
+    int? documentType,
   }) {
     return RegisterRequestModel(
       name: name ?? this.name,
@@ -75,6 +83,8 @@ class RegisterRequestModel {
       preferredJobCateogryId:
           preferredJobCateogryId ?? this.preferredJobCateogryId,
       casteId: casteId ?? this.casteId,
+      document: document ?? this.document,
+      documentType: documentType ?? this.documentType,
     );
   }
 
@@ -96,6 +106,8 @@ class RegisterRequestModel {
       'mobile': mobile,
       'preference_job_cat[0]': preferredJobCateogryId,
       'ethnicity_type': casteId,
+      'document_type_file': document,
+      'document_type': documentType,
     };
   }
 
@@ -117,6 +129,8 @@ class RegisterRequestModel {
       mobile: map['mobile'] as int,
       preferredJobCateogryId: map['preference_job_cat[0]'] as int,
       casteId: map["caste"] as int,
+      document: map["document_type_file"] as FormData,
+      documentType: map["document_type"] as int,
     );
   }
 

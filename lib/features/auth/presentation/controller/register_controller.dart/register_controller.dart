@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shramsansar/dashboard.dart';
@@ -24,6 +25,21 @@ class RegisterController extends StateNotifier<AsyncValue<LoginResponseModel>> {
       state = AsyncValue.data(r);
 
       log("RegisterSuccess: ${r.toJson()}");
+      if (context.mounted) {
+        pushAndRemoveUntil(context, const Dashboard());
+      }
+    });
+  }
+
+  registerWithFormData(
+      {required FormData formData, required BuildContext context}) async {
+    final result = await _authRepo.registerWithFormData(formData);
+    result.fold((l) {
+      showCustomSnackBar(l.message, context);
+      state = AsyncValue.error(l, StackTrace.fromString(l.message));
+    }, (r) {
+      state = AsyncValue.data(r);
+
       if (context.mounted) {
         pushAndRemoveUntil(context, const Dashboard());
       }

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -11,6 +12,9 @@ import 'package:shramsansar/features/auth/presentation/views/register/widgets/na
 import 'package:shramsansar/features/caste/presentation/controller/caste_controller.dart';
 import 'package:shramsansar/features/gender/presentation/controller/gender_controller.dart';
 import 'package:shramsansar/features/getDistricts/presentation/controller/district_controller.dart';
+import 'package:shramsansar/features/getDocumentType/data/data_source/document_type_data_source.dart';
+import 'package:shramsansar/features/getDocumentType/data/models/document_type_model.dart';
+import 'package:shramsansar/features/getDocumentType/presentation/controller/document_type_controller.dart';
 import 'package:shramsansar/features/getMunicipalities/presentation/controller/municipality_controller.dart';
 import 'package:shramsansar/features/getPradesh/presentation/controller/pradesh_controller.dart';
 import 'package:shramsansar/features/getWardnumber/presentation/controller/ward_controller.dart';
@@ -34,6 +38,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
   String? selectedCaste;
   int selectedCasteId = 0;
+
+  int selectedDocumentTypeID = -1;
 
   //permanent address
   String? selectedPradesh;
@@ -75,6 +81,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   ];
 
   final _formKey = GlobalKey<FormState>();
+
+  String imagePath = "";
+  FormData formData = FormData();
+
+  final otherSkillsController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -121,6 +132,12 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           height: 2.1.h,
                         ),
                         jobCategoryDropDown(context),
+
+                        TextField(
+                          controller: otherSkillsController,
+                          decoration: InputDecoration(hintText: 'Other Skills'),
+                        ),
+
                         SizedBox(
                           height: 2.1.h,
                         ),
@@ -130,10 +147,22 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         ),
 
                         // National ID card
-                        const NationalIdCardButton(),
+                        NationalIdCardButton(
+                          imagePath: (path) {
+                            imagePath = path;
+
+                            formData.files.add(MapEntry(
+                                "document_type_file",
+                                MultipartFile.fromFileSync(
+                                  path,
+                                  filename: path.split('/').last,
+                                )));
+                          },
+                        ),
 
                         SizedBox(height: 2.1.h),
 
+                        documentTypeDropDown(context),
                         const Text(
                           'Permanent address Details *',
                           style: TextStyle(color: Colors.black, fontSize: 20),
@@ -233,35 +262,44 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                   .validate(); // validate the form
 
                               if (isRequiredFieldValid) {
-                                final RegisterRequestModel
-                                    registerRequestModel = RegisterRequestModel(
-                                  name: requiredTextField[0]['controller'].text,
-                                  email:
+                                // register request model write in map
+                                final formData = FormData.fromMap({
+                                  "name":
+                                      requiredTextField[0]['controller'].text,
+                                  "email":
                                       requiredTextField[1]['controller'].text,
-                                  password:
+                                  "password":
                                       requiredTextField[2]['controller'].text,
-                                  password_confirmation:
+                                  "password_confirmation":
                                       requiredTextField[3]['controller'].text,
-                                  gender: selectedGenderId.toString(),
-                                  per_pradesh_id: selectedPradeshId,
-                                  per_district_id: selectedDistrictId,
-                                  per_muni_id: selectedMunicipalityId,
-                                  per_ward: selectedWardId,
-                                  pradesh_id: tselectedPradeshId,
-                                  district_id: tSelectedDistrictId,
-                                  muni_id: tselectedMunicipalityId,
-                                  ward: tselectedWardId,
-                                  mobile: int.parse(
+                                  "per_pradesh_id": selectedPradeshId,
+                                  "per_district_id": selectedDistrictId,
+                                  "per_muni_id": selectedMunicipalityId,
+                                  "per_ward": selectedWardId,
+                                  "pradesh_id": tselectedPradeshId,
+                                  "district_id": tSelectedDistrictId,
+                                  "muni_id": tselectedMunicipalityId,
+                                  "ward": tselectedWardId,
+                                  "mobile": int.parse(
                                       requiredTextField[4]['controller'].text),
-                                  casteId: selectedCasteId,
-                                  preferredJobCateogryId: selectedJobCategoryId,
-                                );
+                                  "preference_job_cat[0]":
+                                      selectedJobCategoryId,
+                                  "preference_job_cat[1]": "2",
+                                  "preference_job_cat[2]": "3",
+                                  "document_type": selectedDocumentTypeID,
+                                  "document_type_file": imagePath.isEmpty
+                                      ? ""
+                                      : MultipartFile.fromFileSync(imagePath,
+                                          filename: imagePath.split('/').last),
+                                  "gender": selectedGenderId,
+                                  "other_skills": otherSkillsController.text,
+                                  "ethnicity_type": selectedCasteId,
+                                });
+
                                 ref
                                     .read(registerControllerProvider.notifier)
-                                    .register(
-                                        registerRequestModel:
-                                            registerRequestModel,
-                                        context: context);
+                                    .registerWithFormData(
+                                        formData: formData, context: context);
                               }
                             },
                             child: Container(
@@ -802,6 +840,33 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             error: (error, stack) => Text(error.toString()),
             loading: () => const Center(child: CircularProgressIndicator()),
           );
+        },
+      ),
+    );
+  }
+
+  documentTypeDropDown(BuildContext context) {
+    List<Data> documentTypes = [];
+    ref.read(documentTypeControllerProvider).when(
+        data: (data) {
+          documentTypes = data.data!;
+        },
+        error: (error, stackTrace) {},
+        loading: () => SizedBox());
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: DropdownButtonFormField<String>(
+        hint: const Text('Document Type'),
+        items: documentTypes.map((doc) {
+          return DropdownMenuItem<String>(
+            value: doc.name,
+            child: Text(doc.name.toString()),
+          );
+        }).toList(),
+        onChanged: (String? value) {
+          selectedDocumentTypeID =
+              documentTypes.firstWhere((element) => element.name == value).id!;
         },
       ),
     );

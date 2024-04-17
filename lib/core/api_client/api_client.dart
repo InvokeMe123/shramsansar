@@ -39,7 +39,7 @@ class ApiClient {
       required FormData formData}) async {
     final String dbResult =
         token.isEmpty ? await dbClient.getData(dbKey: "token") : token;
-    final Dio dio = Dio(BaseOptions(baseUrl: ApiConst.BASE_URL, headers: {
+    final Dio dio = Dio(BaseOptions(baseUrl: ApiConst.URL, headers: {
       'Content-type': 'application/json',
       'Authorization': "Bearer $dbResult",
       'Accept': 'application/json'

@@ -3,8 +3,16 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-class NationalIdCardButton extends StatelessWidget {
-  const NationalIdCardButton({super.key});
+class NationalIdCardButton extends StatefulWidget {
+  final ValueChanged<String> imagePath;
+  const NationalIdCardButton({super.key, required this.imagePath});
+
+  @override
+  State<NationalIdCardButton> createState() => _NationalIdCardButtonState();
+}
+
+class _NationalIdCardButtonState extends State<NationalIdCardButton> {
+  String text = "National ID Card";
 
   @override
   Widget build(BuildContext context) {
@@ -16,14 +24,21 @@ class NationalIdCardButton extends StatelessWidget {
           log("National ID Card clicked");
           final ImagePicker picker = ImagePicker();
           final file = await picker.pickImage(source: ImageSource.gallery);
-          debugPrint(file!.path);
+          debugPrint(file?.path ?? '');
+
+          if (file?.path != null) {
+            widget.imagePath(file!.path);
+            setState(() {
+              text = file.path.split('/').last;
+            });
+          }
         },
         style: TextButton.styleFrom(
           backgroundColor: Colors.grey,
           foregroundColor: Colors.white,
           textStyle: const TextStyle(fontSize: 16),
         ),
-        child: const Text("National ID Card"),
+        child: Text(text),
       ),
     );
   }

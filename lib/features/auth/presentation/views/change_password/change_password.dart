@@ -121,15 +121,15 @@ class _ChangePasswordState extends ConsumerState<ChangePassword> {
                         passwordConfirmation: passwordConfirmation);
                 update
                     .changePassword(changePasswordReqModel, context)
-                    .then((success) {
-                  if (success) {
+                    .then((result) {
+                  if (result.contains('change')) {
                     currentPassword.clear();
                     newPassword1.clear();
                     confirmPassword.clear();
                     showCustomSnackBar('Password Sucessfully updated', context,
                         isError: false);
                   } else {
-                    showCustomSnackBar('Sorry error occurred', context,
+                    showCustomSnackBar(result, context,
                         isError: true);
                   }
                 });

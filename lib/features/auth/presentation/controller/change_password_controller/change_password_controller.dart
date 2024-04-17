@@ -10,17 +10,18 @@ class ChangePasswordController
   final AuthRepo authRepo;
   ChangePasswordController(this.authRepo) : super(const AsyncValue.loading());
 
-  Future<bool> changePassword(ChangePasswordReqModel changePasswordReqModel,
+  Future<String> changePassword(ChangePasswordReqModel changePasswordReqModel,
       BuildContext context) async {
-    bool flag = false;
+    String flag = "";
     final result = await authRepo.changePasswordRepo(changePasswordReqModel);
     result.fold((l) {
-      showCustomSnackBar(l.message, context);
+      
       state = AsyncValue.error(l, StackTrace.fromString(l.message));
+      flag =l.message;
     }, (r) {
       state = AsyncValue.data(r);
 
-      flag = true; 
+      flag = r.message!;
     });
     return flag;
   }

@@ -31,6 +31,19 @@ class SocialAccountsController
 
     return flag;
   }
+
+  Future<bool> deleteSocialAccount(int id) async {
+    final result = await socialAccountsRepo.deleteSocialAccount(id);
+    bool flag = false;
+
+    result.fold((l) {
+      state = AsyncValue.error(l.message, StackTrace.fromString(l.message));
+    }, (r) {
+      flag = true;
+    });
+
+    return flag;
+  }
 }
 
 final socialAccountsControllerProvider = StateNotifierProvider<

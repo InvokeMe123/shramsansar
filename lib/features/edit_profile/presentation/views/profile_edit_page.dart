@@ -668,13 +668,40 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                           shrinkWrap: true,
                           itemCount: myProfileModel.socialAccounts!.length,
                           itemBuilder: (context, index) {
-                            return Column(
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
                                   '${myProfileModel.socialAccounts![index].name}:${myProfileModel.socialAccounts![index].url}',
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold),
-                                )
+                                ),
+                                IconButton(
+                                    onPressed: () {
+                                      ref
+                                          .read(socialAccountsControllerProvider
+                                              .notifier)
+                                          .deleteSocialAccount(myProfileModel
+                                              .socialAccounts![index].id!)
+                                          .then((value) {
+                                        if (value) {
+                                          ref
+                                              .read(profileControllerProvider
+                                                  .notifier)
+                                              .getMyProfile()
+                                              .then((value) {
+                                            showCustomSnackBar(
+                                                'Successfully Deleted', context,
+                                                isError: false);
+                                          });
+                                        } else {
+                                          showCustomSnackBar(
+                                              'Failed to delete', context,
+                                              isError: true);
+                                        }
+                                      });
+                                    },
+                                    icon: const Icon(Icons.delete_outline))
                               ],
                             );
                           }),

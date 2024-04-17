@@ -455,10 +455,10 @@ class Experiences {
   String? title;
   int? isCurrentlyWorking;
   String? startDate;
-  Null? endDate;
+  String? endDate;
   String? referenceName;
   String? referenceContact;
-  Null? file;
+  String? file;
 
   Experiences(
       {this.id,

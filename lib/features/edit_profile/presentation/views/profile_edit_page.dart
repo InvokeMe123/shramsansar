@@ -633,6 +633,63 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                           ],
                         ),
                       ),
+                      ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: myProfileModel.languages!.length,
+                          itemBuilder: (context, index) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  myProfileModel.languages![index].languageName
+                                      .toString(),
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  myProfileModel
+                                      .languages![index].languageRatingListening
+                                      .toString(),
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                                Text(
+                                  myProfileModel
+                                      .languages![index].languageRatingReading
+                                      .toString(),
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                                Text(
+                                  myProfileModel
+                                      .languages![index].languageRatingSpeaking
+                                      .toString(),
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                                Text(
+                                  myProfileModel
+                                      .languages![index].languageRatingWriting
+                                      .toString(),
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                              ],
+                            );
+                          }),
                       const SizedBox(
                         height: 10,
                       ),

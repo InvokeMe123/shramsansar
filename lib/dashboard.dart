@@ -18,12 +18,14 @@ import 'package:shramsansar/features/auth/presentation/views/login/loginScreen.d
 import 'package:shramsansar/features/edit_profile/presentation/views/profile_edit_page.dart';
 
 import 'package:shramsansar/features/latest_training/presentation/views/latest_training.dart';
+import 'package:shramsansar/features/news_and_notices/presentation/views/news_notice.dart';
 import 'package:shramsansar/features/profile/presentation/controller/profile_controller.dart';
 
 import 'package:shramsansar/features/profile/presentation/views/profile_page.dart';
 import 'package:shramsansar/features/trainings/presentation/views/training_page.dart';
 import 'package:shramsansar/features/training_center/presentation/views/training_center.dart';
 import 'package:shramsansar/utils/navigation/nav_app.dart';
+import 'package:shramsansar/utils/shimmer/shimmer.dart';
 
 class Dashboard extends ConsumerStatefulWidget {
   const Dashboard({super.key});
@@ -211,115 +213,127 @@ class _DashboardState extends ConsumerState<Dashboard> {
                   ))
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: SingleChildScrollView(
+        child: SizedBox(
+          height: MediaQuery.sizeOf(context).height,
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                GestureDetector(
-                  onTap: () {
-                    // normalNav(context, AllJobs());
-                    normalNav(context, AllJobs());
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 0),
-                    child: Container(
-                        height: 18.h,
-                        width: 21.w,
-                        decoration:
-                            BoxDecoration(color: AppColorConst.PRAYMERY_COLOR),
-                        child: const Center(child: Text('Jobs'))),
-                  ),
+                Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        // normalNav(context, AllJobs());
+                        normalNav(context, AllJobs());
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 0),
+                        child: Container(
+                            height: 18.h,
+                            width: 22.w,
+                            decoration: BoxDecoration(
+                                color: AppColorConst.PRAYMERY_COLOR),
+                            child: const Center(child: Text('Jobs'))),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        normalNav(context, TrainingPage());
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 7.0),
+                        child: Container(
+                            height: 18.h,
+                            width: 22.w,
+                            decoration: BoxDecoration(
+                                color: AppColorConst.PRAYMERY_COLOR),
+                            child: const Center(child: Text('Training'))),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 7.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          normalNav(context, const NewsNotice());
+                        },
+                        child: Container(
+                            height: 18.h,
+                            width: 22.w,
+                            decoration: BoxDecoration(
+                                color: AppColorConst.PRAYMERY_COLOR),
+                            child:
+                                const Center(child: Text('Notice and\nNews'))),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () => normalNav(context, const TrainingCenters()),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 7.0),
+                        child: Container(
+                            height: 18.h,
+                            width: 22.w,
+                            decoration: BoxDecoration(
+                                color: AppColorConst.PRAYMERY_COLOR),
+                            child:
+                                const Center(child: Text('Training\nCenters'))),
+                      ),
+                    ),
+                  ],
                 ),
-                GestureDetector(
-                  onTap: () {
-                    normalNav(context, TrainingPage());
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 7.0),
-                    child: Container(
-                        height: 18.h,
-                        width: 21.w,
-                        decoration:
-                            BoxDecoration(color: AppColorConst.PRAYMERY_COLOR),
-                        child: const Center(child: Text('Training'))),
-                  ),
+                const SizedBox(
+                  height: 10,
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 7.0),
-                  child: Container(
-                      height: 18.h,
-                      width: 21.w,
-                      decoration:
-                          BoxDecoration(color: AppColorConst.PRAYMERY_COLOR),
-                      child: const Center(child: Text('Notice and\nNews'))),
+                const Text('Latest Jobs',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black)),
+                const Divider(color: Colors.black),
+                Expanded(
+                  child: latestJobs.when(
+                      data: (data) {
+                        return ListView.builder(
+                            itemCount: data.data!.length,
+                            itemBuilder: (context, index) {
+                              return LatestJobCard(data: data.data![index]);
+                            });
+                      },
+                      error: (_, __) {
+                        return Text("he");
+                      },
+                      loading: () => ShimmerSkeleton(
+                            count: 3,
+                          )),
                 ),
-                GestureDetector(
-                  onTap: () => normalNav(context, const TrainingCenters()),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 7.0),
-                    child: Container(
-                        height: 18.h,
-                        width: 21.w,
-                        decoration:
-                            BoxDecoration(color: AppColorConst.PRAYMERY_COLOR),
-                        child: const Center(child: Text('Training\nCenters'))),
-                  ),
+                Row(
+                  children: [
+                    const Spacer(),
+                    TextButton(
+                        onPressed: () {
+                          normalNav(context, AllJobs());
+                        },
+                        child: Text('See All Jobs ',
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black)))
+                  ],
+                ),
+                const Text("Latest Training",
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black)),
+                const Divider(color: Colors.black),
+                const LatestTraining(),
+                const SizedBox(
+                  height: 10,
                 ),
               ],
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            const Text("Latest Training",
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black)),
-            const Divider(color: Colors.black),
-            const LatestTraining(),
-            const SizedBox(
-              height: 10,
-            ),
-            const Text('Latest Jobs',
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black)),
-            const Divider(color: Colors.black),
-            Expanded(
-              child: latestJobs.when(
-                  data: (data) {
-                    return ListView.builder(
-                        itemCount: data.data!.length,
-                        itemBuilder: (context, index) {
-                          return LatestJobCard(data: data.data![index]);
-                        });
-                  },
-                  error: (_, __) {
-                    return Text("he");
-                  },
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator())),
-            ),
-            Row(
-              children: [
-                Spacer(),
-                TextButton(
-                    onPressed: () {
-                      normalNav(context, AllJobs());
-                    },
-                    child: Text('See All Jobs ',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black)))
-              ],
-            )
-          ],
+          ),
         ),
       ),
     );

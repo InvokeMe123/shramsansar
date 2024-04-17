@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shramsansar/const/app_color_const.dart';
 import 'package:shramsansar/features/edit_profile/data/models/education_model/education_model_req.dart';
+import 'package:shramsansar/features/edit_profile/data/models/language_model/language_model.dart';
 import 'package:shramsansar/features/edit_profile/data/models/social_accounts_model/social_accounts_model.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/education_controller/educationAddController.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/education_controller/education_controller.dart';
@@ -16,6 +17,7 @@ import 'package:shramsansar/features/edit_profile/presentation/views/widgets/add
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/add_social_media.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/edit_education.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/language_related/add_language.dart';
+import 'package:shramsansar/features/edit_profile/presentation/views/widgets/language_related/edit_language.dart';
 import 'package:shramsansar/features/profile/data/model/profile_model.dart';
 import 'package:shramsansar/features/profile/presentation/controller/profile_controller.dart';
 import 'package:shramsansar/utils/snackbar/custome_snack_bar.dart';
@@ -636,6 +638,19 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (_) => EditLanguage(
+                                          languageModel: LanguageModel.fromMap(
+                                              myProfileModel.languages![index]
+                                                  .toJson())),
+                                    );
+                                  },
+                                  child: const Icon(Icons.edit,
+                                      color: Colors.black),
+                                ),
                                 GestureDetector(
                                   onTap: () {
                                     ref

@@ -6,6 +6,7 @@ import 'package:shramsansar/features/edit_profile/data/models/language_model/lan
 abstract class LanguageDataSource {
   Future<void> addLanguage(LanguageModel language);
   Future<void> deleteLanguage(int id);
+  Future<void> updateLanguage(LanguageModel language);
 }
 
 class LanguageDataSourceImpl implements LanguageDataSource {
@@ -23,6 +24,14 @@ class LanguageDataSourceImpl implements LanguageDataSource {
   Future<void> deleteLanguage(int id) async {
     await apiClient.request(
         path: "${ApiConst.DELETE_LAMGUAGE}$id", type: 'get');
+  }
+
+  @override
+  Future<void> updateLanguage(LanguageModel language) async {
+    await apiClient.request(
+        path: "${ApiConst.UPDATE_LAMGUAGE}${language.id}",
+        type: 'post',
+        data: language.toMap());
   }
 }
 

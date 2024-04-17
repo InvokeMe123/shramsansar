@@ -21,6 +21,14 @@ class LanguageController extends StateNotifier<AsyncValue<LanguageModel>> {
 
     return flag;
   }
+
+  Future<bool> updateLanguage(LanguageModel language) async {
+    final result = await languageRepo.updateLanguage(language);
+    bool flag = false;
+    result.fold((l) {}, (r) => flag = true);
+
+    return flag;
+  }
 }
 
 final languageControllerProvider =

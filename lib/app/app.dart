@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:shramsansar/const/app_color_const.dart';
 import 'package:shramsansar/core/dbclient.dart';
 import 'package:shramsansar/dashboard.dart';
 import 'package:shramsansar/features/auth/presentation/controller/auth_controller.dart';
@@ -13,7 +14,12 @@ class ShramsansarApp extends ConsumerWidget {
     return ResponsiveSizer(builder: (context, orientation, screentype) {
       return MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(),
+        theme: ThemeData(
+          appBarTheme: AppBarTheme(
+            backgroundColor: AppColorConst.PRAYMARY_TEXT_COLOR,
+            foregroundColor: AppColorConst.PRAYMERY_COLOR,
+          ),
+        ),
         home: ref.watch(authControllerProvider).when(
             loggedIn: (data) {
               return const Dashboard();

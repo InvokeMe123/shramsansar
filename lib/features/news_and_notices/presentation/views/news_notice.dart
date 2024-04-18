@@ -46,10 +46,8 @@ class _NewsNoticeState extends ConsumerState<NewsNotice> {
     var newsnotice = ref.watch(newsnoticeControllerProvider(1));
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColorConst.BUTTON_BLUE_COLOR,
         title: Text(
           'News and Notice',
-          style: TextStyle(color: Colors.white),
         ),
       ),
       body: SafeArea(

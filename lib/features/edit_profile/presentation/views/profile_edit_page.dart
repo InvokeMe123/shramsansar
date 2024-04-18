@@ -71,12 +71,7 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColorConst.BUTTON_BLUE_COLOR,
-        title: const Center(
-            child: Text(
-          'Profile Edit Page',
-          style: TextStyle(color: Colors.white),
-        )),
+        title: const Center(child: Text('Profile Edit Page')),
       ),
       body: SingleChildScrollView(
         child: Column(

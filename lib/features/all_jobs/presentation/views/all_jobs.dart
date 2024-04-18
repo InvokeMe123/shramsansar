@@ -360,8 +360,10 @@ class _AllJobsState extends ConsumerState<AllJobs> {
         ),
         child: Consumer(
           builder: (context, watch, child) {
+            late MunicipalityModel model;
             getMuni.when(
                 data: (data) {
+                  model = data;
                   for (var model in data.data) {
                     if (model.district_id == selectedDistrictId) {
                       muni.add(model.name);
@@ -391,8 +393,12 @@ class _AllJobsState extends ConsumerState<AllJobs> {
                   onChanged: (value) {
                     setState(() {
                       selectedMunicipality = value;
-                      selectedMunicipalityId =
-                          muni.indexOf(selectedMunicipality!) + 1;
+
+                      for (var element in model.data) {
+                        if (element.name == selectedMunicipality) {
+                          selectedMunicipalityId = element.muni_id;
+                        }
+                      }
                     });
                   }),
             );
@@ -429,6 +435,12 @@ class _AllJobsState extends ConsumerState<AllJobs> {
                     setState(() {
                       selectedJobCategory = value;
                     });
+
+                    for (var element in data.data) {
+                      if (element.name == selectedJobCategory) {
+                        selectedJobCategoryId = element.id;
+                      }
+                    }
                   },
                   value: selectedJobCategory,
                   items: jobCate.map((name) {

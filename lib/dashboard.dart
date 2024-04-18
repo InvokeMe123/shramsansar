@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shramsansar/commons/latest_job_card.dart';
+import 'package:shramsansar/commons/training_card.dart';
 import 'package:shramsansar/const/app_color_const.dart';
 import 'package:shramsansar/core/dbclient.dart';
 import 'package:shramsansar/features/all_jobs/presentation/controller/latest_job_controller.dart';
@@ -16,6 +17,7 @@ import 'package:shramsansar/features/auth/presentation/views/change_password/cha
 import 'package:shramsansar/features/auth/presentation/views/login/loginScreen.dart';
 
 import 'package:shramsansar/features/edit_profile/presentation/views/profile_edit_page.dart';
+import 'package:shramsansar/features/latest_training/presentation/controller/latest_training_controller.dart';
 
 import 'package:shramsansar/features/latest_training/presentation/views/latest_training.dart';
 import 'package:shramsansar/features/news_and_notices/presentation/views/news_notice.dart';
@@ -61,7 +63,9 @@ class _DashboardState extends ConsumerState<Dashboard> {
   @override
   Widget build(BuildContext context) {
     final latestJobs = ref.watch(latestJobControllerProvider);
+    final latestTraining = ref.watch(latestTrainingControllerProvider);
     final profile = ref.watch(profileControllerProvider);
+
     return Scaffold(
       drawer: Drawer(
         child: Column(
@@ -213,128 +217,134 @@ class _DashboardState extends ConsumerState<Dashboard> {
                   ))
         ],
       ),
-      body: SingleChildScrollView(
-        child: SizedBox(
-          height: MediaQuery.sizeOf(context).height,
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+      body: ListView(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  // normalNav(context, AllJobs());
+                  normalNav(context, AllJobs());
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 0),
+                  child: Container(
+                      height: 18.h,
+                      width: 22.w,
+                      decoration:
+                          BoxDecoration(color: AppColorConst.PRAYMERY_COLOR),
+                      child: const Center(child: Text('Jobs'))),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  normalNav(context, TrainingPage());
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 7.0),
+                  child: Container(
+                      height: 18.h,
+                      width: 22.w,
+                      decoration:
+                          BoxDecoration(color: AppColorConst.PRAYMERY_COLOR),
+                      child: const Center(child: Text('Training'))),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 7.0),
+                child: GestureDetector(
+                  onTap: () {
+                    normalNav(context, const NewsNotice());
+                  },
+                  child: Container(
+                      height: 18.h,
+                      width: 22.w,
+                      decoration:
+                          BoxDecoration(color: AppColorConst.PRAYMERY_COLOR),
+                      child: const Center(child: Text('Notice and\nNews'))),
+                ),
+              ),
+              GestureDetector(
+                onTap: () => normalNav(context, const TrainingCenters()),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 7.0),
+                  child: Container(
+                      height: 18.h,
+                      width: 22.w,
+                      decoration:
+                          BoxDecoration(color: AppColorConst.PRAYMERY_COLOR),
+                      child: const Center(child: Text('Training\nCenters'))),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 2.w),
+            child: Column(children: [
+              const Text('Latest Jobs',
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black)),
+              const Divider(color: Colors.black),
+              latestJobs.when(data: (data) {
+                return Column(
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        // normalNav(context, AllJobs());
+                    for (int a = 0; a < 10; a++)
+                      LatestJobCard(data: data.data![a]),
+                  ],
+                );
+              }, error: (_, __) {
+                return Text('error');
+              }, loading: () {
+                return const ShimmerSkeleton(
+                  count: 3,
+                );
+              }),
+              Row(
+                children: [
+                  const Spacer(),
+                  TextButton(
+                      onPressed: () {
                         normalNav(context, AllJobs());
                       },
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 0),
-                        child: Container(
-                            height: 18.h,
-                            width: 22.w,
-                            decoration: BoxDecoration(
-                                color: AppColorConst.PRAYMERY_COLOR),
-                            child: const Center(child: Text('Jobs'))),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        normalNav(context, TrainingPage());
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 7.0),
-                        child: Container(
-                            height: 18.h,
-                            width: 22.w,
-                            decoration: BoxDecoration(
-                                color: AppColorConst.PRAYMERY_COLOR),
-                            child: const Center(child: Text('Training'))),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 7.0),
-                      child: GestureDetector(
-                        onTap: () {
-                          normalNav(context, const NewsNotice());
-                        },
-                        child: Container(
-                            height: 18.h,
-                            width: 22.w,
-                            decoration: BoxDecoration(
-                                color: AppColorConst.PRAYMERY_COLOR),
-                            child:
-                                const Center(child: Text('Notice and\nNews'))),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () => normalNav(context, const TrainingCenters()),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 7.0),
-                        child: Container(
-                            height: 18.h,
-                            width: 22.w,
-                            decoration: BoxDecoration(
-                                color: AppColorConst.PRAYMERY_COLOR),
-                            child:
-                                const Center(child: Text('Training\nCenters'))),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const Text('Latest Jobs',
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black)),
-                const Divider(color: Colors.black),
-                Expanded(
-                  child: latestJobs.when(
-                      data: (data) {
-                        return ListView.builder(
-                            itemCount: data.data!.length,
-                            itemBuilder: (context, index) {
-                              return LatestJobCard(data: data.data![index]);
-                            });
-                      },
-                      error: (_, __) {
-                        return Text("he");
-                      },
-                      loading: () => ShimmerSkeleton(
-                            count: 3,
-                          )),
-                ),
-                Row(
+                      child: Text('See All Jobs ',
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black)))
+                ],
+              ),
+              const Text("Latest Training",
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black)),
+              const Divider(color: Colors.black),
+              latestTraining.when(data: (data) {
+                return Column(
                   children: [
-                    const Spacer(),
-                    TextButton(
-                        onPressed: () {
-                          normalNav(context, AllJobs());
-                        },
-                        child: Text('See All Jobs ',
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black)))
+                    for (int a = 0; a < 10; a++)
+                      TrainingCard(model: data.data![a]),
                   ],
-                ),
-                const Text("Latest Training",
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black)),
-                const Divider(color: Colors.black),
-                const LatestTraining(),
-                const SizedBox(
-                  height: 10,
-                ),
-              ],
-            ),
+                );
+              }, error: (_, __) {
+                return Text('error');
+              }, loading: () {
+                return ShimmerSkeleton(
+                  count: 3,
+                );
+              }),
+              const SizedBox(
+                height: 10,
+              ),
+            ]),
           ),
-        ),
+        ],
       ),
     );
   }

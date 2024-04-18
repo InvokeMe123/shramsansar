@@ -21,11 +21,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     var profile = ref.watch(profileControllerProvider);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColorConst.BUTTON_BLUE_COLOR,
         title: const Center(
             child: Text(
           'Profile Page',
-          style: TextStyle(color: Colors.white),
         )),
       ),
       body: SingleChildScrollView(

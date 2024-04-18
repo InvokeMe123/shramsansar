@@ -34,7 +34,7 @@ class DisplayTraining extends ConsumerWidget {
                   style: TextStyle(
                       color: AppColorConst.BUTTON_BLUE_COLOR,
                       fontWeight: FontWeight.bold,
-                      fontSize: 24),
+                      fontSize: 18),
                 ),
                 Container(
                   height: 40,

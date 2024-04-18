@@ -17,6 +17,15 @@ class NewsNoticeController extends StateNotifier<AsyncValue<NewsNoticeModel>> {
             AsyncValue.error(l.message, StackTrace.fromString(l.message)),
         (r) => state = AsyncValue.data(r));
   }
+
+  filterNewsNotice({required String title, required String type}) async {
+    final result = await newsNoticeRepo.filter(title: title, type: type);
+    result.fold(
+        (l) => state =
+            AsyncValue.error(l.message, StackTrace.fromString(l.message)), (r) {
+      state = AsyncValue.data(r);
+    });
+  }
 }
 
 final newsnoticeControllerProvider = StateNotifierProvider.family<

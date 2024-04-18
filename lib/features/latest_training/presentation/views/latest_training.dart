@@ -10,22 +10,18 @@ class LatestTraining extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final latestTraining = ref.watch(latestTrainingControllerProvider);
-    return Expanded(
-      child: latestTraining.when(data: (data) {
-        return ListView.builder(
-            itemCount: 10, // returns all data so displaying first 10 only
-            itemBuilder: (_, index) {
-              var trainingData = data.data![index];
-              return TrainingCard(model: trainingData);
-            });
-      }, error: (obj, trace) {
-        return Center(child: Text(obj.toString()));
-      }, loading: () {
-        return const Center(
-            child: ShimmerSkeleton(
-          count: 3,
-        ));
-      }),
-    );
+    return latestTraining.when(data: (data) {
+      return Column(
+        children: [
+          for (int a = 0; a < 10; a++) TrainingCard(model: data.data![a]),
+        ],
+      );
+    }, error: (_, __) {
+      return Text('error');
+    }, loading: () {
+      return ShimmerSkeleton(
+        count: 3,
+      );
+    });
   }
 }

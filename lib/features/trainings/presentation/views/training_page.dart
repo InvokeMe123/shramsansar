@@ -15,6 +15,7 @@ import 'package:shramsansar/features/getPradesh/data/models/pradeshModel.dart';
 import 'package:shramsansar/features/getPradesh/presentation/controller/pradesh_controller.dart';
 import 'package:shramsansar/features/jobs/data/models/job_category_model.dart';
 import 'package:shramsansar/features/jobs/presentation/controller/job_catergory_controller.dart';
+import 'package:shramsansar/features/trainings/presentation/controller/training_category_controller.dart';
 import 'package:shramsansar/features/trainings/presentation/controller/view_all_training_controller.dart';
 import 'package:shramsansar/features/trainings/provider/filtered_provider.dart';
 import 'package:shramsansar/features/trainings/provider/page_index_provider.dart';
@@ -108,6 +109,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
                         debugPrint(
                             "Pradesh: $selectedPradeshId, District: $selectedDistrictId, Muni: $selectedMunicipalityId, JobCategory: $selectedJobCategory");
 
+                        debugger();
                         ref
                             .read(filteredProvider.notifier)
                             .update((state) => true);
@@ -321,7 +323,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
   }
 
   jobCategoryDropDown(BuildContext context) {
-    var jobCat = ref.watch(jobcontrollerProvider);
+    var trainingCat = ref.watch(trainingCategoryControllerProvider);
 
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -332,17 +334,17 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
       ),
       child: Consumer(
         builder: (context, watch, child) {
-          return jobCat.when(
+          return trainingCat.when(
             data: (data) {
-              List<String> jobCate =
-                  data.data.map((model) => model.name).toSet().toList();
+              List<String> trainingCategory =
+                  data.data!.map((e) => e.name!).toSet().toList();
 
               return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: DropdownButton<String>(
                   icon: const Padding(
                     padding: EdgeInsets.only(
-                        left: 75), // Adjust the left padding as needed
+                        left: 12), // Adjust the left padding as needed
                     child: Icon(Icons.arrow_drop_down),
                   ),
                   hint: const Text('Place of interest'),
@@ -352,7 +354,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
                     });
                   },
                   value: selectedJobCategory,
-                  items: jobCate.map((name) {
+                  items: trainingCategory.map((name) {
                     return DropdownMenuItem<String>(
                       value: name,
                       child: Text(name),

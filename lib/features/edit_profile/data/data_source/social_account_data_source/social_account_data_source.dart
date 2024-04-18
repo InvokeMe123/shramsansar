@@ -7,6 +7,7 @@ import 'package:shramsansar/features/edit_profile/data/models/social_accounts_mo
 abstract class SocialAccountDataSource {
   Future<SocialAccountsModel> getSocialAccounts();
   Future<void> addSocialAccount(AddSocialAccountsModel model);
+  Future<void> deleteSocialAccount(int id);
 }
 
 class SocialAccountDataSourceImpl implements SocialAccountDataSource {
@@ -26,6 +27,11 @@ class SocialAccountDataSourceImpl implements SocialAccountDataSource {
   Future<void> addSocialAccount(AddSocialAccountsModel model) async {
     await apiClient.request(
         path: ApiConst.ADD_SOCIAL, type: 'post', data: model.toJson());
+  }
+
+  @override
+  Future<void> deleteSocialAccount(int id) async {
+    await apiClient.request(path: '${ApiConst.DELETE_SOCIAL}/$id', type: 'get');
   }
 }
 

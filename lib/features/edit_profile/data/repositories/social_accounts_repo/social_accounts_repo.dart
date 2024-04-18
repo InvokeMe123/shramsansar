@@ -8,6 +8,7 @@ import 'package:shramsansar/features/edit_profile/data/models/social_accounts_mo
 abstract class SocialAccountsRepo {
   Future<Either<AppError, SocialAccountsModel>> getSocialAccounts();
   Future<Either<AppError, void>> addSocialAccount(AddSocialAccountsModel model);
+  Future<Either<AppError, void>> deleteSocialAccount(int id);
 }
 
 class SocialAccountsRepoImpl implements SocialAccountsRepo {
@@ -29,7 +30,17 @@ class SocialAccountsRepoImpl implements SocialAccountsRepo {
   Future<Either<AppError, void>> addSocialAccount(
       AddSocialAccountsModel model) async {
     try {
-      final result = await socialAccountDataSource.addSocialAccount(model);
+      await socialAccountDataSource.addSocialAccount(model);
+      return const Right(null);
+    } catch (e) {
+      return Left(AppError(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<AppError, void>> deleteSocialAccount(int id) async {
+    try {
+      await socialAccountDataSource.deleteSocialAccount(id);
       return const Right(null);
     } catch (e) {
       return Left(AppError(e.toString()));

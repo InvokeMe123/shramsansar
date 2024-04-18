@@ -6,14 +6,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shramsansar/const/app_color_const.dart';
 import 'package:shramsansar/features/edit_profile/data/models/education_model/education_model_req.dart';
+import 'package:shramsansar/features/edit_profile/data/models/language_model/language_model.dart';
 import 'package:shramsansar/features/edit_profile/data/models/social_accounts_model/social_accounts_model.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/education_controller/educationAddController.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/education_controller/education_controller.dart';
+import 'package:shramsansar/features/edit_profile/presentation/controller/language_controller/language_controller.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/social_accounts_controller/social_accounts_controller.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/add_education.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/add_experience.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/add_social_media.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/edit_education.dart';
+import 'package:shramsansar/features/edit_profile/presentation/views/widgets/language_related/add_language.dart';
+import 'package:shramsansar/features/edit_profile/presentation/views/widgets/language_related/edit_language.dart';
 import 'package:shramsansar/features/profile/data/model/profile_model.dart';
 import 'package:shramsansar/features/profile/presentation/controller/profile_controller.dart';
 import 'package:shramsansar/utils/snackbar/custome_snack_bar.dart';
@@ -603,7 +607,11 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                             ),
                             const Spacer(),
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (_) => const AddLanguage());
+                              },
                               child: const Icon(
                                 Icons.add,
                                 color: Colors.white,
@@ -611,11 +619,6 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                             ),
                             const SizedBox(
                               width: 10,
-                            ),
-                            GestureDetector(
-                              onTap: () {},
-                              child: const Icon(Icons.delete_outline,
-                                  color: Colors.white),
                             ),
                             const SizedBox(
                               width: 10,
@@ -628,6 +631,104 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                           ],
                         ),
                       ),
+                      ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: myProfileModel.languages!.length,
+                          itemBuilder: (context, index) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (_) => EditLanguage(
+                                          languageModel: LanguageModel.fromMap(
+                                              myProfileModel.languages![index]
+                                                  .toJson())),
+                                    );
+                                  },
+                                  child: const Icon(Icons.edit,
+                                      color: Colors.black),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    ref
+                                        .read(
+                                            languageControllerProvider.notifier)
+                                        .deleteLanguage(myProfileModel
+                                            .languages![index].id!)
+                                        .then((value) {
+                                      if (value) {
+                                        ref
+                                            .read(profileControllerProvider
+                                                .notifier)
+                                            .getMyProfile()
+                                            .then((value) {
+                                          showCustomSnackBar(
+                                              'Successfully Deleted', context,
+                                              isError: false);
+                                        });
+                                      } else {
+                                        showCustomSnackBar(
+                                            'Failed to delete', context,
+                                            isError: true);
+                                      }
+                                    });
+                                  },
+                                  child: const Icon(Icons.delete_outline,
+                                      color: Colors.black),
+                                ),
+                                Text(
+                                  myProfileModel.languages![index].languageName
+                                      .toString(),
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  myProfileModel
+                                      .languages![index].languageRatingListening
+                                      .toString(),
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                                Text(
+                                  myProfileModel
+                                      .languages![index].languageRatingReading
+                                      .toString(),
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                                Text(
+                                  myProfileModel
+                                      .languages![index].languageRatingSpeaking
+                                      .toString(),
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                                Text(
+                                  myProfileModel
+                                      .languages![index].languageRatingWriting
+                                      .toString(),
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                              ],
+                            );
+                          }),
                       const SizedBox(
                         height: 10,
                       ),
@@ -668,13 +769,40 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                           shrinkWrap: true,
                           itemCount: myProfileModel.socialAccounts!.length,
                           itemBuilder: (context, index) {
-                            return Column(
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
                                   '${myProfileModel.socialAccounts![index].name}:${myProfileModel.socialAccounts![index].url}',
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold),
-                                )
+                                ),
+                                IconButton(
+                                    onPressed: () {
+                                      ref
+                                          .read(socialAccountsControllerProvider
+                                              .notifier)
+                                          .deleteSocialAccount(myProfileModel
+                                              .socialAccounts![index].id!)
+                                          .then((value) {
+                                        if (value) {
+                                          ref
+                                              .read(profileControllerProvider
+                                                  .notifier)
+                                              .getMyProfile()
+                                              .then((value) {
+                                            showCustomSnackBar(
+                                                'Successfully Deleted', context,
+                                                isError: false);
+                                          });
+                                        } else {
+                                          showCustomSnackBar(
+                                              'Failed to delete', context,
+                                              isError: true);
+                                        }
+                                      });
+                                    },
+                                    icon: const Icon(Icons.delete_outline))
                               ],
                             );
                           }),

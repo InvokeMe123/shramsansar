@@ -6,6 +6,7 @@ import 'package:shramsansar/const/app_color_const.dart';
 import 'package:shramsansar/features/news_and_notices/presentation/controller/news_notice_controller.dart';
 import 'package:shramsansar/features/news_and_notices/presentation/views/widgets/news_notice_card.dart';
 import 'package:shramsansar/utils/custom_form/custom_form.dart';
+import 'package:shramsansar/utils/snackbar/custome_snack_bar.dart';
 
 class NewsNotice extends ConsumerStatefulWidget {
   const NewsNotice({super.key});
@@ -40,6 +41,8 @@ class _NewsNoticeState extends ConsumerState<NewsNotice> {
 
   TextEditingController search = TextEditingController();
   String selectedValue = '';
+  int selectedIndexValue = -1;
+  bool isSearched = false;
 
   @override
   Widget build(BuildContext context) {
@@ -106,6 +109,12 @@ class _NewsNoticeState extends ConsumerState<NewsNotice> {
                                 setState(() {
                                   selectedValue = newValue!;
                                 });
+
+                                if (newValue == 'News') {
+                                  selectedIndexValue = 1;
+                                } else {
+                                  selectedIndexValue = 2;
+                                }
                               },
                               items: <String>['News', 'Notice']
                                   .map((String value) {
@@ -127,9 +136,40 @@ class _NewsNoticeState extends ConsumerState<NewsNotice> {
               ),
               Row(
                 children: [
+                  if (isSearched)
+                    TextButton(
+                      onPressed: () {
+                        setState(() {
+                          isSearched = false;
+                          search.clear();
+                          ref
+                              .read(newsnoticeControllerProvider(1).notifier)
+                              .getNewsNotice();
+                        });
+                      },
+                      child: Text(
+                        'Clear',
+                        style:
+                            TextStyle(color: AppColorConst.BUTTON_BLUE_COLOR),
+                      ),
+                    ),
                   const Spacer(),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      if (selectedIndexValue == -1 && search.text.isEmpty) {
+                        showCustomSnackBar("Nothing to search", context);
+                        return;
+                      }
+                      setState(() {
+                        isSearched = true;
+                      });
+
+                      ref
+                          .read(newsnoticeControllerProvider(1).notifier)
+                          .filterNewsNotice(
+                              title: search.text,
+                              type: selectedIndexValue.toString());
+                    },
                     child: Text(
                       'Apply',
                       style: TextStyle(color: Colors.white),

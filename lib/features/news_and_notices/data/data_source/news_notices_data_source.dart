@@ -7,6 +7,7 @@ import 'package:shramsansar/features/news_and_notices/data/models/news_notice_mo
 
 abstract class NewsNoticeDs {
   Future<NewsNoticeModel> newsNoticeDs(int page);
+  Future<NewsNoticeModel> filter({required String title, required String type});
 }
 
 class NewsNoticeDsImp implements NewsNoticeDs {
@@ -17,6 +18,16 @@ class NewsNoticeDsImp implements NewsNoticeDs {
   Future<NewsNoticeModel> newsNoticeDs(int page) async {
     final result = await apiClient.request(path: "${ApiConst.NEW_NOTICE}$page");
     log("Result type: ${result.runtimeType}");
+    return NewsNoticeModel.fromJson(result);
+  }
+
+  @override
+  Future<NewsNoticeModel> filter(
+      {required String title, required String type}) async {
+    final result = await apiClient.request(
+        path:
+            "${ApiConst.SEARCH_NEW_NOTICE_F}$title${ApiConst.SEARCH_NEW_NOTICE_L}$type");
+
     return NewsNoticeModel.fromJson(result);
   }
 }

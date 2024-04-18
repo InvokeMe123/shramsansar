@@ -301,7 +301,7 @@ class _DashboardState extends ConsumerState<Dashboard> {
               }, error: (_, __) {
                 return Text('error');
               }, loading: () {
-                return ShimmerSkeleton(
+                return const ShimmerSkeleton(
                   count: 3,
                 );
               }),

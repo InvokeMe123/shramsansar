@@ -14,11 +14,14 @@ import 'package:shramsansar/features/edit_profile/presentation/controller/educat
 import 'package:shramsansar/features/edit_profile/presentation/controller/experience_controller/experience_controller.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/language_controller/language_controller.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/social_accounts_controller/social_accounts_controller.dart';
+import 'package:shramsansar/features/edit_profile/presentation/controller/training_certification_controller/training_certification_controller.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/add_education.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/add_experience.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/add_social_media.dart';
+import 'package:shramsansar/features/edit_profile/presentation/views/widgets/add_training_certification.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/edit_education.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/edit_experience.dart';
+import 'package:shramsansar/features/edit_profile/presentation/views/widgets/editing_training_certification.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/language_related/add_language.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/language_related/edit_language.dart';
 import 'package:shramsansar/features/profile/data/model/profile_model.dart';
@@ -553,7 +556,13 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                             ),
                             const Spacer(),
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (_) {
+                                      return AddTrainingCertificate();
+                                    });
+                              },
                               child: const Icon(
                                 Icons.add,
                                 color: Colors.white,
@@ -562,19 +571,6 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                             const SizedBox(
                               width: 10,
                             ),
-                            GestureDetector(
-                              onTap: () {},
-                              child: const Icon(Icons.delete_outline,
-                                  color: Colors.white),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            GestureDetector(
-                              onTap: () {},
-                              child:
-                                  const Icon(Icons.edit, color: Colors.white),
-                            )
                           ],
                         ),
                       ),
@@ -588,13 +584,64 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  myProfileModel.trainings![index].title
-                                      .toString(),
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.bold),
+                                Row(
+                                  children: [
+                                    Text(
+                                      myProfileModel.trainings![index].title
+                                          .toString(),
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const Spacer(),
+                                    GestureDetector(
+                                      onTap: () {
+                                        ref
+                                            .read(
+                                                trainingCertificationControllerProvider
+                                                    .notifier)
+                                            .deleteExperienceC(myProfileModel
+                                                .trainings![index].id!)
+                                            .then((value) {
+                                          if (value) {
+                                            ref
+                                                .watch(profileControllerProvider
+                                                    .notifier)
+                                                .getMyProfile()
+                                                .then((value) {
+                                              showCustomSnackBar(
+                                                  "Successsfully Deleted",
+                                                  context,
+                                                  isError: false);
+                                            });
+                                          } else {
+                                            showCustomSnackBar(
+                                                "Failed to Delete", context,
+                                                isError: true);
+                                          }
+                                        });
+                                      },
+                                      child: const Icon(Icons.delete_outline,
+                                          color: Colors.black),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (_) {
+                                              return EditTrainingCertificate(
+                                                  trainings: myProfileModel
+                                                      .trainings![index]);
+                                            });
+                                      },
+                                      child: const Icon(Icons.edit,
+                                          color: Colors.black),
+                                    )
+                                  ],
                                 ),
                                 Text(
                                   myProfileModel.trainings![index].year

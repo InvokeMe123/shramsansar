@@ -307,12 +307,12 @@ class _AddEducationState extends ConsumerState<EditEducation> {
                                 .then((value) {
                               Navigator.pop(context);
                               showCustomSnackBar(
-                                  'Education added successfully', context,
+                                  'Education updated successfully', context,
                                   isError: false);
                             });
                           } else {
                             showCustomSnackBar(
-                                'Failed to add education', context);
+                                'Failed to update education', context);
                           }
                         });
                       }

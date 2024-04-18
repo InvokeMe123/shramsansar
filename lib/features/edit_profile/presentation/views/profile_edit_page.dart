@@ -1,11 +1,13 @@
 import 'dart:developer';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shramsansar/const/app_color_const.dart';
 import 'package:shramsansar/features/edit_profile/data/models/education_model/education_model_req.dart';
+import 'package:shramsansar/features/edit_profile/data/models/language_model/language_model.dart';
 import 'package:shramsansar/features/edit_profile/data/models/social_accounts_model/social_accounts_model.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/education_controller/educationAddController.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/education_controller/education_controller.dart';
@@ -16,6 +18,7 @@ import 'package:shramsansar/features/edit_profile/presentation/views/widgets/add
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/add_experience.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/add_social_media.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/edit_education.dart';
+import 'package:shramsansar/features/edit_profile/presentation/views/widgets/edit_experience.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/language_related/add_language.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/language_related/edit_language.dart';
 import 'package:shramsansar/features/profile/data/model/profile_model.dart';
@@ -455,7 +458,16 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                       width: 10,
                                     ),
                                     GestureDetector(
-                                      onTap: () {},
+                                      onTap: () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (_) {
+                                              return EditExperience(
+                                                experienceModel: myProfileModel
+                                                    .experiences![index],
+                                              );
+                                            });
+                                      },
                                       child: const Icon(Icons.edit,
                                           color: Colors.black),
                                     )

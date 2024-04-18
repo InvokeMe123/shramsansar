@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +8,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shramsansar/const/app_color_const.dart';
+import 'package:shramsansar/features/edit_profile/presentation/controller/experience_controller/experience_controller.dart';
+import 'package:shramsansar/features/profile/presentation/controller/profile_controller.dart';
+import 'package:shramsansar/utils/snackbar/custome_snack_bar.dart';
 
 class AddExperience extends ConsumerStatefulWidget {
   const AddExperience({super.key});
@@ -23,14 +29,17 @@ class _AddExperienceState extends ConsumerState<AddExperience> {
   final startDate = TextEditingController();
   final endDate = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool isWorking = true;
+  int isCurrentlyWorking = 0;
+
   String _formatDate(DateTime? date) {
     if (date == null) return '';
 
     return DateFormat('yyyy-MM-dd').format(date);
   }
 
-  String? filePath1;
-  String? fileName;
+  String filePath1 = '';
+  String fileName = '';
   bool isSelected = false;
   void experience() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -232,52 +241,56 @@ class _AddExperienceState extends ConsumerState<AddExperience> {
                       ),
                       Checkbox(
                         value:
-                            isChecked, // Set the value of the checkbox based on the isChecked variable
+                            isWorking, // Set the value of the checkbox based on the isChecked variable
                         onChanged: (newValue) {
                           // When the checkbox is tapped, update the isChecked variable
                           setState(() {
-                            isChecked = newValue ?? false;
+                            isWorking = newValue!;
                           });
                         },
                       ),
                       const Text('Currently working')
                     ],
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('End Date'),
-                      const SizedBox(
-                        height: 3,
-                      ),
-                      TextFormField(
-                        controller: endDate,
-                        decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.all(7),
-                            constraints: BoxConstraints.tight(Size(
-                                MediaQuery.sizeOf(context).width * .365, 40)),
-                            focusedBorder: const OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.black, width: .5)),
-                            enabledBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors.black, width: .5))),
-                        onTap: () async {
-                          FocusScope.of(context).requestFocus(FocusNode());
-                          DateTime? picked = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(2015, 8),
-                              lastDate: DateTime.now());
-                          if (picked != null) {
-                            setState(() {
-                              endDate.text = _formatDate(picked);
-                            });
-                          }
-                        },
-                      ),
-                    ],
-                  ),
+                  !isWorking
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text('End Date'),
+                            const SizedBox(
+                              height: 3,
+                            ),
+                            TextFormField(
+                              controller: endDate,
+                              decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.all(7),
+                                  constraints: BoxConstraints.tight(Size(
+                                      MediaQuery.sizeOf(context).width * .365,
+                                      40)),
+                                  focusedBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.black, width: .5)),
+                                  enabledBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.black, width: .5))),
+                              onTap: () async {
+                                FocusScope.of(context)
+                                    .requestFocus(FocusNode());
+                                DateTime? picked = await showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime(2015, 8),
+                                    lastDate: DateTime.now());
+                                if (picked != null) {
+                                  setState(() {
+                                    endDate.text = _formatDate(picked);
+                                  });
+                                }
+                              },
+                            ),
+                          ],
+                        )
+                      : const SizedBox(),
                   Row(
                     children: [
                       Column(
@@ -366,7 +379,7 @@ class _AddExperienceState extends ConsumerState<AddExperience> {
                         experience();
                       },
                       child: Text(
-                        isSelected ? fileName! : 'Choose File',
+                        isSelected ? fileName : 'Choose File',
                         style: const TextStyle(color: Colors.white),
                       ),
                     ),
@@ -383,7 +396,59 @@ class _AddExperienceState extends ConsumerState<AddExperience> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(4))),
                           onPressed: () {
-                            if (_formKey.currentState!.validate()) {}
+                            if (_formKey.currentState!.validate()) {
+                              if (isWorking) {
+                                isCurrentlyWorking = 1;
+                              } else {
+                                isCurrentlyWorking = 0;
+                              }
+                              log(isWorking.toString());
+                              log(isCurrentlyWorking.toString());
+
+                              var dataForm = {
+                                "title": position.text,
+                                "organization": organizationName.text,
+                                "reference_name": referenceName.text,
+                                "reference_contact": referenceNum.text,
+                                "location": address.text,
+                                "start_date": startDate.text,
+                                "end_date": (isCurrentlyWorking == 1)
+                                    ? ''
+                                    : endDate.text,
+                                "is_currently_working": isCurrentlyWorking,
+                                
+                              }; 
+                              
+                              if (filePath1.isNotEmpty) {
+                                dataForm['file'] = MultipartFile.fromFileSync(
+                                    filePath1,
+                                    filename: fileName);
+                              }
+
+                              
+                              final formData = FormData.fromMap(dataForm);
+
+                              ref
+                                  .read(experienceControllerProvider.notifier)
+                                  .addExperience(formData)
+                                  .then((value) {
+                                if (value) {
+                                  ref
+                                      .read(profileControllerProvider.notifier)
+                                      .getMyProfile()
+                                      .then((value) {
+                                    Navigator.pop(context);
+                                    showCustomSnackBar(
+                                        "Experience succesfully added.",
+                                        context,
+                                        isError: false);
+                                  });
+                                } else {
+                                  showCustomSnackBar(
+                                      'Failed to add experience', context);
+                                }
+                              });
+                            }
                           },
                           child: const Text(
                             'Save',

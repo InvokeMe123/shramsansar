@@ -6,10 +6,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shramsansar/const/app_color_const.dart';
 import 'package:shramsansar/features/edit_profile/data/models/education_model/education_model_req.dart';
-import 'package:shramsansar/features/edit_profile/data/models/language_model/language_model.dart';
 import 'package:shramsansar/features/edit_profile/data/models/social_accounts_model/social_accounts_model.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/education_controller/educationAddController.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/education_controller/education_controller.dart';
+import 'package:shramsansar/features/edit_profile/presentation/controller/experience_controller/experience_controller.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/language_controller/language_controller.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/social_accounts_controller/social_accounts_controller.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/add_education.dart';
@@ -426,7 +426,28 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                     ),
                                     const Spacer(),
                                     GestureDetector(
-                                      onTap: () {},
+                                      onTap: () {
+                                        ref
+                                            .read(experienceControllerProvider
+                                                .notifier)
+                                            .deleteExperienceC(myProfileModel
+                                                .experiences![index].id!)
+                                            .then((value) {
+                                          if (value) {
+                                            ref
+                                                .read(profileControllerProvider
+                                                    .notifier)
+                                                .getMyProfile();
+                                            showCustomSnackBar(
+                                                "Sucessfully Delete", context,
+                                                isError: false);
+                                          } else {
+                                            showCustomSnackBar(
+                                                "Failed to delete experience",
+                                                context);
+                                          }
+                                        });
+                                      },
                                       child: const Icon(Icons.delete_outline,
                                           color: Colors.black),
                                     ),

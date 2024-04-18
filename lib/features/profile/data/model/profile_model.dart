@@ -1,3 +1,8 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
+import 'package:flutter/widgets.dart';
+
 class MyProfileModel {
   int? id;
   String? name;
@@ -479,7 +484,7 @@ class Experiences {
     title = json['title'];
     isCurrentlyWorking = json['is_currently_working'];
     startDate = json['start_date'];
-    endDate = json['end_date'];
+    endDate = json['end_date'] ?? '';
     referenceName = json['reference_name'];
     referenceContact = json['reference_contact'];
     file = json['file'];

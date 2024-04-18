@@ -9,17 +9,19 @@ import 'package:intl/intl.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shramsansar/const/app_color_const.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/experience_controller/experience_controller.dart';
+import 'package:shramsansar/features/profile/data/model/profile_model.dart';
 import 'package:shramsansar/features/profile/presentation/controller/profile_controller.dart';
 import 'package:shramsansar/utils/snackbar/custome_snack_bar.dart';
 
-class AddExperience extends ConsumerStatefulWidget {
-  const AddExperience({super.key});
+class EditExperience extends ConsumerStatefulWidget {
+  Experiences experienceModel;
+  EditExperience({super.key, required this.experienceModel});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _AddExperienceState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _EditExperienceState();
 }
 
-class _AddExperienceState extends ConsumerState<AddExperience> {
+class _EditExperienceState extends ConsumerState<EditExperience> {
   bool isChecked = false;
   TextEditingController position = TextEditingController();
   TextEditingController organizationName = TextEditingController();
@@ -60,6 +62,20 @@ class _AddExperienceState extends ConsumerState<AddExperience> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    position.text = widget.experienceModel.title!;
+    organizationName.text = widget.experienceModel.organization!;
+    address.text = widget.experienceModel.location!;
+    referenceName.text = widget.experienceModel.referenceName!;
+    referenceNum.text = widget.experienceModel.referenceContact!;
+    startDate.text = widget.experienceModel.startDate!;
+    endDate.text = widget.experienceModel.endDate!;
+    isCurrentlyWorking = widget.experienceModel.isCurrentlyWorking!;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
@@ -78,7 +94,7 @@ class _AddExperienceState extends ConsumerState<AddExperience> {
               child: Row(
                 children: [
                   Text(
-                    'Add Experience',
+                    'Update Experience',
                     style: TextStyle(color: AppColorConst.PRAYMARY_TEXT_COLOR),
                   ),
                   const Spacer(),
@@ -330,7 +346,7 @@ class _AddExperienceState extends ConsumerState<AddExperience> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('Reference Number *'),
+                          const Text('Reference Contact *'),
                           const SizedBox(
                             height: 3,
                           ),
@@ -389,9 +405,6 @@ class _AddExperienceState extends ConsumerState<AddExperience> {
                       const Spacer(),
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              minimumSize: Size(20.w, 4.h),
-                              fixedSize: Size(20.w, 4.h),
-                              maximumSize: Size(20.w, 4.h),
                               backgroundColor: AppColorConst.BUTTON_BLUE_COLOR,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(4))),
@@ -416,21 +429,20 @@ class _AddExperienceState extends ConsumerState<AddExperience> {
                                     ? ''
                                     : endDate.text,
                                 "is_currently_working": isCurrentlyWorking,
-                                
-                              }; 
-                              
+                              };
+
                               if (filePath1.isNotEmpty) {
                                 dataForm['file'] = MultipartFile.fromFileSync(
                                     filePath1,
                                     filename: fileName);
                               }
 
-                              
                               final formData = FormData.fromMap(dataForm);
 
                               ref
                                   .read(experienceControllerProvider.notifier)
-                                  .addExperience(formData)
+                                  .editExperienceC(
+                                      widget.experienceModel.id!, formData)
                                   .then((value) {
                                 if (value) {
                                   ref
@@ -439,19 +451,19 @@ class _AddExperienceState extends ConsumerState<AddExperience> {
                                       .then((value) {
                                     Navigator.pop(context);
                                     showCustomSnackBar(
-                                        "Experience succesfully added.",
+                                        "Experience succesfully updated.",
                                         context,
                                         isError: false);
                                   });
                                 } else {
                                   showCustomSnackBar(
-                                      'Failed to add experience', context);
+                                      'Failed to add updated', context);
                                 }
                               });
                             }
                           },
                           child: const Text(
-                            'Save',
+                            'Update',
                             style: TextStyle(color: Colors.white),
                           ))
                     ],

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,12 +11,14 @@ import 'package:shramsansar/features/edit_profile/data/models/language_model/lan
 import 'package:shramsansar/features/edit_profile/data/models/social_accounts_model/social_accounts_model.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/education_controller/educationAddController.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/education_controller/education_controller.dart';
+import 'package:shramsansar/features/edit_profile/presentation/controller/experience_controller/experience_controller.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/language_controller/language_controller.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/social_accounts_controller/social_accounts_controller.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/add_education.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/add_experience.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/add_social_media.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/edit_education.dart';
+import 'package:shramsansar/features/edit_profile/presentation/views/widgets/edit_experience.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/language_related/add_language.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/language_related/edit_language.dart';
 import 'package:shramsansar/features/profile/data/model/profile_model.dart';
@@ -426,7 +429,28 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                     ),
                                     const Spacer(),
                                     GestureDetector(
-                                      onTap: () {},
+                                      onTap: () {
+                                        ref
+                                            .read(experienceControllerProvider
+                                                .notifier)
+                                            .deleteExperienceC(myProfileModel
+                                                .experiences![index].id!)
+                                            .then((value) {
+                                          if (value) {
+                                            ref
+                                                .read(profileControllerProvider
+                                                    .notifier)
+                                                .getMyProfile();
+                                            showCustomSnackBar(
+                                                "Sucessfully Delete", context,
+                                                isError: false);
+                                          } else {
+                                            showCustomSnackBar(
+                                                "Failed to delete experience",
+                                                context);
+                                          }
+                                        });
+                                      },
                                       child: const Icon(Icons.delete_outline,
                                           color: Colors.black),
                                     ),
@@ -434,7 +458,16 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                       width: 10,
                                     ),
                                     GestureDetector(
-                                      onTap: () {},
+                                      onTap: () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (_) {
+                                              return EditExperience(
+                                                experienceModel: myProfileModel
+                                                    .experiences![index],
+                                              );
+                                            });
+                                      },
                                       child: const Icon(Icons.edit,
                                           color: Colors.black),
                                     )

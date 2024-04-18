@@ -38,7 +38,7 @@ class _NewsNoticeState extends ConsumerState<NewsNotice> {
   }
 
   TextEditingController search = TextEditingController();
-  String? selectedValue;
+  String selectedValue = '';
 
   @override
   Widget build(BuildContext context) {
@@ -99,11 +99,13 @@ class _NewsNoticeState extends ConsumerState<NewsNotice> {
                         Positioned.fill(
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton<String>(
-                              value: selectedValue, // Example initial value
+                              value: selectedValue.isEmpty
+                                  ? null
+                                  : selectedValue, // Example initial value
                               onChanged: (String? newValue) {
                                 // Handle dropdown item selection
                                 setState(() {
-                                  selectedValue = newValue;
+                                  selectedValue = newValue!;
                                 });
                               },
                               items: <String>['News', 'Notice']
@@ -149,9 +151,14 @@ class _NewsNoticeState extends ConsumerState<NewsNotice> {
                 color: CupertinoColors.systemGrey3,
               ),
               newsnotice.when(data: (data) {
+                if (data.data!.isEmpty) {
+                  return const Center(
+                    child: Text("No data found"),
+                  );
+                }
                 return Expanded(
                   child: ListView.builder(
-                      itemCount: 2,
+                      itemCount: data.data!.length,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.all(5.0),
@@ -168,7 +175,7 @@ class _NewsNoticeState extends ConsumerState<NewsNotice> {
                                 Row(
                                   children: [
                                     //title of news and notice
-                                    Container(
+                                    SizedBox(
                                       width: MediaQuery.sizeOf(context).width *
                                           0.7,
                                       child: Text(
@@ -187,7 +194,7 @@ class _NewsNoticeState extends ConsumerState<NewsNotice> {
                                       decoration: BoxDecoration(
                                           color: AppColorConst.PRAYMERY_COLOR),
                                       child: Text(
-                                        selectedValue!,
+                                        selectedValue,
                                         style: TextStyle(
                                             color: AppColorConst
                                                 .PRAYMARY_TEXT_COLOR),

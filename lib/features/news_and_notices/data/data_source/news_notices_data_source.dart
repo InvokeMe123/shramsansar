@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shramsansar/core/api_client/api_client.dart';
 import 'package:shramsansar/core/api_const/api_const.dart';
@@ -14,7 +16,8 @@ class NewsNoticeDsImp implements NewsNoticeDs {
   @override
   Future<NewsNoticeModel> newsNoticeDs(int page) async {
     final result = await apiClient.request(path: "${ApiConst.NEW_NOTICE}$page");
-    return NewsNoticeModel.fromJson(result['data']);
+    log("Result type: ${result.runtimeType}");
+    return NewsNoticeModel.fromJson(result);
   }
 }
 

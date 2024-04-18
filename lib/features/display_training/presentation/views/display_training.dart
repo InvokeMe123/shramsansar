@@ -78,7 +78,7 @@ class DisplayTraining extends ConsumerWidget {
                                       },
                                       loading: () {},
                                       error: (error, stackTrace) {
-                                        debugPrint("Appliied failed");
+                                        debugPrint("Applied failed");
                                       });
                                 },
                                 child: const Text('Yes'),

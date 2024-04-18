@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shramsansar/const/app_color_const.dart';
 import 'package:shramsansar/features/news_and_notices/presentation/controller/news_notice_controller.dart';
+import 'package:shramsansar/features/news_and_notices/presentation/views/widgets/news_notice_card.dart';
 import 'package:shramsansar/utils/custom_form/custom_form.dart';
 
 class NewsNotice extends ConsumerStatefulWidget {
@@ -159,79 +160,12 @@ class _NewsNoticeState extends ConsumerState<NewsNotice> {
                 return Expanded(
                   child: ListView.builder(
                       itemCount: data.data!.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Container(
-                            padding: const EdgeInsets.only(left: 12),
-                            height: 65,
-                            width: MediaQuery.sizeOf(context).width,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(6),
-                                color:
-                                    CupertinoColors.extraLightBackgroundGray),
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    //title of news and notice
-                                    SizedBox(
-                                      width: MediaQuery.sizeOf(context).width *
-                                          0.7,
-                                      child: Text(
-                                        data.data!
-                                            .map((e) => e.title)
-                                            .toString(),
-                                        style: TextStyle(
-                                            overflow: TextOverflow.ellipsis,
-                                            color: AppColorConst
-                                                .BUTTON_BLUE_COLOR),
-                                      ),
-                                    ),
-                                    const Spacer(),
-                                    Container(
-                                      padding: const EdgeInsets.all(4),
-                                      decoration: BoxDecoration(
-                                          color: AppColorConst.PRAYMERY_COLOR),
-                                      child: Text(
-                                        selectedValue,
-                                        style: TextStyle(
-                                            color: AppColorConst
-                                                .PRAYMARY_TEXT_COLOR),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                const Row(
-                                  children: [
-                                    Icon(Icons.location_on_outlined,
-                                        size: 18, color: Colors.grey),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text('biratnagar'),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Icon(Icons.calendar_month_outlined,
-                                        size: 18, color: Colors.grey),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text("2080-1-21")
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                        );
+                      itemBuilder: (_, index) {
+                        return NewsNoticeCard(data: data.data![index]);
                       }),
                 );
               }, error: (_, __) {
-                return Text('error');
+                return const Text('error');
               }, loading: () {
                 return Text('Loading.....');
               })

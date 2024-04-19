@@ -1,19 +1,17 @@
 import 'dart:developer';
 
-import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shramsansar/const/app_color_const.dart';
 import 'package:shramsansar/dashboard.dart';
-import 'package:shramsansar/features/auth/data/models/register_model/register_request_model.dart';
+
 import 'package:shramsansar/features/auth/presentation/controller/register_controller.dart/register_controller.dart';
 import 'package:shramsansar/features/auth/presentation/views/register/widgets/national_id_card_button.dart';
 import 'package:shramsansar/features/caste/presentation/controller/caste_controller.dart';
 import 'package:shramsansar/features/gender/presentation/controller/gender_controller.dart';
 import 'package:shramsansar/features/getDistricts/presentation/controller/district_controller.dart';
-import 'package:shramsansar/features/getDocumentType/data/data_source/document_type_data_source.dart';
 import 'package:shramsansar/features/getDocumentType/data/models/document_type_model.dart';
 import 'package:shramsansar/features/getDocumentType/presentation/controller/document_type_controller.dart';
 import 'package:shramsansar/features/getMunicipalities/presentation/controller/municipality_controller.dart';
@@ -58,7 +56,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   int selectedWardId = 0;
 
   //temporary address
-
   String? tSelectedPradesh;
   int tselectedPradeshId = 0;
 
@@ -442,7 +439,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               onChanged: (newValue) {
                 setState(() {
                   selectedDistrict = newValue;
-                  selectedMunicipality = null;
                   selectedDistrictId = districts.indexOf(selectedDistrict!) + 1;
                 });
               },
@@ -600,10 +596,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                       tSelectedPradesh = value;
                       isCheckBoxSelected = false;
 
-                      tSelectedDistrict = null;
-                      tSelectedMunicipality = null;
-                      tSelectedWard = null;
-
                       tselectedPradeshId =
                           pradesh.indexOf(tSelectedPradesh!) + 1;
                     });
@@ -657,7 +649,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   tSelectedDistrict = newValue;
                   isCheckBoxSelected = false;
 
-                  tSelectedMunicipality = null;
                   tSelectedDistrictId =
                       districts.indexOf(tSelectedDistrict!) + 1;
                 });

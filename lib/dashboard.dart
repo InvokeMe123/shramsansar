@@ -93,6 +93,11 @@ class _DashboardState extends ConsumerState<Dashboard> {
                   ),
                   profile.when(
                       data: (data) {
+                        debugger();
+                        if (data.email == null) {
+                          return SizedBox();
+                        }
+
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -298,6 +303,9 @@ class _DashboardState extends ConsumerState<Dashboard> {
                       color: Colors.black)),
               const Divider(color: Colors.black),
               latestJobs.when(data: (data) {
+                if (data.data!.isEmpty) {
+                  return const Text('No data found');
+                }
                 return Column(
                   children: [
                     for (int a = 0; a < 10; a++)
@@ -332,6 +340,10 @@ class _DashboardState extends ConsumerState<Dashboard> {
                       color: Colors.black)),
               const Divider(color: Colors.black),
               latestTraining.when(data: (data) {
+                if (data.data!.isEmpty) {
+                  return const Text('No training data found');
+                }
+
                 return Column(
                   children: [
                     for (int a = 0; a < 10; a++)

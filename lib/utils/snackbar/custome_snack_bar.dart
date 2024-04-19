@@ -24,7 +24,7 @@
             margin: const EdgeInsets.all(10),
             content: Text(
               message,
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             duration: const Duration(seconds: 4),
           ));

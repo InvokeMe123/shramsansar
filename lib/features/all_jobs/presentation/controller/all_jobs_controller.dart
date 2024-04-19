@@ -1,5 +1,3 @@
-import 'package:dio/dio.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shramsansar/features/all_jobs/data/models/all_jobs_model.dart';
 import 'package:shramsansar/features/all_jobs/data/repository/all_job_repo.dart';
@@ -9,7 +7,7 @@ class AllJobsController extends StateNotifier<AsyncValue<AllJobsModel>> {
   final int pageIndex;
 
   AllJobsController({required this.allJobsRepo, required this.pageIndex})
-      : super(AsyncValue.loading()) {
+      : super(const AsyncValue.loading()) {
     getAllJobsDetails();
   }
 

@@ -1,5 +1,3 @@
-import 'dart:developer';
-import 'dart:math';
 
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
@@ -11,7 +9,6 @@ import 'package:shramsansar/features/auth/data/models/change_password_model/chan
 import 'package:shramsansar/features/auth/data/models/login_model/login_request_model.dart';
 import 'package:shramsansar/features/auth/data/models/login_model/login_response_model.dart';
 import 'package:shramsansar/features/auth/data/models/register_model/register_request_model.dart';
-import 'package:shramsansar/features/auth/data/models/register_model/register_response_model.dart';
 
 abstract class AuthRepo {
   Future<Either<AppError, LoginResponseModel>> loginRepo(
@@ -63,6 +60,7 @@ class AuthRepoImp implements AuthRepo {
     }
   }
 
+  @override
   Future<Either<AppError, ChangePasswordResModel>> changePasswordRepo(
       ChangePasswordReqModel changePasswordReqModel) async {
     try {

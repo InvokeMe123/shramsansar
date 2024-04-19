@@ -1,7 +1,4 @@
-import 'dart:io';
 
-import 'package:dio/dio.dart';
-import 'package:flutter/widgets.dart';
 
 class MyProfileModel {
   int? id;
@@ -122,110 +119,110 @@ class MyProfileModel {
       jobseekerPreferenceCategory = <JobseekerPreferenceCategory>[];
       json['jobseeker_preference_category'].forEach((v) {
         jobseekerPreferenceCategory!
-            .add(new JobseekerPreferenceCategory.fromJson(v));
+            .add(JobseekerPreferenceCategory.fromJson(v));
       });
     }
     if (json['educations'] != null) {
       educations = <Educations>[];
       json['educations'].forEach((v) {
-        educations!.add(new Educations.fromJson(v));
+        educations!.add(Educations.fromJson(v));
       });
     }
     if (json['experiences'] != null) {
       experiences = <Experiences>[];
       json['experiences'].forEach((v) {
-        experiences!.add(new Experiences.fromJson(v));
+        experiences!.add(Experiences.fromJson(v));
       });
     }
     if (json['trainings'] != null) {
       trainings = <Trainings>[];
       json['trainings'].forEach((v) {
-        trainings!.add(new Trainings.fromJson(v));
+        trainings!.add(Trainings.fromJson(v));
       });
     }
     if (json['languages'] != null) {
       languages = <Languages>[];
       json['languages'].forEach((v) {
-        languages!.add(new Languages.fromJson(v));
+        languages!.add(Languages.fromJson(v));
       });
     }
     if (json['locations'] != null) {
       locations = <Locations>[];
       json['locations'].forEach((v) {
-        locations!.add(new Locations.fromJson(v));
+        locations!.add(Locations.fromJson(v));
       });
     }
     if (json['socialAccounts'] != null) {
       socialAccounts = <SocialAccounts>[];
       json['socialAccounts'].forEach((v) {
-        socialAccounts!.add(new SocialAccounts.fromJson(v));
+        socialAccounts!.add(SocialAccounts.fromJson(v));
       });
     }
     specialization = json['specialization'] != null
-        ? new Specialization.fromJson(json['specialization'])
+        ? Specialization.fromJson(json['specialization'])
         : null;
     aboutYourself = json['aboutYourself'] != null
-        ? new AboutYourself.fromJson(json['aboutYourself'])
+        ? AboutYourself.fromJson(json['aboutYourself'])
         : null;
     if (json['skills'] != null) {
       skills = <Skills>[];
       json['skills'].forEach((v) {
-        skills!.add(new Skills.fromJson(v));
+        skills!.add(Skills.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> MyProfileModel = new Map<String, dynamic>();
-    MyProfileModel['id'] = this.id;
-    MyProfileModel['name'] = this.name;
-    MyProfileModel['email'] = this.email;
-    MyProfileModel['per_pradesh_id'] = this.perPradeshId;
-    MyProfileModel['per_pradesh_name'] = this.perPradeshName;
-    MyProfileModel['per_district_id'] = this.perDistrictId;
-    MyProfileModel['per_district_name'] = this.perDistrictName;
-    MyProfileModel['per_muni_id'] = this.perMuniId;
-    MyProfileModel['per_muni_name'] = this.perMuniName;
-    MyProfileModel['per_ward'] = this.perWard;
-    MyProfileModel['pradesh_id'] = this.pradeshId;
-    MyProfileModel['temp_pradesh_name'] = this.tempPradeshName;
-    MyProfileModel['district_id'] = this.districtId;
-    MyProfileModel['temp_district_name'] = this.tempDistrictName;
-    MyProfileModel['muni_id'] = this.muniId;
-    MyProfileModel['temp_muni_name'] = this.tempMuniName;
-    MyProfileModel['ward'] = this.ward;
-    MyProfileModel['dob'] = this.dob;
-    MyProfileModel['gender'] = this.gender;
-    MyProfileModel['mobile'] = this.mobile;
-    MyProfileModel['phone'] = this.phone;
-    MyProfileModel['other_skills'] = this.otherSkills;
-    MyProfileModel['citizenship_no'] = this.citizenshipNo;
-    MyProfileModel['expected_salary'] = this.expectedSalary;
-    MyProfileModel['ethnicity_type'] = this.ethnicityType;
-    MyProfileModel['ethnicity_name'] = this.ethnicityName;
-    MyProfileModel['differently_able'] = this.differentlyAble;
-    MyProfileModel['migrant_worker'] = this.migrantWorker;
-    MyProfileModel['minority_group'] = this.minorityGroup;
+    final Map<String, dynamic> MyProfileModel = <String, dynamic>{};
+    MyProfileModel['id'] = id;
+    MyProfileModel['name'] = name;
+    MyProfileModel['email'] = email;
+    MyProfileModel['per_pradesh_id'] = perPradeshId;
+    MyProfileModel['per_pradesh_name'] = perPradeshName;
+    MyProfileModel['per_district_id'] = perDistrictId;
+    MyProfileModel['per_district_name'] = perDistrictName;
+    MyProfileModel['per_muni_id'] = perMuniId;
+    MyProfileModel['per_muni_name'] = perMuniName;
+    MyProfileModel['per_ward'] = perWard;
+    MyProfileModel['pradesh_id'] = pradeshId;
+    MyProfileModel['temp_pradesh_name'] = tempPradeshName;
+    MyProfileModel['district_id'] = districtId;
+    MyProfileModel['temp_district_name'] = tempDistrictName;
+    MyProfileModel['muni_id'] = muniId;
+    MyProfileModel['temp_muni_name'] = tempMuniName;
+    MyProfileModel['ward'] = ward;
+    MyProfileModel['dob'] = dob;
+    MyProfileModel['gender'] = gender;
+    MyProfileModel['mobile'] = mobile;
+    MyProfileModel['phone'] = phone;
+    MyProfileModel['other_skills'] = otherSkills;
+    MyProfileModel['citizenship_no'] = citizenshipNo;
+    MyProfileModel['expected_salary'] = expectedSalary;
+    MyProfileModel['ethnicity_type'] = ethnicityType;
+    MyProfileModel['ethnicity_name'] = ethnicityName;
+    MyProfileModel['differently_able'] = differentlyAble;
+    MyProfileModel['migrant_worker'] = migrantWorker;
+    MyProfileModel['minority_group'] = minorityGroup;
     MyProfileModel['file'] = file;
     if (jobseekerPreferenceCategory != null) {
       MyProfileModel['jobseeker_preference_category'] =
-          this.jobseekerPreferenceCategory!.map((v) => v.toJson()).toList();
+          jobseekerPreferenceCategory!.map((v) => v.toJson()).toList();
     }
     if (educations != null) {
       MyProfileModel['educations'] =
-          this.educations!.map((v) => v.toJson()).toList();
+          educations!.map((v) => v.toJson()).toList();
     }
-    if (this.experiences != null) {
+    if (experiences != null) {
       MyProfileModel['experiences'] =
-          this.experiences!.map((v) => v.toJson()).toList();
+          experiences!.map((v) => v.toJson()).toList();
     }
-    if (this.trainings != null) {
+    if (trainings != null) {
       MyProfileModel['trainings'] =
-          this.trainings!.map((v) => v.toJson()).toList();
+          trainings!.map((v) => v.toJson()).toList();
     }
-    if (this.languages != null) {
+    if (languages != null) {
       MyProfileModel['languages'] =
-          this.languages!.map((v) => v.toJson()).toList();
+          languages!.map((v) => v.toJson()).toList();
     }
     if (locations != null) {
       MyProfileModel['locations'] = locations!.map((v) => v.toJson()).toList();
@@ -235,13 +232,13 @@ class MyProfileModel {
           socialAccounts!.map((v) => v.toJson()).toList();
     }
     if (specialization != null) {
-      MyProfileModel['specialization'] = this.specialization!.toJson();
+      MyProfileModel['specialization'] = specialization!.toJson();
     }
-    if (this.aboutYourself != null) {
-      MyProfileModel['aboutYourself'] = this.aboutYourself!.toJson();
+    if (aboutYourself != null) {
+      MyProfileModel['aboutYourself'] = aboutYourself!.toJson();
     }
-    if (this.skills != null) {
-      MyProfileModel['skills'] = this.skills!.map((v) => v.toJson()).toList();
+    if (skills != null) {
+      MyProfileModel['skills'] = skills!.map((v) => v.toJson()).toList();
     }
     return MyProfileModel;
   }
@@ -348,10 +345,10 @@ class JobseekerPreferenceCategory {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> MyProfileModel = new Map<String, dynamic>();
-    MyProfileModel['id'] = this.id;
-    MyProfileModel['category_id'] = this.categoryId;
-    MyProfileModel['category_name'] = this.categoryName;
+    final Map<String, dynamic> MyProfileModel = <String, dynamic>{};
+    MyProfileModel['id'] = id;
+    MyProfileModel['category_id'] = categoryId;
+    MyProfileModel['category_name'] = categoryName;
     return MyProfileModel;
   }
 }
@@ -414,21 +411,21 @@ class Educations {
     graduationYear = json['graduation_year'];
     marksSecured = json['marks_secured'];
     levels =
-        json['levels'] != null ? new Levels.fromJson(json['levels']) : null;
+        json['levels'] != null ? Levels.fromJson(json['levels']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> MyProfileModel = new Map<String, dynamic>();
-    MyProfileModel['id'] = this.id;
-    MyProfileModel['level_id'] = this.levelId;
-    MyProfileModel['level_name'] = this.levelName;
-    MyProfileModel['program'] = this.program;
-    MyProfileModel['board'] = this.board;
-    MyProfileModel['institute'] = this.institute;
-    MyProfileModel['graduation_year'] = this.graduationYear;
-    MyProfileModel['marks_secured'] = this.marksSecured;
-    if (this.levels != null) {
-      MyProfileModel['levels'] = this.levels!.toJson();
+    final Map<String, dynamic> MyProfileModel = <String, dynamic>{};
+    MyProfileModel['id'] = id;
+    MyProfileModel['level_id'] = levelId;
+    MyProfileModel['level_name'] = levelName;
+    MyProfileModel['program'] = program;
+    MyProfileModel['board'] = board;
+    MyProfileModel['institute'] = institute;
+    MyProfileModel['graduation_year'] = graduationYear;
+    MyProfileModel['marks_secured'] = marksSecured;
+    if (levels != null) {
+      MyProfileModel['levels'] = levels!.toJson();
     }
     return MyProfileModel;
   }
@@ -446,9 +443,9 @@ class Levels {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> MyProfileModel = new Map<String, dynamic>();
-    MyProfileModel['id'] = this.id;
-    MyProfileModel['name'] = this.name;
+    final Map<String, dynamic> MyProfileModel = <String, dynamic>{};
+    MyProfileModel['id'] = id;
+    MyProfileModel['name'] = name;
     return MyProfileModel;
   }
 }
@@ -491,17 +488,17 @@ class Experiences {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> MyProfileModel = new Map<String, dynamic>();
-    MyProfileModel['id'] = this.id;
-    MyProfileModel['organization'] = this.organization;
-    MyProfileModel['location'] = this.location;
-    MyProfileModel['title'] = this.title;
-    MyProfileModel['is_currently_working'] = this.isCurrentlyWorking;
-    MyProfileModel['start_date'] = this.startDate;
-    MyProfileModel['end_date'] = this.endDate;
-    MyProfileModel['reference_name'] = this.referenceName;
-    MyProfileModel['reference_contact'] = this.referenceContact;
-    MyProfileModel['file'] = this.file;
+    final Map<String, dynamic> MyProfileModel = <String, dynamic>{};
+    MyProfileModel['id'] = id;
+    MyProfileModel['organization'] = organization;
+    MyProfileModel['location'] = location;
+    MyProfileModel['title'] = title;
+    MyProfileModel['is_currently_working'] = isCurrentlyWorking;
+    MyProfileModel['start_date'] = startDate;
+    MyProfileModel['end_date'] = endDate;
+    MyProfileModel['reference_name'] = referenceName;
+    MyProfileModel['reference_contact'] = referenceContact;
+    MyProfileModel['file'] = file;
     return MyProfileModel;
   }
 }
@@ -513,7 +510,7 @@ class Trainings {
   String? duration;
   String? year;
   String? details;
-  Null? file;
+  Null file;
 
   Trainings(
       {this.id,
@@ -535,14 +532,14 @@ class Trainings {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> MyProfileModel = new Map<String, dynamic>();
-    MyProfileModel['id'] = this.id;
-    MyProfileModel['title'] = this.title;
-    MyProfileModel['provider'] = this.provider;
-    MyProfileModel['duration'] = this.duration;
-    MyProfileModel['year'] = this.year;
-    MyProfileModel['details'] = this.details;
-    MyProfileModel['file'] = this.file;
+    final Map<String, dynamic> MyProfileModel = <String, dynamic>{};
+    MyProfileModel['id'] = id;
+    MyProfileModel['title'] = title;
+    MyProfileModel['provider'] = provider;
+    MyProfileModel['duration'] = duration;
+    MyProfileModel['year'] = year;
+    MyProfileModel['details'] = details;
+    MyProfileModel['file'] = file;
     return MyProfileModel;
   }
 }
@@ -573,13 +570,13 @@ class Languages {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> MyProfileModel = new Map<String, dynamic>();
-    MyProfileModel['id'] = this.id;
-    MyProfileModel['language_name'] = this.languageName;
-    MyProfileModel['language_rating_speaking'] = this.languageRatingSpeaking;
-    MyProfileModel['language_rating_reading'] = this.languageRatingReading;
-    MyProfileModel['language_rating_writing'] = this.languageRatingWriting;
-    MyProfileModel['language_rating_listening'] = this.languageRatingListening;
+    final Map<String, dynamic> MyProfileModel = <String, dynamic>{};
+    MyProfileModel['id'] = id;
+    MyProfileModel['language_name'] = languageName;
+    MyProfileModel['language_rating_speaking'] = languageRatingSpeaking;
+    MyProfileModel['language_rating_reading'] = languageRatingReading;
+    MyProfileModel['language_rating_writing'] = languageRatingWriting;
+    MyProfileModel['language_rating_listening'] = languageRatingListening;
     return MyProfileModel;
   }
 }
@@ -616,15 +613,15 @@ class Locations {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> MyProfileModel = new Map<String, dynamic>();
-    MyProfileModel['id'] = this.id;
-    MyProfileModel['location'] = this.location;
-    MyProfileModel['per_pradesh_id'] = this.perPradeshId;
-    MyProfileModel['pradesh_name'] = this.pradeshName;
-    MyProfileModel['per_district_id'] = this.perDistrictId;
-    MyProfileModel['district_name'] = this.districtName;
-    MyProfileModel['per_muni_id'] = this.perMuniId;
-    MyProfileModel['muni_name'] = this.muniName;
+    final Map<String, dynamic> MyProfileModel = <String, dynamic>{};
+    MyProfileModel['id'] = id;
+    MyProfileModel['location'] = location;
+    MyProfileModel['per_pradesh_id'] = perPradeshId;
+    MyProfileModel['pradesh_name'] = pradeshName;
+    MyProfileModel['per_district_id'] = perDistrictId;
+    MyProfileModel['district_name'] = districtName;
+    MyProfileModel['per_muni_id'] = perMuniId;
+    MyProfileModel['muni_name'] = muniName;
     return MyProfileModel;
   }
 }
@@ -643,10 +640,10 @@ class SocialAccounts {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> MyProfileModel = new Map<String, dynamic>();
-    MyProfileModel['id'] = this.id;
-    MyProfileModel['name'] = this.name;
-    MyProfileModel['url'] = this.url;
+    final Map<String, dynamic> MyProfileModel = <String, dynamic>{};
+    MyProfileModel['id'] = id;
+    MyProfileModel['name'] = name;
+    MyProfileModel['url'] = url;
     return MyProfileModel;
   }
 }
@@ -663,9 +660,9 @@ class Specialization {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> MyProfileModel = new Map<String, dynamic>();
-    MyProfileModel['id'] = this.id;
-    MyProfileModel['specialization'] = this.specialization;
+    final Map<String, dynamic> MyProfileModel = <String, dynamic>{};
+    MyProfileModel['id'] = id;
+    MyProfileModel['specialization'] = specialization;
     return MyProfileModel;
   }
 }
@@ -682,9 +679,9 @@ class AboutYourself {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> MyProfileModel = new Map<String, dynamic>();
-    MyProfileModel['id'] = this.id;
-    MyProfileModel['description'] = this.description;
+    final Map<String, dynamic> MyProfileModel = <String, dynamic>{};
+    MyProfileModel['id'] = id;
+    MyProfileModel['description'] = description;
     return MyProfileModel;
   }
 
@@ -714,10 +711,10 @@ class Skills {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> MyProfileModel = new Map<String, dynamic>();
-    MyProfileModel['id'] = this.id;
-    MyProfileModel['skill_id'] = this.skillId;
-    MyProfileModel['skill_name'] = this.skillName;
+    final Map<String, dynamic> MyProfileModel = <String, dynamic>{};
+    MyProfileModel['id'] = id;
+    MyProfileModel['skill_id'] = skillId;
+    MyProfileModel['skill_name'] = skillName;
     return MyProfileModel;
   }
 }

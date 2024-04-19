@@ -1,12 +1,10 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shramsansar/const/app_color_const.dart';
-import 'package:shramsansar/core/dbclient.dart';
 import 'package:shramsansar/features/auth/data/models/login_model/login_request_model.dart';
 import 'package:shramsansar/features/auth/presentation/controller/auth_controller.dart';
 import 'package:shramsansar/features/auth/presentation/controller/login_loading_controller.dart';
@@ -32,8 +30,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       'fiRiB9DySGO4dzQG8-Qu7y:APA91bGIoNhOM1Ub8a6u7TN3SDd1DO3HahpS8DIqW0p_vf5eJQgICh5Byt6F8CqjGJLdWof2IadqdSXwVYxZfEyTCY-pB2zLs6u9ZtyQSWSnQ5w-RAIa61czHzJ-FqxGdtMyt7HnUQ_A';
   String token = '';
   bool isVisible = false;
-  Icon visible = Icon(Icons.visibility);
-  Icon notVisible = Icon(Icons.visibility_off_outlined);
+  Icon visible = const Icon(Icons.visibility);
+  Icon notVisible = const Icon(Icons.visibility_off_outlined);
 
   login() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

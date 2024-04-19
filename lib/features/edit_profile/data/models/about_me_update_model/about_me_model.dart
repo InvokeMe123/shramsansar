@@ -7,15 +7,15 @@ class AboutMeModel {
     if (json['aboutYou'] != null) {
       aboutYou = <AboutYou>[];
       json['aboutYou'].forEach((v) {
-        aboutYou!.add(new AboutYou.fromJson(v));
+        aboutYou!.add(AboutYou.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.aboutYou != null) {
-      data['aboutYou'] = this.aboutYou!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (aboutYou != null) {
+      data['aboutYou'] = aboutYou!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -35,10 +35,10 @@ class AboutYou {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['job_seeker_id'] = this.jobSeekerId;
-    data['about_me'] = this.aboutMe;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['job_seeker_id'] = jobSeekerId;
+    data['about_me'] = aboutMe;
     return data;
   }
 }

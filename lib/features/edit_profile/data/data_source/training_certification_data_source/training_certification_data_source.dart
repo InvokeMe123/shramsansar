@@ -4,7 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shramsansar/core/api_client/api_client.dart';
 import 'package:shramsansar/core/api_const/api_const.dart';
-import 'package:shramsansar/features/edit_profile/data/models/experience_model/experience_model.dart';
 
 abstract class TrainingCertificationDs {
   Future<void> addTraining(FormData formData);

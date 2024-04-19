@@ -4,7 +4,7 @@ import 'package:shramsansar/features/getWardnumber/data/repository/ward_reposito
 
 class WardController extends StateNotifier<AsyncValue<WardModel>> {
   final WardRepo wardRepo;
-  WardController(this.wardRepo) : super(AsyncValue.loading()) {
+  WardController(this.wardRepo) : super(const AsyncValue.loading()) {
     getWard();
   }
 

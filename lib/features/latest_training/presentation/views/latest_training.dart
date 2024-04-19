@@ -17,9 +17,9 @@ class LatestTraining extends ConsumerWidget {
         ],
       );
     }, error: (_, __) {
-      return Text('error');
+      return const Text('error');
     }, loading: () {
-      return ShimmerSkeleton(
+      return const ShimmerSkeleton(
         count: 3,
       );
     });

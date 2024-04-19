@@ -4,7 +4,7 @@ import 'package:shimmer/shimmer.dart';
 class ShimmerSkeleton extends StatelessWidget {
   final int count;
 
-  const ShimmerSkeleton({Key? key, required this.count}) : super(key: key);
+  const ShimmerSkeleton({super.key, required this.count});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class ShimmerSkeleton extends StatelessWidget {
             baseColor: Colors.grey.shade200,
             highlightColor: Colors.grey.shade100,
             child: Container(
-              margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
               width: double.infinity,
               height: 100.0,
               decoration: BoxDecoration(

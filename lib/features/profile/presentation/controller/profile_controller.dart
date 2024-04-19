@@ -1,8 +1,6 @@
 import 'dart:developer';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shramsansar/core/dbclient.dart';
-import 'package:shramsansar/features/edit_profile/data/models/education_model/education_model.dart';
 import 'package:shramsansar/features/edit_profile/data/models/education_model/education_model_req.dart';
 
 import 'package:shramsansar/features/profile/data/model/profile_model.dart';
@@ -10,7 +8,7 @@ import 'package:shramsansar/features/profile/data/repositories/profile_repo.dart
 
 class ProfileController extends StateNotifier<AsyncValue<MyProfileModel>> {
   final ProfileRepo profileRepo;
-  ProfileController(this.profileRepo) : super(AsyncValue.loading()) {
+  ProfileController(this.profileRepo) : super(const AsyncValue.loading()) {
     getMyProfile();
   }
   Future getMyProfile() async {

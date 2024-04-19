@@ -6,10 +6,8 @@ import 'package:shramsansar/core/dbclient.dart';
 import 'package:shramsansar/dashboard.dart';
 import 'package:shramsansar/features/auth/data/models/login_model/login_request_model.dart';
 import 'package:shramsansar/features/auth/data/models/login_model/login_response_model.dart';
-import 'package:shramsansar/features/auth/data/models/register_model/register_request_model.dart';
 import 'package:shramsansar/features/auth/data/repositories/auth_repository.dart';
 import 'package:shramsansar/features/auth/presentation/controller/auth_state.dart';
-import 'package:shramsansar/features/auth/presentation/views/login/loginScreen.dart';
 import 'package:shramsansar/utils/navigation/nav_app.dart';
 import 'package:shramsansar/utils/snackbar/custome_snack_bar.dart';
 

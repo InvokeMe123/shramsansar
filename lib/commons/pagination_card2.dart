@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:number_pagination/number_pagination.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shramsansar/const/app_color_const.dart';
 import 'package:shramsansar/features/all_jobs/provider/page_index_provider.dart';
-import 'package:shramsansar/features/trainings/provider/page_index_provider.dart';
 
 class PaginationCard2 extends ConsumerWidget {
   final int totalItems;

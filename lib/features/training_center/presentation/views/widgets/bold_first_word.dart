@@ -25,7 +25,7 @@ class BoldFirstWord extends StatelessWidget {
         children: <TextSpan>[
           TextSpan(
             text: lastWord,
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.normal,
               color: Colors.black,
             ),

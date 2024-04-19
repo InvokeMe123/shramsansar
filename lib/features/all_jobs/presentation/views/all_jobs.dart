@@ -1,15 +1,10 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:shramsansar/commons/pagination_card.dart';
 import 'package:shramsansar/commons/pagination_card2.dart';
 import 'package:shramsansar/const/app_color_const.dart';
-import 'package:shramsansar/const/app_const.dart';
 import 'package:shramsansar/features/all_jobs/data/models/all_jobs_model.dart';
 import 'package:shramsansar/features/all_jobs/presentation/controller/all_jobs_controller.dart';
-import 'package:shramsansar/features/all_jobs/presentation/views/all_jobs_list.dart';
 import 'package:shramsansar/commons/job_card.dart';
 import 'package:shramsansar/features/all_jobs/provider/filtered_provider.dart';
 import 'package:shramsansar/features/all_jobs/provider/page_index_provider.dart';
@@ -21,7 +16,6 @@ import 'package:shramsansar/features/getPradesh/data/models/pradeshModel.dart';
 import 'package:shramsansar/features/getPradesh/presentation/controller/pradesh_controller.dart';
 import 'package:shramsansar/features/jobs/data/models/job_category_model.dart';
 import 'package:shramsansar/features/jobs/presentation/controller/job_catergory_controller.dart';
-import 'package:shramsansar/utils/snackbar/custome_snack_bar.dart';
 
 class AllJobs extends ConsumerStatefulWidget {
   const AllJobs({super.key});
@@ -65,25 +59,25 @@ class _AllJobsState extends ConsumerState<AllJobs> {
     final result = ref.watch(allJobsControllerProvider(pageIndex));
     return Scaffold(
       appBar: AppBar(
-        title: Text('All Jobs'),
+        title: const Text('All Jobs'),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           getPradesh(context),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           districtsDropDown(context),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           getMuni(context),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           jobCategoryDropDown(context),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Row(
@@ -103,7 +97,7 @@ class _AllJobsState extends ConsumerState<AllJobs> {
                       selectedMunicipality = null;
                       selectedJobCategory = null;
                     },
-                    child: Text('Clear filter')),
+                    child: const Text('Clear filter')),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     shape: const RoundedRectangleBorder(
@@ -146,14 +140,14 @@ class _AllJobsState extends ConsumerState<AllJobs> {
             width: MediaQuery.sizeOf(context).width,
             height: 1,
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Expanded(
               child: result.when(
                   data: (data) {
                     if (data.data!.isEmpty) {
-                      return Center(
+                      return const Center(
                         child: Text('NO data'),
                       );
                     }
@@ -173,12 +167,12 @@ class _AllJobsState extends ConsumerState<AllJobs> {
                     );
                   },
                   error: (_, __) {
-                    return Text("he");
+                    return const Text("he");
                   },
                   loading: () =>
                       const Center(child: CircularProgressIndicator()))),
 
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           //getJobs(context)
@@ -267,7 +261,7 @@ class _AllJobsState extends ConsumerState<AllJobs> {
             return Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: DropdownButton<String>(
-                  icon: Padding(
+                  icon: const Padding(
                     padding: EdgeInsets.only(
                         left: 203), // Adjust the left padding as needed
                     child: Icon(Icons.arrow_drop_down),
@@ -320,7 +314,7 @@ class _AllJobsState extends ConsumerState<AllJobs> {
           return Container(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: DropdownButton<String>(
-              icon: Padding(
+              icon: const Padding(
                 padding: EdgeInsets.only(
                     left: 210), // Adjust the left padding as needed
                 child: Icon(Icons.arrow_drop_down),
@@ -376,8 +370,8 @@ class _AllJobsState extends ConsumerState<AllJobs> {
             return Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: DropdownButton<String>(
-                  icon: Padding(
-                    padding: const EdgeInsets.only(
+                  icon: const Padding(
+                    padding: EdgeInsets.only(
                         left: 145), // Adjust the left padding as needed
                     child: Icon(Icons.arrow_drop_down),
                   ),
@@ -425,8 +419,8 @@ class _AllJobsState extends ConsumerState<AllJobs> {
               return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: DropdownButton<String>(
-                  icon: Padding(
-                    padding: const EdgeInsets.only(
+                  icon: const Padding(
+                    padding: EdgeInsets.only(
                         left: 75), // Adjust the left padding as needed
                     child: Icon(Icons.arrow_drop_down),
                   ),

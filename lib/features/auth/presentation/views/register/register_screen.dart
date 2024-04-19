@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,7 +20,6 @@ import 'package:shramsansar/features/getPradesh/presentation/controller/pradesh_
 import 'package:shramsansar/features/getWardnumber/presentation/controller/ward_controller.dart';
 import 'package:shramsansar/features/jobs/presentation/controller/job_catergory_controller.dart';
 import 'package:shramsansar/features/profile/presentation/controller/profile_controller.dart';
-import 'package:shramsansar/utils/custom_form/custom_form.dart';
 import 'package:shramsansar/utils/navigation/nav_app.dart';
 import 'package:shramsansar/utils/snackbar/custome_snack_bar.dart';
 
@@ -168,7 +166,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           },
                           error: (error, stackTrace) {
                             log(error.toString());
-                            return SizedBox();
+                            return const SizedBox();
                           },
                           loading: () {
                             return const CircularProgressIndicator();
@@ -181,7 +179,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
                         TextFormField(
                           controller: otherSkillsController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             hintText: 'Other Skills',
                           ),
                         ),
@@ -378,11 +376,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             },
                             child: Container(
                               width: MediaQuery.sizeOf(context).width,
-                              padding: EdgeInsets.all(12),
+                              padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12),
                                   color: AppColorConst.PRAYMARY_TEXT_COLOR),
-                              child: Center(
+                              child: const Center(
                                   child: Text(
                                 'REGISTER',
                                 style: TextStyle(color: Colors.white),
@@ -772,7 +770,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           documentTypes = data.data!;
         },
         error: (error, stackTrace) {},
-        loading: () => SizedBox());
+        loading: () => const SizedBox());
 
     return DropdownButtonFormField<String>(
       hint: const Text('Document Type'),

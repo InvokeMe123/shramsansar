@@ -59,16 +59,16 @@ class NewsNoticeCard extends StatelessWidget {
                 children: [
                   const Icon(Icons.location_on_outlined,
                       size: 18, color: Colors.grey),
-                  SizedBox(
+                  const SizedBox(
                     width: 5,
                   ),
                   Text(data.location!),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
-                  Icon(Icons.calendar_month_outlined,
+                  const Icon(Icons.calendar_month_outlined,
                       size: 18, color: Colors.grey),
-                  SizedBox(
+                  const SizedBox(
                     width: 5,
                   ),
                   Text(data.publishedDate!),

@@ -41,13 +41,13 @@ class _SkillsDropDownState extends State<SkillsDropDown> {
                 onPressed: () {
                   Navigator.pop<List<String>>(context, []);
                 },
-                child: Text('Cancel'),
+                child: const Text('Cancel'),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.pop<List<String>>(context, selectedValues);
                 },
-                child: Text('Done'),
+                child: const Text('Done'),
               ),
             ],
           ),

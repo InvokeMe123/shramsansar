@@ -13,7 +13,7 @@ class AddSocialAccountsModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (accounts != null) {
       data['accounts'] = accounts!.map((v) => v.toJson()).toList();
     }
@@ -33,7 +33,7 @@ class Accounts {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['name'] = name;
     data['url'] = url;
     return data;

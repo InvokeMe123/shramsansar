@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shramsansar/const/app_color_const.dart';
 import 'package:shramsansar/features/news_and_notices/presentation/controller/news_notice_controller.dart';
 import 'package:shramsansar/features/news_and_notices/presentation/views/widgets/news_notice_card.dart';
-import 'package:shramsansar/utils/custom_form/custom_form.dart';
 import 'package:shramsansar/utils/snackbar/custome_snack_bar.dart';
 
 class NewsNotice extends ConsumerStatefulWidget {
@@ -49,7 +47,7 @@ class _NewsNoticeState extends ConsumerState<NewsNotice> {
     var newsnotice = ref.watch(newsnoticeControllerProvider(1));
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'News and Notice',
         ),
       ),
@@ -66,13 +64,13 @@ class _NewsNoticeState extends ConsumerState<NewsNotice> {
               ),
               Row(
                 children: [
-                  Container(
+                  SizedBox(
                     width: MediaQuery.sizeOf(context).width * 0.65,
                     child: TextFormField(
                       controller: search,
                       decoration: InputDecoration(
                           constraints:
-                              BoxConstraints.tight(Size.fromHeight(35)),
+                              BoxConstraints.tight(const Size.fromHeight(35)),
                           contentPadding: const EdgeInsets.only(
                               top: 10, left: 10, right: 10),
                           focusedBorder: OutlineInputBorder(
@@ -170,10 +168,6 @@ class _NewsNoticeState extends ConsumerState<NewsNotice> {
                               title: search.text,
                               type: selectedIndexValue.toString());
                     },
-                    child: Text(
-                      'Apply',
-                      style: TextStyle(color: Colors.white),
-                    ),
                     style: ElevatedButton.styleFrom(
                         minimumSize:
                             Size(MediaQuery.sizeOf(context).width * .24, 25),
@@ -183,6 +177,10 @@ class _NewsNoticeState extends ConsumerState<NewsNotice> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(6)),
                         backgroundColor: AppColorConst.BUTTON_BLUE_COLOR),
+                    child: const Text(
+                      'Apply',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   )
                 ],
               ),
@@ -205,7 +203,7 @@ class _NewsNoticeState extends ConsumerState<NewsNotice> {
               }, error: (_, __) {
                 return const Text('error');
               }, loading: () {
-                return Text('Loading.....');
+                return const Text('Loading.....');
               })
             ],
           ),

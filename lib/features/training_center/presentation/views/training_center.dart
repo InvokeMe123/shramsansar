@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shramsansar/core/api_client/api_client.dart';
-import 'package:shramsansar/features/training_center/data/data_source/training_center_data_source.dart';
 import 'package:shramsansar/features/training_center/presentation/controller/training_center_controller.dart';
 import 'package:shramsansar/features/training_center/presentation/views/widgets/training_center_card.dart';
 

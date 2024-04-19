@@ -29,9 +29,11 @@ class AuthController extends StateNotifier<AuthState> {
         : state = AuthState.loggedIn(LoginResponseModel.fromJson(dbResult));
   }
 
-  login(LoginRequestModel loginRequestModel, BuildContext context,
+  Future<bool> login(LoginRequestModel loginRequestModel, BuildContext context,
       String token) async {
     final result = await authRepo.loginRepo(loginRequestModel, token);
+    bool flag = false;
+
     result.fold((l) {
       log('error');
       showCustomSnackBar("Your email or password do not match", context);
@@ -39,10 +41,12 @@ class AuthController extends StateNotifier<AuthState> {
       showCustomSnackBar("You are logged In", context, isError: false);
 
       state = AuthState.loggedIn(r);
+      flag = true;
       if (context.mounted) {
         pushAndRemoveUntil(context, const Dashboard());
       }
     });
+    return flag;
   }
 }
 

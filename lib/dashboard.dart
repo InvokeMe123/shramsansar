@@ -9,6 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shramsansar/commons/latest_job_card.dart';
 import 'package:shramsansar/commons/training_card.dart';
 import 'package:shramsansar/const/app_color_const.dart';
+import 'package:shramsansar/core/api_client/api_client.dart';
+import 'package:shramsansar/core/api_const/api_const.dart';
 import 'package:shramsansar/core/dbclient.dart';
 import 'package:shramsansar/features/all_jobs/presentation/controller/latest_job_controller.dart';
 import 'package:shramsansar/features/all_jobs/presentation/views/all_jobs.dart';
@@ -55,9 +57,13 @@ class _DashboardState extends ConsumerState<Dashboard> {
     }
   }
 
-  logout() {
-    DbClient().removeData(dbkey: 'token');
-    normalNav(context, const LoginScreen());
+  logout() async {
+    await ApiClient(DbClient()).request(path: "${ApiConst.LOG_OUT_URI}");
+    await DbClient().removeData(dbkey: 'token').then(
+      (value) {
+        normalNav(context, const LoginScreen());
+      },
+    );
   }
 
   @override

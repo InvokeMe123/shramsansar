@@ -19,8 +19,9 @@ class ProfileDataSourceImp implements ProfileDataSource {
   ProfileDataSourceImp(this.apiClient);
   @override
   Future<MyProfileModel> getMyProfile() async {
-    final result =
-        await apiClient.request(path: ApiConst.MY_PROFILE, type: 'get');
+    final token = await apiClient.dbClient.getData(dbKey: 'token');
+    final result = await apiClient.request(
+        path: ApiConst.MY_PROFILE, type: 'get', token: token);
     //log('profile DS:${result['data']}');
     return MyProfileModel.fromJson(result['data']);
   }

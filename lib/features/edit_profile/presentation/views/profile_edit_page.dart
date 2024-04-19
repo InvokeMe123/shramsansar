@@ -884,27 +884,6 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                       const SizedBox(
                         height: 10,
                       ),
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        width: MediaQuery.sizeOf(context).width,
-                        decoration: BoxDecoration(
-                          color: AppColorConst.BUTTON_BLUE_COLOR,
-                        ),
-                        child: Row(
-                          children: [
-                            const Text(
-                              'Characteristics',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            const Spacer(),
-                            GestureDetector(
-                              onTap: () {},
-                              child:
-                                  const Icon(Icons.edit, color: Colors.white),
-                            )
-                          ],
-                        ),
-                      ),
                     ],
                   ),
                 );

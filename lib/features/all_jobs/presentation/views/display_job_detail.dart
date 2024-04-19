@@ -28,11 +28,12 @@ class _DisplayJobState extends State<DisplayJob> {
   String filePath1 = '';
   String fileName = '';
   FormData formData = FormData();
+  String token = DbClient().getData(dbKey: 'token');
 
   void cvUpload() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: ['pdf', 'doc'],
+      allowedExtensions: ['pdf', 'doc', 'jpg'],
     );
     if (result != null && result.files.isNotEmpty) {
       String filePath = result.files.single.path!;

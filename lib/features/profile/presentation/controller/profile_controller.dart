@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shramsansar/core/dbclient.dart';
 import 'package:shramsansar/features/edit_profile/data/models/education_model/education_model.dart';
 import 'package:shramsansar/features/edit_profile/data/models/education_model/education_model_req.dart';
 
@@ -12,8 +15,9 @@ class ProfileController extends StateNotifier<AsyncValue<MyProfileModel>> {
   }
   Future getMyProfile() async {
     print('profile controller');
+
     final result = await profileRepo.profileRepo();
-    //log(result.toString());
+    log("Profile controller : $result");
     result.fold(
         (l) => state =
             AsyncValue.error(l.message, StackTrace.fromString(l.message)),

@@ -45,7 +45,7 @@ class JobCard extends StatelessWidget {
                           color: AppColorConst.BUTTON_BLUE_COLOR)),
                   const SizedBox(height: 4),
                   Text(model.serviceProviderName.toString()),
-                 const SizedBox(height: 6),
+                  const SizedBox(height: 6),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

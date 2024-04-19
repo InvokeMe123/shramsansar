@@ -5,7 +5,8 @@ import 'package:shramsansar/features/jobs/data/repository/job_category_repo.dart
 class JobCategoryController
     extends StateNotifier<AsyncValue<JobCategoryModel>> {
   final JobCategoryRepo jobCategoryRepo;
-  JobCategoryController(this.jobCategoryRepo) : super(const AsyncValue.loading()) {
+  JobCategoryController(this.jobCategoryRepo)
+      : super(const AsyncValue.loading()) {
     getJobCategory();
   }
   getJobCategory() async {
@@ -17,7 +18,7 @@ class JobCategoryController
   }
 }
 
-final jobcontrollerProvider =
+final jobCategoryControllerProvider =
     StateNotifierProvider<JobCategoryController, AsyncValue<JobCategoryModel>>(
         (ref) {
   return JobCategoryController(ref.read(jobcategoryRepoProvider));

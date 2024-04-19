@@ -29,13 +29,13 @@ class DisplayNewsNoticeScreen extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Icon(Icons.location_on_outlined),
+                    const Icon(Icons.location_on_outlined),
                     Text(data.location.toString())
                   ],
                 ),
                 Row(
                   children: [
-                    Icon(Icons.calendar_today_outlined),
+                    const Icon(Icons.calendar_today_outlined),
                     Text(data.publishedDate.toString())
                   ],
                 )

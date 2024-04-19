@@ -6,7 +6,7 @@ class NewsNoticeController extends StateNotifier<AsyncValue<NewsNoticeModel>> {
   final NewsNoticeRepo newsNoticeRepo;
   int page;
   NewsNoticeController(this.newsNoticeRepo, this.page)
-      : super(AsyncValue.loading()) {
+      : super(const AsyncValue.loading()) {
     getNewsNotice();
   }
 

@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shramsansar/const/app_color_const.dart';
-import 'package:shramsansar/core/dbclient.dart';
 import 'package:shramsansar/dashboard.dart';
 import 'package:shramsansar/features/auth/presentation/controller/auth_controller.dart';
-import 'package:shramsansar/features/auth/presentation/views/login/loginScreen.dart';
 
 class ShramsansarApp extends ConsumerWidget {
   const ShramsansarApp({super.key});
@@ -18,6 +16,15 @@ class ShramsansarApp extends ConsumerWidget {
           appBarTheme: AppBarTheme(
             backgroundColor: AppColorConst.PRAYMARY_TEXT_COLOR,
             foregroundColor: AppColorConst.PRAYMERY_COLOR,
+          ),
+          inputDecorationTheme: InputDecorationTheme(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            filled: true,
+            fillColor: const Color(0xffF1F1F1),
           ),
         ),
         home: ref.watch(authControllerProvider).when(

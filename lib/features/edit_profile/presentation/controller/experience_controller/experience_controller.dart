@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shramsansar/features/edit_profile/data/models/experience_model/experience_model.dart';
 import 'package:shramsansar/features/edit_profile/data/repositories/experience_repo/experience_repo.dart';
 
 class ExperienceController extends StateNotifier<AsyncValue<void>> {

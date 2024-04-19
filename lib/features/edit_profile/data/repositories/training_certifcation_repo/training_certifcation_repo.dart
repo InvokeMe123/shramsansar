@@ -2,9 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shramsansar/core/app_error/app_error.dart';
-import 'package:shramsansar/features/edit_profile/data/data_source/experience_data_source/experience_data_source.dart';
 import 'package:shramsansar/features/edit_profile/data/data_source/training_certification_data_source/training_certification_data_source.dart';
-import 'package:shramsansar/features/edit_profile/data/models/experience_model/experience_model.dart';
 
 abstract class TrainingCertificationRepo {
   Future<Either<AppError, void>> trainingCertificationRepo(FormData formData);

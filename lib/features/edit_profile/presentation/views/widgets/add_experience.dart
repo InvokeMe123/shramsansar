@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -39,7 +38,7 @@ class _AddExperienceState extends ConsumerState<AddExperience> {
   }
 
   String filePath1 = '';
-  String fileName = '';
+  String fileName = "Choose File";
   bool isSelected = false;
   void experience() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -64,17 +63,23 @@ class _AddExperienceState extends ConsumerState<AddExperience> {
     return Form(
       key: _formKey,
       child: AlertDialog(
-        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-        contentPadding: const EdgeInsets.all(0),
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(12))),
+        contentPadding: EdgeInsets.zero,
         content: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              padding: const EdgeInsets.all(3),
+              padding: const EdgeInsets.all(4),
               width: MediaQuery.sizeOf(context).width,
               height: 30,
-              decoration: BoxDecoration(color: AppColorConst.PRAYMERY_COLOR),
+              decoration: BoxDecoration(
+                color: AppColorConst.PRAYMERY_COLOR,
+                borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(12),
+                    topRight: Radius.circular(12)),
+              ),
               child: Row(
                 children: [
                   Text(
@@ -94,14 +99,10 @@ class _AddExperienceState extends ConsumerState<AddExperience> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Job Position *'),
-                  const SizedBox(
-                    height: 3,
-                  ),
                   TextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -110,131 +111,89 @@ class _AddExperienceState extends ConsumerState<AddExperience> {
                       return null;
                     },
                     controller: position,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         isDense: true,
                         fillColor: Colors.white,
-                        contentPadding: const EdgeInsets.all(7),
-                        constraints: BoxConstraints.tight(
-                            Size(MediaQuery.sizeOf(context).width, 40)),
-                        focusedBorder: const OutlineInputBorder(
+                        contentPadding: EdgeInsets.all(7),
+                        label: Text("Job Position *"),
+                        focusedBorder: OutlineInputBorder(
                             borderSide:
                                 BorderSide(color: Colors.black, width: .5)),
-                        enabledBorder: const OutlineInputBorder(
+                        enabledBorder: OutlineInputBorder(
                             borderSide:
                                 BorderSide(color: Colors.black, width: .5))),
                   ),
+                  SizedBox(height: 1.2.h),
                   Row(
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('Organization Name *'),
-                          const SizedBox(
-                            height: 3,
+                      Expanded(
+                        child: TextFormField(
+                          controller: organizationName,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter Org. Name';
+                            }
+                            return null;
+                          },
+                          decoration: const InputDecoration(
+                            isDense: true,
+                            fillColor: Colors.white,
+                            contentPadding: EdgeInsets.all(7),
+                            label: Text('Org. Name *'),
                           ),
-                          TextFormField(
-                            controller: organizationName,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter Organization Name';
-                              }
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                                isDense: true,
-                                fillColor: Colors.white,
-                                contentPadding: const EdgeInsets.all(7),
-                                constraints: BoxConstraints.tight(Size(
-                                    MediaQuery.sizeOf(context).width * .365,
-                                    40)),
-                                focusedBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.black, width: .5)),
-                                enabledBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.black, width: .5))),
-                          ),
-                        ],
+                        ),
                       ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('Address *'),
-                          const SizedBox(
-                            height: 3,
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: TextFormField(
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter Address';
+                            }
+                            return null;
+                          },
+                          controller: address,
+                          decoration: const InputDecoration(
+                            isDense: true,
+                            fillColor: Colors.white,
+                            contentPadding: EdgeInsets.all(7),
+                            label: Text('Address *'),
                           ),
-                          TextFormField(
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter Address';
-                              }
-                              return null;
-                            },
-                            controller: address,
-                            decoration: InputDecoration(
-                                isDense: true,
-                                fillColor: Colors.white,
-                                contentPadding: const EdgeInsets.all(7),
-                                constraints: BoxConstraints.tight(Size(
-                                    MediaQuery.sizeOf(context).width * .365,
-                                    40)),
-                                focusedBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.black, width: .5)),
-                                enabledBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.black, width: .5))),
-                          ),
-                        ],
+                        ),
                       ),
                     ],
                   ),
+                  SizedBox(height: 1.2.h),
                   Row(
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('Start Date *'),
-                          const SizedBox(
-                            height: 3,
+                      Expanded(
+                        child: TextFormField(
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter Start Date';
+                            }
+                            return null;
+                          },
+                          controller: startDate,
+                          decoration: const InputDecoration(
+                            isDense: true,
+                            contentPadding: EdgeInsets.all(7),
+                            label: Text("Start Date *"),
                           ),
-                          TextFormField(
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter Start Date';
-                              }
-                              return null;
-                            },
-                            controller: startDate,
-                            decoration: InputDecoration(
-                                contentPadding: const EdgeInsets.all(7),
-                                constraints: BoxConstraints.tight(Size(
-                                    MediaQuery.sizeOf(context).width * .365,
-                                    40)),
-                                focusedBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.black, width: .5)),
-                                enabledBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.black, width: .5))),
-                            onTap: () async {
-                              FocusScope.of(context).requestFocus(FocusNode());
-                              DateTime? picked = await showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime(2015, 8),
-                                  lastDate: DateTime.now());
-                              if (picked != null) {
-                                setState(() {
-                                  startDate.text = _formatDate(picked);
-                                });
-                              }
-                            },
-                          ),
-                        ],
+                          onTap: () async {
+                            FocusScope.of(context).requestFocus(FocusNode());
+                            DateTime? picked = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2015, 8),
+                                lastDate: DateTime.now());
+                            if (picked != null) {
+                              setState(() {
+                                startDate.text = _formatDate(picked);
+                              });
+                            }
+                          },
+                        ),
                       ),
                       const SizedBox(
                         width: 4,
@@ -252,209 +211,179 @@ class _AddExperienceState extends ConsumerState<AddExperience> {
                       const Text('Currently working')
                     ],
                   ),
+                  SizedBox(height: 1.2.h),
                   !isWorking
                       ? Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text('End Date'),
-                            const SizedBox(
-                              height: 3,
+                            SizedBox(
+                              width: MediaQuery.sizeOf(context).width * .365,
+                              child: TextFormField(
+                                controller: endDate,
+                                decoration: const InputDecoration(
+                                  contentPadding: EdgeInsets.all(7),
+                                  label: Text("End Date"),
+                                  isDense: true,
+                                ),
+                                onTap: () async {
+                                  FocusScope.of(context)
+                                      .requestFocus(FocusNode());
+                                  DateTime? picked = await showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(2015, 8),
+                                      lastDate: DateTime.now());
+                                  if (picked != null) {
+                                    setState(() {
+                                      endDate.text = _formatDate(picked);
+                                    });
+                                  }
+                                },
+                              ),
                             ),
-                            TextFormField(
-                              controller: endDate,
-                              decoration: InputDecoration(
-                                  contentPadding: const EdgeInsets.all(7),
-                                  constraints: BoxConstraints.tight(Size(
-                                      MediaQuery.sizeOf(context).width * .365,
-                                      40)),
-                                  focusedBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.black, width: .5)),
-                                  enabledBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.black, width: .5))),
-                              onTap: () async {
-                                FocusScope.of(context)
-                                    .requestFocus(FocusNode());
-                                DateTime? picked = await showDatePicker(
-                                    context: context,
-                                    initialDate: DateTime.now(),
-                                    firstDate: DateTime(2015, 8),
-                                    lastDate: DateTime.now());
-                                if (picked != null) {
-                                  setState(() {
-                                    endDate.text = _formatDate(picked);
-                                  });
-                                }
-                              },
-                            ),
+                            SizedBox(height: 1.2.h),
                           ],
                         )
                       : const SizedBox(),
                   Row(
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('Reference Name *'),
-                          const SizedBox(
-                            height: 3,
-                          ),
-                          TextFormField(
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter Reference Name';
-                              }
-                              return null;
-                            },
-                            controller: referenceName,
-                            decoration: InputDecoration(
-                                isDense: true,
-                                fillColor: Colors.white,
-                                contentPadding: const EdgeInsets.all(7),
-                                constraints: BoxConstraints.tight(Size(
-                                    MediaQuery.sizeOf(context).width * .365,
-                                    40)),
-                                focusedBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.black, width: .5)),
-                                enabledBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.black, width: .5))),
-                          ),
-                        ],
+                      Expanded(
+                        child: TextFormField(
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter Ref. Name';
+                            }
+                            return null;
+                          },
+                          controller: referenceName,
+                          decoration: const InputDecoration(
+                              isDense: true,
+                              fillColor: Colors.white,
+                              contentPadding: EdgeInsets.all(7),
+                              label: Text('Ref. Name *'),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.black, width: .5)),
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.black, width: .5))),
+                        ),
                       ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('Reference Number *'),
-                          const SizedBox(
-                            height: 3,
-                          ),
-                          TextFormField(
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter Reference Number';
-                              } else if (value.length != 10) {
-                                return 'Should be 10 digit';
-                              }
-                              return null;
-                            },
-                            keyboardType: TextInputType.number,
-                            controller: referenceNum,
-                            decoration: InputDecoration(
-                                isDense: true,
-                                fillColor: Colors.white,
-                                contentPadding: const EdgeInsets.all(7),
-                                constraints: BoxConstraints.tight(Size(
-                                    MediaQuery.sizeOf(context).width * .365,
-                                    40)),
-                                focusedBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.black, width: .5)),
-                                enabledBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.black, width: .5))),
-                          ),
-                        ],
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: TextFormField(
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter Ref. Number';
+                            } else if (value.length != 10) {
+                              return 'Should be 10 digit';
+                            }
+                            return null;
+                          },
+                          keyboardType: TextInputType.number,
+                          controller: referenceNum,
+                          decoration: const InputDecoration(
+                              isDense: true,
+                              fillColor: Colors.white,
+                              contentPadding: EdgeInsets.all(7),
+                              label: Text("Ref. Number *"),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.black, width: .5)),
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.black, width: .5))),
+                        ),
                       ),
                     ],
                   ),
+                  SizedBox(height: 1.2.h),
                   const Text('Experience Certification'),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    height: 35,
-                    width: MediaQuery.sizeOf(context).width * .5,
-                    decoration: const BoxDecoration(color: Colors.white),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          minimumSize: Size(10.w, 4.h),
-                          fixedSize: Size(10.w, 4.h),
-                          maximumSize: Size(10.w, 4.h),
-                          backgroundColor: Colors.grey),
-                      onPressed: () {
+                  SizedBox(
+                    width: double.infinity,
+                    child: TextButton(
+                      onPressed: () async {
                         experience();
                       },
-                      child: Text(
-                        isSelected ? fileName : 'Choose File',
-                        style: const TextStyle(color: Colors.white),
+                      style: TextButton.styleFrom(
+                        shape: ContinuousRectangleBorder(
+                          borderRadius: BorderRadius.circular(18),
+                        ),
+                        backgroundColor: fileName != "Choose File"
+                            ? AppColorConst.PRAYMARY_TEXT_COLOR.withAlpha(195)
+                            : Colors.grey,
+                        foregroundColor: Colors.white,
+                        textStyle: const TextStyle(fontSize: 14),
                       ),
+                      child: Text(fileName),
                     ),
                   ),
-                  Row(
-                    children: [
-                      const Spacer(),
-                      ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              minimumSize: Size(20.w, 4.h),
-                              fixedSize: Size(20.w, 4.h),
-                              maximumSize: Size(20.w, 4.h),
-                              backgroundColor: AppColorConst.BUTTON_BLUE_COLOR,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(4))),
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              if (isWorking) {
-                                isCurrentlyWorking = 1;
-                              } else {
-                                isCurrentlyWorking = 0;
-                              }
-                              log(isWorking.toString());
-                              log(isCurrentlyWorking.toString());
-
-                              var dataForm = {
-                                "title": position.text,
-                                "organization": organizationName.text,
-                                "reference_name": referenceName.text,
-                                "reference_contact": referenceNum.text,
-                                "location": address.text,
-                                "start_date": startDate.text,
-                                "end_date": (isCurrentlyWorking == 1)
-                                    ? ''
-                                    : endDate.text,
-                                "is_currently_working": isCurrentlyWorking,
-                                
-                              }; 
-                              
-                              if (filePath1.isNotEmpty) {
-                                dataForm['file'] = MultipartFile.fromFileSync(
-                                    filePath1,
-                                    filename: fileName);
-                              }
-
-                              
-                              final formData = FormData.fromMap(dataForm);
-
-                              ref
-                                  .read(experienceControllerProvider.notifier)
-                                  .addExperience(formData)
-                                  .then((value) {
-                                if (value) {
-                                  ref
-                                      .read(profileControllerProvider.notifier)
-                                      .getMyProfile()
-                                      .then((value) {
-                                    Navigator.pop(context);
-                                    showCustomSnackBar(
-                                        "Experience succesfully added.",
-                                        context,
-                                        isError: false);
-                                  });
-                                } else {
-                                  showCustomSnackBar(
-                                      'Failed to add experience', context);
-                                }
-                              });
+                  SizedBox(height: 1.5.h),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            minimumSize: Size(20.w, 4.h),
+                            fixedSize: Size(20.w, 4.h),
+                            maximumSize: Size(20.w, 4.h),
+                            backgroundColor: AppColorConst.BUTTON_BLUE_COLOR,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4))),
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            if (isWorking) {
+                              isCurrentlyWorking = 1;
+                            } else {
+                              isCurrentlyWorking = 0;
                             }
-                          },
-                          child: const Text(
-                            'Save',
-                            style: TextStyle(color: Colors.white),
-                          ))
-                    ],
+                            log(isWorking.toString());
+                            log(isCurrentlyWorking.toString());
+
+                            var dataForm = {
+                              "title": position.text,
+                              "organization": organizationName.text,
+                              "reference_name": referenceName.text,
+                              "reference_contact": referenceNum.text,
+                              "location": address.text,
+                              "start_date": startDate.text,
+                              "end_date":
+                                  (isCurrentlyWorking == 1) ? '' : endDate.text,
+                              "is_currently_working": isCurrentlyWorking,
+                            };
+
+                            if (filePath1.isNotEmpty) {
+                              dataForm['file'] = MultipartFile.fromFileSync(
+                                  filePath1,
+                                  filename: fileName);
+                            }
+
+                            final formData = FormData.fromMap(dataForm);
+
+                            ref
+                                .read(experienceControllerProvider.notifier)
+                                .addExperience(formData)
+                                .then((value) {
+                              if (value) {
+                                ref
+                                    .read(profileControllerProvider.notifier)
+                                    .getMyProfile()
+                                    .then((value) {
+                                  Navigator.pop(context);
+                                  showCustomSnackBar(
+                                      "Experience succesfully added.", context,
+                                      isError: false);
+                                });
+                              } else {
+                                showCustomSnackBar(
+                                    'Failed to add experience', context);
+                              }
+                            });
+                          }
+                        },
+                        child: const Text(
+                          'Save',
+                          style: TextStyle(color: Colors.white),
+                        )),
                   ),
                 ],
               ),

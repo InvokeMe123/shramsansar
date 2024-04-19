@@ -2,8 +2,6 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shramsansar/core/app_error/app_error.dart';
-import 'package:shramsansar/features/jobs/data/data_source/job_category_data_source.dart';
-import 'package:shramsansar/features/jobs/data/models/job_category_model.dart';
 import 'package:shramsansar/features/trainings/data/data_source/training_category_data_source.dart';
 import 'package:shramsansar/features/trainings/data/models/training_category_model/training_category_model.dart';
 

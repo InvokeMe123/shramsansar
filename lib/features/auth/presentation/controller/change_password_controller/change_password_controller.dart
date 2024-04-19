@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shramsansar/features/auth/data/models/change_password_model/change_password_req_model.dart';
 import 'package:shramsansar/features/auth/data/models/change_password_model/change_password_res_model.dart';
 import 'package:shramsansar/features/auth/data/repositories/auth_repository.dart';
-import 'package:shramsansar/utils/snackbar/custome_snack_bar.dart';
 
 class ChangePasswordController
     extends StateNotifier<AsyncValue<ChangePasswordResModel>> {

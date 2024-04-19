@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shramsansar/const/app_color_const.dart';
-import 'package:shramsansar/core/api_const/api_const.dart';
 import 'package:shramsansar/features/display_training/presentation/views/display_training.dart';
 import 'package:shramsansar/features/trainings/data/models/training_model/training_model.dart';
 import 'package:shramsansar/utils/navigation/nav_app.dart';
@@ -21,7 +19,7 @@ class TrainingCard extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
         elevation: 0,
         color: Colors.grey.shade100,
-        child: Container(
+        child: SizedBox(
           width: MediaQuery.sizeOf(context).width,
           child: Padding(
             padding:
@@ -38,11 +36,11 @@ class TrainingCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   model.serviceProviderName.toString(),
-                  style: TextStyle(
+                  style: const TextStyle(
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                SizedBox(height: 6),
+                const SizedBox(height: 6),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -60,7 +58,7 @@ class TrainingCard extends StatelessWidget {
                       children: [
                         const Icon(Icons.location_on_outlined, size: 18),
                         Text("${model.districtName}",
-                            style: TextStyle(
+                            style: const TextStyle(
                                 overflow: TextOverflow.ellipsis, fontSize: 12))
                       ],
                     ),
@@ -68,7 +66,7 @@ class TrainingCard extends StatelessWidget {
                       children: [
                         const Icon(Icons.access_time, size: 18),
                         Text("${model.startTime} - ${model.endTime}",
-                            style: TextStyle(fontSize: 12))
+                            style: const TextStyle(fontSize: 12))
                       ],
                     )
                   ],

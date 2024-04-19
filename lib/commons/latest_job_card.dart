@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shramsansar/const/app_color_const.dart';
@@ -9,7 +8,7 @@ import 'package:shramsansar/utils/navigation/nav_app.dart';
 
 class LatestJobCard extends StatelessWidget {
   final Data data;
-  LatestJobCard({required this.data});
+  const LatestJobCard({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +25,7 @@ class LatestJobCard extends StatelessWidget {
           child: ListTile(
             contentPadding: EdgeInsets.zero,
             leading: Image(
-                image: NetworkImage('${ApiConst.IMAGE_URL}' +
-                    data.serviceProvider!.logo.toString())),
+                image: NetworkImage('${ApiConst.IMAGE_URL}${data.serviceProvider!.logo}')),
             title: Text(
               data.title!,
               style: TextStyle(
@@ -43,14 +41,12 @@ class LatestJobCard extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.location_on_outlined,
                       size: 14,
                     ),
                     Text(
-                      data.serviceProvider!.muniName!.toString() +
-                          ' ,' +
-                          data.serviceProvider!.districtName!.toString(),
+                      '${data.serviceProvider!.muniName!} ,${data.serviceProvider!.districtName!}',
                       style: TextStyle(color: Colors.black, fontSize: 14.sp),
                     ),
                   ],

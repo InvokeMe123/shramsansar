@@ -4,7 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import 'package:flutter_html/flutter_html.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -12,14 +11,12 @@ import 'package:shramsansar/const/app_color_const.dart';
 import 'package:shramsansar/core/api_const/api_const.dart';
 import 'package:shramsansar/core/dbclient.dart';
 
-import 'package:logger/logger.dart';
 import 'package:shramsansar/features/all_jobs/data/models/latest_job_model.dart';
-import 'package:shramsansar/main.dart';
 import 'package:shramsansar/utils/snackbar/custome_snack_bar.dart';
 
 class LatestJobDisplay extends StatefulWidget {
   final Data dataModel;
-  LatestJobDisplay({super.key, required this.dataModel});
+  const LatestJobDisplay({super.key, required this.dataModel});
 
   @override
   State<LatestJobDisplay> createState() => _LatestJobDisplayState();
@@ -136,8 +133,7 @@ class _LatestJobDisplayState extends State<LatestJobDisplay> {
               children: [
                 Image(
                     width: 20.w,
-                    image: NetworkImage('${ApiConst.IMAGE_URL}' +
-                        widget.dataModel.serviceProvider!.logo.toString())),
+                    image: NetworkImage('${ApiConst.IMAGE_URL}${widget.dataModel.serviceProvider!.logo}')),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -148,26 +144,22 @@ class _LatestJobDisplayState extends State<LatestJobDisplay> {
                             color: AppColorConst.BUTTON_BLUE_COLOR)),
                     Row(
                       children: [
-                        Icon(Icons.location_on_outlined),
+                        const Icon(Icons.location_on_outlined),
                         Text(
-                            widget.dataModel.serviceProvider!.districtName!
-                                    .toString() +
-                                ',' +
-                                widget.dataModel.serviceProvider!.muniName!
-                                    .toString(),
+                            '${widget.dataModel.serviceProvider!.districtName!},${widget.dataModel.serviceProvider!.muniName!}',
                             style:
-                                TextStyle(color: CupertinoColors.systemGrey)),
+                                const TextStyle(color: CupertinoColors.systemGrey)),
                       ],
                     ),
                     RichText(
                         text: TextSpan(children: [
-                      TextSpan(
+                      const TextSpan(
                           text: 'Deadline :',
                           style:
                               TextStyle(color: CupertinoColors.destructiveRed)),
                       TextSpan(
                           text: '  ${widget.dataModel.deadline}',
-                          style: TextStyle(color: CupertinoColors.systemGrey))
+                          style: const TextStyle(color: CupertinoColors.systemGrey))
                     ]))
                   ],
                 ),
@@ -178,12 +170,12 @@ class _LatestJobDisplayState extends State<LatestJobDisplay> {
                         cvUpload();
                       },
                       child: Container(
-                          padding: EdgeInsets.all(4),
+                          padding: const EdgeInsets.all(4),
                           decoration: BoxDecoration(
                               border: Border.all(
                                   color: AppColorConst.BUTTON_BLUE_COLOR),
                               color: AppColorConst.BUTTON_BLUE_COLOR),
-                          child: Text(
+                          child: const Text(
                             'CV upload',
                             style: TextStyle(color: Colors.white),
                           )),
@@ -198,7 +190,7 @@ class _LatestJobDisplayState extends State<LatestJobDisplay> {
                 )
               ],
             ),
-            Divider(),
+            const Divider(),
             Text(
               "Company's details",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp),
@@ -208,49 +200,49 @@ class _LatestJobDisplayState extends State<LatestJobDisplay> {
                     fontWeight: FontWeight.normal,
                     fontSize: 15.sp,
                     color: CupertinoColors.systemGrey)),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Row(
               children: [
                 const Icon(Icons.location_on_outlined, size: 18),
-                SizedBox(
+                const SizedBox(
                   width: 6,
                 ),
                 Text(widget.dataModel.districtName.toString(),
-                    style: TextStyle(fontSize: 12)),
+                    style: const TextStyle(fontSize: 12)),
                 Text(", ${widget.dataModel.muniName}",
-                    style: TextStyle(fontSize: 12))
+                    style: const TextStyle(fontSize: 12))
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 6,
             ),
             Row(
               children: [
                 const Icon(Icons.phone_outlined, size: 18),
-                SizedBox(
+                const SizedBox(
                   width: 6,
                 ),
                 Text(widget.dataModel.serviceProvider!.mobile.toString(),
-                    style: TextStyle(fontSize: 12))
+                    style: const TextStyle(fontSize: 12))
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 6,
             ),
             Row(
               children: [
                 const Icon(Icons.email_outlined, size: 18),
-                SizedBox(
+                const SizedBox(
                   width: 6,
                 ),
                 Text(widget.dataModel.serviceProvider!.email.toString(),
-                    style: TextStyle(fontSize: 12))
+                    style: const TextStyle(fontSize: 12))
               ],
             ),
-            Divider(),
-            SizedBox(
+            const Divider(),
+            const SizedBox(
               height: 6,
             ),
             Text(
@@ -261,22 +253,22 @@ class _LatestJobDisplayState extends State<LatestJobDisplay> {
               children: [
                 const Icon(Icons.location_on_outlined, size: 18),
                 Text(widget.dataModel.districtName.toString(),
-                    style: TextStyle(fontSize: 12)),
+                    style: const TextStyle(fontSize: 12)),
                 Text(", ${widget.dataModel.muniName}",
-                    style: TextStyle(fontSize: 12)),
+                    style: const TextStyle(fontSize: 12)),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 6,
             ),
             Row(
               children: [
                 const Icon(Icons.people_alt_outlined, size: 18),
                 Text(widget.dataModel.address.toString(),
-                    style: TextStyle(fontSize: 12))
+                    style: const TextStyle(fontSize: 12))
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 6,
             ),
             Row(
@@ -286,7 +278,7 @@ class _LatestJobDisplayState extends State<LatestJobDisplay> {
                     style: const TextStyle(fontSize: 12))
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 6,
             ),
             Row(
@@ -294,7 +286,7 @@ class _LatestJobDisplayState extends State<LatestJobDisplay> {
                 const Icon(Icons.access_time, size: 18),
                 Text(
                     "${widget.dataModel.deadline} - ${widget.dataModel.engDeadline}",
-                    style: TextStyle(fontSize: 12))
+                    style: const TextStyle(fontSize: 12))
               ],
             ),
             Html(

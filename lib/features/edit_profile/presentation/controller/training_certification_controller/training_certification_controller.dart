@@ -1,7 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shramsansar/features/edit_profile/data/models/experience_model/experience_model.dart';
-import 'package:shramsansar/features/edit_profile/data/repositories/experience_repo/experience_repo.dart';
 import 'package:shramsansar/features/edit_profile/data/repositories/training_certifcation_repo/training_certifcation_repo.dart';
 
 class TrainingCertificationController extends StateNotifier<AsyncValue<void>> {

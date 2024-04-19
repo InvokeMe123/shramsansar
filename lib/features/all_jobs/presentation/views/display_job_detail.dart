@@ -4,7 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import 'package:flutter_html/flutter_html.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -12,13 +11,11 @@ import 'package:shramsansar/const/app_color_const.dart';
 import 'package:shramsansar/core/api_const/api_const.dart';
 import 'package:shramsansar/core/dbclient.dart';
 import 'package:shramsansar/features/all_jobs/data/models/all_jobs_model.dart';
-import 'package:logger/logger.dart';
-import 'package:shramsansar/main.dart';
 import 'package:shramsansar/utils/snackbar/custome_snack_bar.dart';
 
 class DisplayJob extends StatefulWidget {
   final Data dataModel;
-  DisplayJob({super.key, required this.dataModel});
+  const DisplayJob({super.key, required this.dataModel});
 
   @override
   State<DisplayJob> createState() => _DisplayJobState();
@@ -151,27 +148,23 @@ class _DisplayJobState extends State<DisplayJob> {
                         ),
                         Row(
                           children: [
-                            Icon(Icons.location_on_outlined),
+                            const Icon(Icons.location_on_outlined),
                             Text(
-                                widget.dataModel.serviceProvider!.districtName!
-                                        .toString() +
-                                    ',' +
-                                    widget.dataModel.serviceProvider!.muniName!
-                                        .toString(),
-                                style: TextStyle(
+                                '${widget.dataModel.serviceProvider!.districtName!},${widget.dataModel.serviceProvider!.muniName!}',
+                                style: const TextStyle(
                                     color: CupertinoColors.systemGrey)),
                           ],
                         ),
                         RichText(
                             text: TextSpan(children: [
-                          TextSpan(
+                          const TextSpan(
                               text: 'Deadline :',
                               style: TextStyle(
                                   color: CupertinoColors.destructiveRed)),
                           TextSpan(
                               text: '  ${widget.dataModel.deadline}',
                               style:
-                                  TextStyle(color: CupertinoColors.systemGrey))
+                                  const TextStyle(color: CupertinoColors.systemGrey))
                         ]))
                       ],
                     ),
@@ -184,12 +177,12 @@ class _DisplayJobState extends State<DisplayJob> {
                         cvUpload();
                       },
                       child: Container(
-                          padding: EdgeInsets.all(4),
+                          padding: const EdgeInsets.all(4),
                           decoration: BoxDecoration(
                               border: Border.all(
                                   color: AppColorConst.BUTTON_BLUE_COLOR),
                               color: AppColorConst.BUTTON_BLUE_COLOR),
-                          child: Text(
+                          child: const Text(
                             'CV upload',
                             style: TextStyle(color: Colors.white),
                           )),
@@ -204,7 +197,7 @@ class _DisplayJobState extends State<DisplayJob> {
                 )
               ],
             ),
-            Divider(),
+            const Divider(),
             Text(
               "Company's details",
               style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
@@ -220,13 +213,13 @@ class _DisplayJobState extends State<DisplayJob> {
             Row(
               children: [
                 const Icon(Icons.location_on_outlined, size: 18),
-                SizedBox(
+                const SizedBox(
                   width: 6,
                 ),
                 Text(widget.dataModel.districtName.toString(),
-                    style: TextStyle(fontSize: 12)),
+                    style: const TextStyle(fontSize: 12)),
                 Text(", ${widget.dataModel.muniName}",
-                    style: TextStyle(fontSize: 12))
+                    style: const TextStyle(fontSize: 12))
               ],
             ),
             const SizedBox(
@@ -235,11 +228,11 @@ class _DisplayJobState extends State<DisplayJob> {
             Row(
               children: [
                 const Icon(Icons.phone_outlined, size: 18),
-                SizedBox(
+                const SizedBox(
                   width: 6,
                 ),
                 Text(widget.dataModel.serviceProvider!.mobile.toString(),
-                    style: TextStyle(fontSize: 12))
+                    style: const TextStyle(fontSize: 12))
               ],
             ),
             const SizedBox(
@@ -248,11 +241,11 @@ class _DisplayJobState extends State<DisplayJob> {
             Row(
               children: [
                 const Icon(Icons.email_outlined, size: 18),
-                SizedBox(
+                const SizedBox(
                   width: 6,
                 ),
                 Text(widget.dataModel.serviceProvider!.email.toString(),
-                    style: TextStyle(fontSize: 12))
+                    style: const TextStyle(fontSize: 12))
               ],
             ),
             const Divider(),
@@ -270,9 +263,9 @@ class _DisplayJobState extends State<DisplayJob> {
                   width: 6,
                 ),
                 Text(widget.dataModel.districtName.toString(),
-                    style: TextStyle(fontSize: 12)),
+                    style: const TextStyle(fontSize: 12)),
                 Text(", ${widget.dataModel.muniName}",
-                    style: TextStyle(fontSize: 12)),
+                    style: const TextStyle(fontSize: 12)),
               ],
             ),
             const SizedBox(
@@ -285,7 +278,7 @@ class _DisplayJobState extends State<DisplayJob> {
                   width: 6,
                 ),
                 Text(widget.dataModel.address.toString(),
-                    style: TextStyle(fontSize: 12))
+                    style: const TextStyle(fontSize: 12))
               ],
             ),
             const SizedBox(
@@ -299,7 +292,7 @@ class _DisplayJobState extends State<DisplayJob> {
                 ),
                 Text(
                     "${widget.dataModel.deadline} - ${widget.dataModel.engDeadline}",
-                    style: TextStyle(fontSize: 12))
+                    style: const TextStyle(fontSize: 12))
               ],
             ),
             Row(

@@ -4,7 +4,7 @@ import 'package:shramsansar/features/all_jobs/data/repository/latest_job_repo.da
 
 class LatestJobController extends StateNotifier<AsyncValue<LatestJobModel>> {
   final LatestJobRepo latestJobRepo;
-  LatestJobController(this.latestJobRepo) : super(AsyncValue.loading()) {
+  LatestJobController(this.latestJobRepo) : super(const AsyncValue.loading()) {
     getLatestJobs();
   }
 

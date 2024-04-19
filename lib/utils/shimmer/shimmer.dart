@@ -4,27 +4,27 @@ import 'package:shimmer/shimmer.dart';
 class ShimmerSkeleton extends StatelessWidget {
   final int count;
 
-  const ShimmerSkeleton({Key? key, required this.count}) : super(key: key);
+  const ShimmerSkeleton({super.key, required this.count});
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: count,
-      itemBuilder: (context, index) {
-        return Shimmer.fromColors(
-          baseColor: Colors.grey.shade200,
-          highlightColor: Colors.grey.shade100,
-          child: Container(
-            margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-            width: double.infinity,
-            height: 100.0,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8.0),
+    return Column(
+      children: [
+        for (int a = 1; a <= count; a++)
+          Shimmer.fromColors(
+            baseColor: Colors.grey.shade200,
+            highlightColor: Colors.grey.shade100,
+            child: Container(
+              margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              width: double.infinity,
+              height: 100.0,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8.0),
+              ),
             ),
-          ),
-        );
-      },
+          )
+      ],
     );
   }
 }

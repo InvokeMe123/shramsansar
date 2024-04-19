@@ -61,7 +61,7 @@ class _DashboardState extends ConsumerState<Dashboard> {
     await ApiClient(DbClient()).request(path: "${ApiConst.LOG_OUT_URI}");
     await DbClient().removeData(dbkey: 'token').then(
       (value) {
-        normalNav(context, const LoginScreen());
+        pushReplacement(context, const LoginScreen());
       },
     );
   }
@@ -93,7 +93,6 @@ class _DashboardState extends ConsumerState<Dashboard> {
                   ),
                   profile.when(
                       data: (data) {
-                        debugger();
                         if (data.email == null) {
                           return SizedBox();
                         }
@@ -160,7 +159,7 @@ class _DashboardState extends ConsumerState<Dashboard> {
                 ],
               ),
             ),
-          const  Divider(),
+            const Divider(),
             TextButton(
                 onPressed: () {
                   normalNav(context, const ProfilePage());

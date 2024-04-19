@@ -19,6 +19,14 @@ class ShramsansarApp extends ConsumerWidget {
             backgroundColor: AppColorConst.PRAYMARY_TEXT_COLOR,
             foregroundColor: AppColorConst.PRAYMERY_COLOR,
           ),
+          inputDecorationTheme: InputDecorationTheme(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            filled: true,
+            fillColor: const Color(0xffF1F1F1),
+          ),
         ),
         home: ref.watch(authControllerProvider).when(
             loggedIn: (data) {

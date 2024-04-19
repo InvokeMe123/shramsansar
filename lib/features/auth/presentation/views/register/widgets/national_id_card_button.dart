@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shramsansar/const/app_color_const.dart';
 
 class NationalIdCardButton extends StatefulWidget {
   final ValueChanged<String> imagePath;
@@ -34,7 +35,12 @@ class _NationalIdCardButtonState extends State<NationalIdCardButton> {
           }
         },
         style: TextButton.styleFrom(
-          backgroundColor: Colors.grey,
+          shape: ContinuousRectangleBorder(
+            borderRadius: BorderRadius.circular(18),
+          ),
+          backgroundColor: text != "National ID Card"
+              ? AppColorConst.PRAYMARY_TEXT_COLOR.withAlpha(195)
+              : Colors.grey,
           foregroundColor: Colors.white,
           textStyle: const TextStyle(fontSize: 16),
         ),

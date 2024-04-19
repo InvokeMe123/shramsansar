@@ -407,7 +407,7 @@ class _AllJobsState extends ConsumerState<AllJobs> {
   }
 
   jobCategoryDropDown(BuildContext context) {
-    var jobCat = ref.watch(jobcontrollerProvider);
+    var jobCat = ref.watch(jobCategoryControllerProvider);
 
     return Container(
       width: MediaQuery.of(context).size.width,

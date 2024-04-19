@@ -4,6 +4,11 @@ normalNav(BuildContext context, Widget screen) {
   Navigator.push(context, CupertinoPageRoute(builder: (ctx) => screen));
 }
 
+pushReplacement(BuildContext context, Widget screen) {
+  Navigator.pushReplacement(
+      context, CupertinoPageRoute(builder: (ctx) => screen));
+}
+
 void pushAndRemoveUntil(BuildContext context, Widget widget) {
   Navigator.pushAndRemoveUntil(
     context,

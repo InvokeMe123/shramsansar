@@ -30,6 +30,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   String device_token =
       'fiRiB9DySGO4dzQG8-Qu7y:APA91bGIoNhOM1Ub8a6u7TN3SDd1DO3HahpS8DIqW0p_vf5eJQgICh5Byt6F8CqjGJLdWof2IadqdSXwVYxZfEyTCY-pB2zLs6u9ZtyQSWSnQ5w-RAIa61czHzJ-FqxGdtMyt7HnUQ_A';
   String token = '';
+  bool isVisible = false;
+  Icon visible = Icon(Icons.visibility);
+  Icon notVisible = Icon(Icons.visibility_off_outlined);
 
   login() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -77,6 +80,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 hintText: 'Enter Email',
               ),
               CustomTextformFormField(
+                obscureText: isVisible,
+                issuffixIconrequired: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      isVisible = !isVisible;
+                    });
+                  },
+                  child: isVisible ? notVisible : visible,
+                ),
                 keyboardType: TextInputType.visiblePassword,
                 controller: _passwordController,
                 textInputAction: TextInputAction.next,

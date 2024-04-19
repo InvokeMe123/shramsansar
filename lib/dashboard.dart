@@ -145,11 +145,17 @@ class _DashboardState extends ConsumerState<Dashboard> {
                         );
                       },
                       error: (_, __) => Text('error'),
-                      loading: () => const CircularProgressIndicator())
+                      loading: () {
+                        if (isLoggedIn) {
+                          return CircularProgressIndicator();
+                        } else {
+                          return Container();
+                        }
+                      }),
                 ],
               ),
             ),
-            Divider(),
+          const  Divider(),
             TextButton(
                 onPressed: () {
                   normalNav(context, const ProfilePage());

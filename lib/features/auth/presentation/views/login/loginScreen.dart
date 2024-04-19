@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -62,80 +63,94 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Shramsansar (Login)'),
+      ),
       body: Form(
         key: formKey,
         child: Padding(
           padding: const EdgeInsets.all(12.0),
-          child: Column(
-            children: [
-              SizedBox(height: 20.h),
-              const Text('Shramsansar'),
-              const Text("All the works in same place"),
-              const Text("Log In"),
-              CustomTextformFormField(
-                keyboardType: TextInputType.name,
-                controller: _emailController,
-                textInputAction: TextInputAction.next,
-                isLablerequire: true,
-                hintText: 'Enter Email',
-              ),
-              CustomTextformFormField(
-                obscureText: isVisible,
-                issuffixIconrequired: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      isVisible = !isVisible;
-                    });
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(height: 6.h),
+                SizedBox(height: 4.h),
+                Image.asset(
+                  'assets/images/app_logo.png',
+                  height: 20.h,
+                ),
+                SizedBox(height: 4.h),
+                const Text(
+                  "All the works in one place",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 4.h),
+                CustomTextformFormField(
+                  keyboardType: TextInputType.name,
+                  controller: _emailController,
+                  textInputAction: TextInputAction.next,
+                  isLablerequire: true,
+                  hintText: 'Enter Email',
+                ),
+                CustomTextformFormField(
+                  obscureText: isVisible,
+                  issuffixIconrequired: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isVisible = !isVisible;
+                      });
+                    },
+                    child: isVisible ? notVisible : visible,
+                  ),
+                  keyboardType: TextInputType.visiblePassword,
+                  controller: _passwordController,
+                  textInputAction: TextInputAction.next,
+                  isLablerequire: true,
+                  hintText: 'Enter Password',
+                ),
+                Row(
+                  children: [
+                    const SizedBox(),
+                    const Spacer(),
+                    TextButton(
+                        onPressed: () {
+                          print('in forgot password');
+                        },
+                        child: Text(
+                          'Forgot Password?',
+                          style:
+                              TextStyle(color: AppColorConst.TEXT_BLACK_COLOR),
+                        ))
+                  ],
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                      ),
+                      backgroundColor: AppColorConst.BUTTON_BLUE_COLOR),
+                  onPressed: () async {
+                    await login();
                   },
-                  child: isVisible ? notVisible : visible,
+                  child: Text(
+                    'Login',
+                    style: TextStyle(color: AppColorConst.WHAIT),
+                  ),
                 ),
-                keyboardType: TextInputType.visiblePassword,
-                controller: _passwordController,
-                textInputAction: TextInputAction.next,
-                isLablerequire: true,
-                hintText: 'Enter Password',
-              ),
-              Row(
-                children: [
-                  const SizedBox(),
-                  const Spacer(),
-                  TextButton(
-                      onPressed: () {
-                        print('in forgot password');
-                      },
-                      child: Text(
-                        'Forgot Password?',
-                        style: TextStyle(color: AppColorConst.TEXT_BLACK_COLOR),
-                      ))
-                ],
-              ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius
-                          .zero, // Set the border radius to zero for a rectangular shape
-                    ),
-                    backgroundColor: AppColorConst.BUTTON_BLUE_COLOR),
-                onPressed: () async {
-                  await login();
-                },
-                child: Text(
-                  'Login',
-                  style: TextStyle(color: AppColorConst.WHAIT),
+                SizedBox(
+                  height: 2.h,
                 ),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              InkWell(
-                onTap: () {
-                  normalNav(context, const RegisterScreen());
-                },
-                child: Container(
-                  child: const Text("Create New Account"),
-                ),
-              )
-            ],
+                InkWell(
+                  onTap: () {
+                    normalNav(context, const RegisterScreen());
+                  },
+                  child: Container(
+                    child: const Text("Create New Account"),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

@@ -38,14 +38,14 @@ class _AddLanguageState extends ConsumerState<AddLanguage> {
                 }
                 return null;
               },
-              decoration: InputDecoration(hintText: "Language "),
+              decoration: InputDecoration(labelText: "Language "),
             ),
             Row(
               children: [
                 Expanded(
                   child: TextFormField(
                     controller: _readingController,
-                    decoration: InputDecoration(hintText: "Reading "),
+                    decoration: InputDecoration(labelText: "Reading "),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Reading is required';
@@ -57,7 +57,7 @@ class _AddLanguageState extends ConsumerState<AddLanguage> {
                 Expanded(
                   child: TextFormField(
                     controller: _speakingController,
-                    decoration: InputDecoration(hintText: "Speaking "),
+                    decoration: InputDecoration(labelText: "Speaking "),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Speaking is required';
@@ -73,7 +73,7 @@ class _AddLanguageState extends ConsumerState<AddLanguage> {
                 Expanded(
                   child: TextFormField(
                     controller: _writingController,
-                    decoration: InputDecoration(hintText: "Writing "),
+                    decoration: InputDecoration(labelText: "Writing "),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Writing is required';
@@ -85,7 +85,7 @@ class _AddLanguageState extends ConsumerState<AddLanguage> {
                 Expanded(
                   child: TextFormField(
                     controller: _listeningController,
-                    decoration: InputDecoration(hintText: "Listening "),
+                    decoration: InputDecoration(labelText: "Listening "),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Listening is required';

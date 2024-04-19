@@ -28,7 +28,23 @@ class _DisplayJobState extends State<DisplayJob> {
   String filePath1 = '';
   String fileName = '';
   FormData formData = FormData();
-  String token = DbClient().getData(dbKey: 'token');
+  bool isLoggedIn = false;
+
+  @override
+  void initState() {
+    super.initState();
+    checkLoggedInState();
+  }
+
+  Future<void> checkLoggedInState() async {
+    String result = await DbClient().getData(dbKey: 'token');
+    log(result);
+    if (result.isNotEmpty) {
+      setState(() {
+        isLoggedIn = true;
+      });
+    }
+  }
 
   void cvUpload() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -139,6 +155,9 @@ class _DisplayJobState extends State<DisplayJob> {
                         width: 20.w,
                         image: NetworkImage(
                             "${ApiConst.IMAGE_URL}${widget.dataModel.serviceProvider!.logo}")),
+                    SizedBox(
+                      width: 10,
+                    ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -179,27 +198,31 @@ class _DisplayJobState extends State<DisplayJob> {
                 ),
                 Column(
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        cvUpload();
-                      },
-                      child: Container(
-                          padding: EdgeInsets.all(4),
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: AppColorConst.BUTTON_BLUE_COLOR),
-                              color: AppColorConst.BUTTON_BLUE_COLOR),
-                          child: Text(
-                            'CV upload',
-                            style: TextStyle(color: Colors.white),
-                          )),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        applyForJob();
-                      },
-                      child: const Text('Apply Now'),
-                    ),
+                    isLoggedIn
+                        ? GestureDetector(
+                            onTap: () {
+                              cvUpload();
+                            },
+                            child: Container(
+                                padding: EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: AppColorConst.BUTTON_BLUE_COLOR),
+                                    color: AppColorConst.BUTTON_BLUE_COLOR),
+                                child: Text(
+                                  'CV upload',
+                                  style: TextStyle(color: Colors.white),
+                                )),
+                          )
+                        : SizedBox(),
+                    isLoggedIn
+                        ? TextButton(
+                            onPressed: () {
+                              applyForJob();
+                            },
+                            child: const Text('Apply Now'),
+                          )
+                        : SizedBox()
                   ],
                 )
               ],

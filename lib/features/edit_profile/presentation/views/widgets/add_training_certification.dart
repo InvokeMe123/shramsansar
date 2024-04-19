@@ -113,7 +113,7 @@ class _AddTrainingCertificateState
                         },
                         controller: title,
                         decoration: InputDecoration(
-                            isDense: true,
+                            filled: true,
                             fillColor: Colors.white,
                             contentPadding: const EdgeInsets.all(7),
                             constraints: BoxConstraints.tight(
@@ -143,7 +143,7 @@ class _AddTrainingCertificateState
                                   return null;
                                 },
                                 decoration: InputDecoration(
-                                    isDense: true,
+                                    filled: true,
                                     fillColor: Colors.white,
                                     contentPadding: const EdgeInsets.all(7),
                                     constraints: BoxConstraints.tight(Size(
@@ -177,7 +177,7 @@ class _AddTrainingCertificateState
                                 },
                                 controller: duration,
                                 decoration: InputDecoration(
-                                    isDense: true,
+                                    filled: true,
                                     fillColor: Colors.white,
                                     contentPadding: const EdgeInsets.all(7),
                                     constraints: BoxConstraints.tight(Size(
@@ -212,6 +212,8 @@ class _AddTrainingCertificateState
                                 },
                                 controller: year,
                                 decoration: InputDecoration(
+                                    fillColor: Colors.white,
+                                    filled: true,
                                     contentPadding: const EdgeInsets.all(7),
                                     constraints: BoxConstraints.tight(Size(
                                         MediaQuery.sizeOf(context).width * .365,
@@ -263,7 +265,7 @@ class _AddTrainingCertificateState
                                 controller: details,
                                 maxLines: 10,
                                 decoration: InputDecoration(
-                                    isDense: true,
+                                    filled: true,
                                     fillColor: Colors.white,
                                     contentPadding: const EdgeInsets.all(7),
                                     constraints: BoxConstraints.tight(Size(

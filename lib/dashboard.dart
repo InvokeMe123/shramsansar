@@ -12,6 +12,7 @@ import 'package:shramsansar/const/app_color_const.dart';
 import 'package:shramsansar/core/api_client/api_client.dart';
 import 'package:shramsansar/core/api_const/api_const.dart';
 import 'package:shramsansar/core/dbclient.dart';
+import 'package:shramsansar/features/aboutUs.dart';
 import 'package:shramsansar/features/all_jobs/presentation/controller/latest_job_controller.dart';
 import 'package:shramsansar/features/all_jobs/presentation/views/all_jobs.dart';
 import 'package:shramsansar/features/all_jobs/presentation/views/all_jobs_list.dart';
@@ -77,18 +78,48 @@ class _DashboardState extends ConsumerState<Dashboard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 40,
+            ),
+            isLoggedIn
+                ? Container()
+                : Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          'assets/images/app_logo.png',
+                          width: 80,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            'Shramsansar',
+                            style: TextStyle(
+                                letterSpacing: 0.5,
+                                color: AppColorConst.BUTTON_BLUE_COLOR,
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+            const SizedBox(
+              height: 10,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: Row(
                 children: [
-                  CircleAvatar(
-                    radius: 40,
-                    //child: Image.asset(),
-                  ),
-                  SizedBox(
+                  isLoggedIn
+                      ? CircleAvatar(
+                          backgroundColor: AppColorConst.BUTTON_BLUE_COLOR,
+                          backgroundImage: AssetImage("assets/images/cv.png"),
+                          radius: 40,
+                        )
+                      : const SizedBox(),
+                  const SizedBox(
                     width: 20,
                   ),
                   profile.when(
@@ -96,12 +127,16 @@ class _DashboardState extends ConsumerState<Dashboard> {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              data.name!,
-                              style: TextStyle(
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 0.5),
+                            SizedBox(
+                              width: MediaQuery.sizeOf(context).width * .4,
+                              child: Text(
+                                data.name!,
+                                style: TextStyle(
+                                    overflow: TextOverflow.ellipsis,
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 0.5),
+                              ),
                             ),
                             Row(
                               children: [
@@ -155,51 +190,221 @@ class _DashboardState extends ConsumerState<Dashboard> {
                 ],
               ),
             ),
-          const  Divider(),
-            TextButton(
-                onPressed: () {
-                  normalNav(context, const ProfilePage());
-                },
-                child: Text(
-                  'View Profile',
-                  style: TextStyle(
-                      color: AppColorConst.BUTTON_BLUE_COLOR,
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.bold),
-                )),
-            TextButton(
-                onPressed: () {
-                  normalNav(context, const ProfileEditPage());
-                },
-                child: Text(
-                  'Edit Profile',
-                  style: TextStyle(
-                      color: AppColorConst.BUTTON_BLUE_COLOR,
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.bold),
-                )),
-            TextButton(
-                onPressed: () {
-                  normalNav(context, const ChangePassword());
-                },
-                child: Text(
-                  'Change password',
-                  style: TextStyle(
-                      color: AppColorConst.BUTTON_BLUE_COLOR,
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.bold),
-                )),
-            TextButton(
-                onPressed: () {
-                  normalNav(context, const AllJobs());
-                },
-                child: Text(
-                  'View Jobs',
-                  style: TextStyle(
-                      color: AppColorConst.BUTTON_BLUE_COLOR,
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.bold),
-                )),
+            isLoggedIn ? const Divider() : Container(),
+            isLoggedIn
+                ? Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: MediaQuery.sizeOf(context).width,
+                      decoration: BoxDecoration(
+                          // color: Colors.white,
+                          color: AppColorConst.BUTTON_BLUE_COLOR,
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                                offset: Offset(0, 0.5),
+                                color: Colors.black.withOpacity(0.4))
+                          ]),
+                      child: TextButton(
+                          onPressed: () {
+                            normalNav(context, const ProfilePage());
+                          },
+                          child: Text(
+                            'View Profile',
+                            style: TextStyle(
+                                color: AppColorConst.WHAIT,
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.bold),
+                          )),
+                    ),
+                  )
+                : const SizedBox(),
+            isLoggedIn
+                ? Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Container(
+                      width: MediaQuery.sizeOf(context).width,
+                      decoration: BoxDecoration(
+                          // color: Colors.white,
+                          color: AppColorConst.BUTTON_BLUE_COLOR,
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                                offset: Offset(0, 0.5),
+                                color: Colors.black.withOpacity(0.4))
+                          ]),
+                      child: TextButton(
+                          onPressed: () {
+                            normalNav(context, const ProfileEditPage());
+                          },
+                          child: Text(
+                            'Edit Profile',
+                            style: TextStyle(
+                                color: AppColorConst.WHAIT,
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.bold),
+                          )),
+                    ),
+                  )
+                : const SizedBox(),
+            isLoggedIn
+                ? Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Container(
+                      width: MediaQuery.sizeOf(context).width,
+                      decoration: BoxDecoration(
+                          // color: Colors.white,
+                          color: AppColorConst.BUTTON_BLUE_COLOR,
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                                offset: Offset(0, 0.5),
+                                color: Colors.black.withOpacity(0.4))
+                          ]),
+                      child: TextButton(
+                          onPressed: () {
+                            normalNav(context, const ChangePassword());
+                          },
+                          child: Text(
+                            'Change password',
+                            style: TextStyle(
+                                color: AppColorConst.WHAIT,
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.bold),
+                          )),
+                    ),
+                  )
+                : const SizedBox(),
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Container(
+                width: MediaQuery.sizeOf(context).width,
+                decoration: BoxDecoration(
+                    // color: Colors.white,
+                    color: AppColorConst.BUTTON_BLUE_COLOR,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                          offset: Offset(0, 0.5),
+                          color: Colors.black.withOpacity(0.4))
+                    ]),
+                child: TextButton(
+                    onPressed: () {
+                      normalNav(context, const AllJobs());
+                    },
+                    child: Text(
+                      'Jobs',
+                      style: TextStyle(
+                          color: AppColorConst.WHAIT,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.bold),
+                    )),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Container(
+                width: MediaQuery.sizeOf(context).width,
+                decoration: BoxDecoration(
+                    // color: Colors.white,
+                    color: AppColorConst.BUTTON_BLUE_COLOR,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                          offset: Offset(0, 0.5),
+                          color: Colors.black.withOpacity(0.4))
+                    ]),
+                child: TextButton(
+                    onPressed: () {
+                      normalNav(context, const TrainingPage());
+                    },
+                    child: Text(
+                      'Training',
+                      style: TextStyle(
+                          color: AppColorConst.WHAIT,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.bold),
+                    )),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Container(
+                width: MediaQuery.sizeOf(context).width,
+                decoration: BoxDecoration(
+                    // color: Colors.white,
+                    color: AppColorConst.BUTTON_BLUE_COLOR,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                          offset: Offset(0, 0.5),
+                          color: Colors.black.withOpacity(0.4))
+                    ]),
+                child: TextButton(
+                    onPressed: () {
+                      normalNav(context, const TrainingCenters());
+                    },
+                    child: Text(
+                      'Training Centers',
+                      style: TextStyle(
+                          color: AppColorConst.WHAIT,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.bold),
+                    )),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Container(
+                width: MediaQuery.sizeOf(context).width,
+                decoration: BoxDecoration(
+                    // color: Colors.white,
+                    color: AppColorConst.BUTTON_BLUE_COLOR,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                          offset: Offset(0, 0.5),
+                          color: Colors.black.withOpacity(0.4))
+                    ]),
+                child: TextButton(
+                    onPressed: () {
+                      normalNav(context, const NewsNotice());
+                    },
+                    child: Text(
+                      'News and Notices',
+                      style: TextStyle(
+                          color: AppColorConst.WHAIT,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.bold),
+                    )),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Container(
+                width: MediaQuery.sizeOf(context).width,
+                decoration: BoxDecoration(
+                    // color: Colors.white,
+                    color: AppColorConst.BUTTON_BLUE_COLOR,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                          offset: Offset(0, 0.5),
+                          color: Colors.black.withOpacity(0.4))
+                    ]),
+                child: TextButton(
+                    onPressed: () {
+                      normalNav(context, const AboutUs());
+                    },
+                    child: Text(
+                      'About Us',
+                      style: TextStyle(
+                          color: AppColorConst.WHAIT,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.bold),
+                    )),
+              ),
+            ),
           ],
         ),
       ),

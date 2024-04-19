@@ -18,7 +18,7 @@ class DbClient {
     log("Token after removing: ${prefs.getString(dbkey)}");
   }
 
-  getData({required var dbKey}) async {
+  Future getData({required var dbKey}) async {
     final prefs = await SharedPreferences.getInstance();
     final result = prefs.getString(dbKey);
     return result ?? '';

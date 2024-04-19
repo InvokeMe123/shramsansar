@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -24,6 +25,7 @@ import 'package:shramsansar/features/edit_profile/presentation/views/widgets/edi
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/editing_training_certification.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/language_related/add_language.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/language_related/edit_language.dart';
+import 'package:shramsansar/features/edit_profile/presentation/views/widgets/language_related/stars_rating.dart';
 import 'package:shramsansar/features/profile/data/model/profile_model.dart';
 import 'package:shramsansar/features/profile/presentation/controller/profile_controller.dart';
 import 'package:shramsansar/utils/snackbar/custome_snack_bar.dart';
@@ -103,6 +105,9 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                     height: 80,
                                     width: 80,
                                     decoration: const BoxDecoration(
+                                        image: DecorationImage(
+                                            image: AssetImage(
+                                                "assets/images/cv.png")),
                                         shape: BoxShape.circle,
                                         color: Colors.blue),
                                   ),
@@ -695,14 +700,6 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                             const SizedBox(
                               width: 10,
                             ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            GestureDetector(
-                              onTap: () {},
-                              child:
-                                  const Icon(Icons.edit, color: Colors.white),
-                            )
                           ],
                         ),
                       ),
@@ -713,90 +710,132 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (_) => EditLanguage(
-                                          languageModel: LanguageModel.fromMap(
-                                              myProfileModel.languages![index]
-                                                  .toJson())),
-                                    );
-                                  },
-                                  child: const Icon(Icons.edit,
-                                      color: Colors.black),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    ref
-                                        .read(
-                                            languageControllerProvider.notifier)
-                                        .deleteLanguage(myProfileModel
-                                            .languages![index].id!)
-                                        .then((value) {
-                                      if (value) {
+                                Row(
+                                  children: [
+                                    Text(
+                                      myProfileModel
+                                          .languages![index].languageName
+                                          .toString(),
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const Spacer(),
+                                    GestureDetector(
+                                      onTap: () {
                                         ref
-                                            .read(profileControllerProvider
+                                            .read(languageControllerProvider
                                                 .notifier)
-                                            .getMyProfile()
+                                            .deleteLanguage(myProfileModel
+                                                .languages![index].id!)
                                             .then((value) {
-                                          showCustomSnackBar(
-                                              'Successfully Deleted', context,
-                                              isError: false);
+                                          if (value) {
+                                            ref
+                                                .read(profileControllerProvider
+                                                    .notifier)
+                                                .getMyProfile()
+                                                .then((value) {
+                                              showCustomSnackBar(
+                                                  'Successfully Deleted',
+                                                  context,
+                                                  isError: false);
+                                            });
+                                          } else {
+                                            showCustomSnackBar(
+                                                'Failed to delete', context,
+                                                isError: true);
+                                          }
                                         });
-                                      } else {
-                                        showCustomSnackBar(
-                                            'Failed to delete', context,
-                                            isError: true);
-                                      }
-                                    });
-                                  },
-                                  child: const Icon(Icons.delete_outline,
-                                      color: Colors.black),
+                                      },
+                                      child: const Icon(Icons.delete_outline,
+                                          color: Colors.black),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (_) => EditLanguage(
+                                              languageModel:
+                                                  LanguageModel.fromMap(
+                                                      myProfileModel
+                                                          .languages![index]
+                                                          .toJson())),
+                                        );
+                                      },
+                                      child: const Icon(Icons.edit,
+                                          color: Colors.black),
+                                    ),
+                                  ],
                                 ),
-                                Text(
-                                  myProfileModel.languages![index].languageName
-                                      .toString(),
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.bold),
+                                Row(
+                                  children: [
+                                    Text("Listening"),
+                                    StarRating(
+                                        count: int.parse(myProfileModel
+                                            .languages![index]
+                                            .languageRatingListening!)),
+                                    // Text(
+                                    //   myProfileModel.languages![index]
+                                    //       .languageRatingListening
+                                    //       .toString(),
+                                    //   style: TextStyle(
+                                    //       color: Colors.black,
+                                    //       fontSize: 14.sp,
+                                    //       fontWeight: FontWeight.normal),
+                                    // ),
+                                    const Spacer(),
+                                    Text("Reading"),
+                                    StarRating(
+                                        count: int.parse(myProfileModel
+                                            .languages![index]
+                                            .languageRatingReading!)),
+                                    // Text(
+                                    //   myProfileModel.languages![index]
+                                    //       .languageRatingReading
+                                    //       .toString(),
+                                    //   style: TextStyle(
+                                    //       color: Colors.black,
+                                    //       fontSize: 14.sp,
+                                    //       fontWeight: FontWeight.normal),
+                                    // ),
+                                  ],
                                 ),
-                                Text(
-                                  myProfileModel
-                                      .languages![index].languageRatingListening
-                                      .toString(),
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.normal),
-                                ),
-                                Text(
-                                  myProfileModel
-                                      .languages![index].languageRatingReading
-                                      .toString(),
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.normal),
-                                ),
-                                Text(
-                                  myProfileModel
-                                      .languages![index].languageRatingSpeaking
-                                      .toString(),
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.normal),
-                                ),
-                                Text(
-                                  myProfileModel
-                                      .languages![index].languageRatingWriting
-                                      .toString(),
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.normal),
+                                Row(
+                                  children: [
+                                    Text("Speaking"),
+                                    StarRating(
+                                        count: int.parse(myProfileModel
+                                            .languages![index]
+                                            .languageRatingSpeaking!)),
+                                    // Text(
+                                    //   myProfileModel.languages![index]
+                                    //       .languageRatingSpeaking
+                                    //       .toString(),
+                                    //   style: TextStyle(
+                                    //       color: Colors.black,
+                                    //       fontSize: 14.sp,
+                                    //       fontWeight: FontWeight.normal),
+                                    // ),
+                                    const Spacer(),
+                                    Text("Writing"),
+                                    StarRating(
+                                        count: int.parse(myProfileModel
+                                            .languages![index]
+                                            .languageRatingWriting!)),
+                                    // Text(
+                                    //   myProfileModel.languages![index]
+                                    //       .languageRatingWriting
+                                    //       .toString(),
+                                    //   style: TextStyle(
+                                    //       color: Colors.black,
+                                    //       fontSize: 14.sp,
+                                    //       fontWeight: FontWeight.normal),
+                                    // ),
+                                  ],
                                 ),
                                 const SizedBox(
                                   height: 10,
@@ -906,19 +945,34 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
         context: context,
         builder: (context) {
           return AlertDialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             contentPadding: const EdgeInsets.all(15),
             titlePadding: const EdgeInsets.all(0),
             title: Container(
+              height: 30,
               decoration: BoxDecoration(color: AppColorConst.BUTTON_BLUE_COLOR),
               child: Row(
                 children: [
-                  const Text('Edit About Me'),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  const Text(
+                    'Edit About Me',
+                    style: TextStyle(color: Colors.white, fontSize: 16),
+                  ),
                   const Spacer(),
-                  IconButton(
-                      onPressed: () {
+                  GestureDetector(
+                      onTap: () {
                         Navigator.pop(context);
                       },
-                      icon: const Icon(Icons.close))
+                      child: const Icon(
+                        Icons.close,
+                        color: Colors.white,
+                      )),
+                  SizedBox(
+                    width: 10,
+                  ),
                 ],
               ),
             ),
@@ -926,6 +980,17 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 TextField(
+                  decoration: InputDecoration(
+                      fillColor: Colors.white,
+                      filled: true,
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(0),
+                          borderSide:
+                              BorderSide(color: Colors.black, width: .5)),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(0),
+                          borderSide:
+                              BorderSide(color: Colors.black, width: .5))),
                   controller: aboutMe,
                   maxLength: 250,
                   maxLines: 7,

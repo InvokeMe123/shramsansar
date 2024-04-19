@@ -29,7 +29,7 @@ class JobCard extends StatelessWidget {
           child: Row(
             children: [
               Image(
-                  width: 23.w,
+                  width: 16.w,
                   image: NetworkImage(
                       '${ApiConst.IMAGE_URL}' + model.serviceProvider!.logo!)),
               const SizedBox(

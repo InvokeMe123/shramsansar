@@ -2,10 +2,12 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:flutter_html/flutter_html.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shramsansar/const/app_color_const.dart';
 import 'package:shramsansar/core/api_const/api_const.dart';
 import 'package:shramsansar/core/dbclient.dart';
@@ -122,111 +124,203 @@ class _DisplayJobState extends State<DisplayJob> {
       appBar: AppBar(
         title: const Text('Job Details'),
       ),
-      body: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(widget.dataModel.title.toString()),
-              Column(
-                children: [
-                  GestureDetector(
-                    onTap: token.isEmpty
-                        ? null
-                        : () {
-                            cvUpload();
-                          },
-                    child: Container(
-                        padding: EdgeInsets.all(4),
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                color: AppColorConst.BUTTON_BLUE_COLOR),
-                            color: AppColorConst.BUTTON_BLUE_COLOR),
-                        child: Text(
-                          'CV upload',
-                          style: TextStyle(color: Colors.white),
-                        )),
-                  ),
-                  TextButton(
-                    onPressed: token== null
-                        ? null
-                        : () {
-                            applyForJob();
-                          },
-                    child: const Text('Apply Now'),
-                  )
-                ],
-              )
-            ],
-          ),
-          Divider(),
-          Text("Company's details"),
-          Text(widget.dataModel.serviceProviderName.toString()),
-          Row(
-            children: [
-              const Icon(Icons.location_on_outlined, size: 18),
-              Text(widget.dataModel.districtName.toString(),
-                  style: TextStyle(fontSize: 12)),
-              Text(", ${widget.dataModel.muniName}",
-                  style: TextStyle(fontSize: 12))
-            ],
-          ),
-          Row(
-            children: [
-              const Icon(Icons.phone_outlined, size: 18),
-              Text(widget.dataModel.serviceProvider!.mobile.toString(),
-                  style: TextStyle(fontSize: 12))
-            ],
-          ),
-          Row(
-            children: [
-              const Icon(Icons.email_outlined, size: 18),
-              Text(widget.dataModel.serviceProvider!.email.toString(),
-                  style: TextStyle(fontSize: 12))
-            ],
-          ),
-          const Text("Test details"),
-          Row(
-            children: [
-              const Icon(Icons.location_on_outlined, size: 18),
-              Text(widget.dataModel.districtName.toString(),
-                  style: TextStyle(fontSize: 12)),
-              Text(", ${widget.dataModel.muniName}",
-                  style: TextStyle(fontSize: 12)),
-            ],
-          ),
-          Row(
-            children: [
-              const Icon(Icons.people_alt_outlined, size: 18),
-              Text(widget.dataModel.address.toString(),
-                  style: TextStyle(fontSize: 12))
-            ],
-          ),
-          Row(
-            children: [
-              const Icon(Icons.calendar_month_outlined, size: 18),
-              Text("${widget.dataModel.description} ",
-                  style: const TextStyle(fontSize: 12))
-            ],
-          ),
-          Row(
-            children: [
-              const Icon(Icons.access_time, size: 18),
-              Text(
-                  "${widget.dataModel.deadline} - ${widget.dataModel.engDeadline}",
-                  style: TextStyle(fontSize: 12))
-            ],
-          ),
-          Html(
-            data: widget.dataModel.description.toString(),
-            shrinkWrap: true,
-            style: {
-              "*": Style(
-                fontSize: FontSize(12),
-              ),
-            },
-          ),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Image(
+                        width: 20.w,
+                        image: NetworkImage(
+                            "${ApiConst.IMAGE_URL}${widget.dataModel.serviceProvider!.logo}")),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.dataModel.title.toString(),
+                          style: TextStyle(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.bold,
+                              color: AppColorConst.BUTTON_BLUE_COLOR),
+                        ),
+                        Row(
+                          children: [
+                            Icon(Icons.location_on_outlined),
+                            Text(
+                                widget.dataModel.serviceProvider!.districtName!
+                                        .toString() +
+                                    ',' +
+                                    widget.dataModel.serviceProvider!.muniName!
+                                        .toString(),
+                                style: TextStyle(
+                                    color: CupertinoColors.systemGrey)),
+                          ],
+                        ),
+                        RichText(
+                            text: TextSpan(children: [
+                          TextSpan(
+                              text: 'Deadline :',
+                              style: TextStyle(
+                                  color: CupertinoColors.destructiveRed)),
+                          TextSpan(
+                              text: '  ${widget.dataModel.deadline}',
+                              style:
+                                  TextStyle(color: CupertinoColors.systemGrey))
+                        ]))
+                      ],
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        cvUpload();
+                      },
+                      child: Container(
+                          padding: EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: AppColorConst.BUTTON_BLUE_COLOR),
+                              color: AppColorConst.BUTTON_BLUE_COLOR),
+                          child: Text(
+                            'CV upload',
+                            style: TextStyle(color: Colors.white),
+                          )),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        applyForJob();
+                      },
+                      child: const Text('Apply Now'),
+                    ),
+                  ],
+                )
+              ],
+            ),
+            Divider(),
+            Text(
+              "Company's details",
+              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+            ),
+            Text(widget.dataModel.serviceProviderName.toString(),
+                style: TextStyle(
+                    fontWeight: FontWeight.normal,
+                    fontSize: 15.sp,
+                    color: CupertinoColors.systemGrey)),
+            const SizedBox(
+              height: 6,
+            ),
+            Row(
+              children: [
+                const Icon(Icons.location_on_outlined, size: 18),
+                SizedBox(
+                  width: 6,
+                ),
+                Text(widget.dataModel.districtName.toString(),
+                    style: TextStyle(fontSize: 12)),
+                Text(", ${widget.dataModel.muniName}",
+                    style: TextStyle(fontSize: 12))
+              ],
+            ),
+            const SizedBox(
+              height: 6,
+            ),
+            Row(
+              children: [
+                const Icon(Icons.phone_outlined, size: 18),
+                SizedBox(
+                  width: 6,
+                ),
+                Text(widget.dataModel.serviceProvider!.mobile.toString(),
+                    style: TextStyle(fontSize: 12))
+              ],
+            ),
+            const SizedBox(
+              height: 6,
+            ),
+            Row(
+              children: [
+                const Icon(Icons.email_outlined, size: 18),
+                SizedBox(
+                  width: 6,
+                ),
+                Text(widget.dataModel.serviceProvider!.email.toString(),
+                    style: TextStyle(fontSize: 12))
+              ],
+            ),
+            const Divider(),
+            Text(
+              "Test details",
+              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(
+              height: 6,
+            ),
+            Row(
+              children: [
+                const Icon(Icons.location_on_outlined, size: 18),
+                const SizedBox(
+                  width: 6,
+                ),
+                Text(widget.dataModel.districtName.toString(),
+                    style: TextStyle(fontSize: 12)),
+                Text(", ${widget.dataModel.muniName}",
+                    style: TextStyle(fontSize: 12)),
+              ],
+            ),
+            const SizedBox(
+              height: 6,
+            ),
+            Row(
+              children: [
+                const Icon(Icons.people_alt_outlined, size: 18),
+                const SizedBox(
+                  width: 6,
+                ),
+                Text(widget.dataModel.address.toString(),
+                    style: TextStyle(fontSize: 12))
+              ],
+            ),
+            const SizedBox(
+              height: 6,
+            ),
+            Row(
+              children: [
+                const Icon(Icons.access_time, size: 18),
+                const SizedBox(
+                  width: 6,
+                ),
+                Text(
+                    "${widget.dataModel.deadline} - ${widget.dataModel.engDeadline}",
+                    style: TextStyle(fontSize: 12))
+              ],
+            ),
+            Row(
+              children: [
+                // const Icon(Icons.calendar_month_outlined, size: 18),
+                Html(
+                  data: widget.dataModel.description.toString(),
+                  shrinkWrap: true,
+                  style: {
+                    "*": Style(
+                      fontSize: FontSize(12),
+                    ),
+                  },
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 6,
+            ),
+          ],
+        ),
       ),
     );
   }

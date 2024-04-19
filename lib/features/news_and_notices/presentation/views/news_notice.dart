@@ -4,7 +4,9 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shramsansar/const/app_color_const.dart';
 import 'package:shramsansar/features/news_and_notices/presentation/controller/news_notice_controller.dart';
+import 'package:shramsansar/features/news_and_notices/presentation/views/widgets/news_notice_card.dart';
 import 'package:shramsansar/utils/custom_form/custom_form.dart';
+import 'package:shramsansar/utils/snackbar/custome_snack_bar.dart';
 
 class NewsNotice extends ConsumerStatefulWidget {
   const NewsNotice({super.key});
@@ -38,17 +40,17 @@ class _NewsNoticeState extends ConsumerState<NewsNotice> {
   }
 
   TextEditingController search = TextEditingController();
-  String? selectedValue;
+  String selectedValue = '';
+  int selectedIndexValue = -1;
+  bool isSearched = false;
 
   @override
   Widget build(BuildContext context) {
     var newsnotice = ref.watch(newsnoticeControllerProvider(1));
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColorConst.BUTTON_BLUE_COLOR,
         title: Text(
           'News and Notice',
-          style: TextStyle(color: Colors.white),
         ),
       ),
       body: SafeArea(
@@ -99,12 +101,20 @@ class _NewsNoticeState extends ConsumerState<NewsNotice> {
                         Positioned.fill(
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton<String>(
-                              value: selectedValue, // Example initial value
+                              value: selectedValue.isEmpty
+                                  ? null
+                                  : selectedValue, // Example initial value
                               onChanged: (String? newValue) {
                                 // Handle dropdown item selection
                                 setState(() {
-                                  selectedValue = newValue;
+                                  selectedValue = newValue!;
                                 });
+
+                                if (newValue == 'News') {
+                                  selectedIndexValue = 1;
+                                } else {
+                                  selectedIndexValue = 2;
+                                }
                               },
                               items: <String>['News', 'Notice']
                                   .map((String value) {
@@ -126,9 +136,40 @@ class _NewsNoticeState extends ConsumerState<NewsNotice> {
               ),
               Row(
                 children: [
+                  if (isSearched)
+                    TextButton(
+                      onPressed: () {
+                        setState(() {
+                          isSearched = false;
+                          search.clear();
+                          ref
+                              .read(newsnoticeControllerProvider(1).notifier)
+                              .getNewsNotice();
+                        });
+                      },
+                      child: Text(
+                        'Clear',
+                        style:
+                            TextStyle(color: AppColorConst.BUTTON_BLUE_COLOR),
+                      ),
+                    ),
                   const Spacer(),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      if (selectedIndexValue == -1 && search.text.isEmpty) {
+                        showCustomSnackBar("Nothing to search", context);
+                        return;
+                      }
+                      setState(() {
+                        isSearched = true;
+                      });
+
+                      ref
+                          .read(newsnoticeControllerProvider(1).notifier)
+                          .filterNewsNotice(
+                              title: search.text,
+                              type: selectedIndexValue.toString());
+                    },
                     child: Text(
                       'Apply',
                       style: TextStyle(color: Colors.white),
@@ -149,82 +190,20 @@ class _NewsNoticeState extends ConsumerState<NewsNotice> {
                 color: CupertinoColors.systemGrey3,
               ),
               newsnotice.when(data: (data) {
+                if (data.data!.isEmpty) {
+                  return const Center(
+                    child: Text("No data found"),
+                  );
+                }
                 return Expanded(
                   child: ListView.builder(
-                      itemCount: 2,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Container(
-                            padding: const EdgeInsets.only(left: 12),
-                            height: 65,
-                            width: MediaQuery.sizeOf(context).width,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(6),
-                                color:
-                                    CupertinoColors.extraLightBackgroundGray),
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    //title of news and notice
-                                    Container(
-                                      width: MediaQuery.sizeOf(context).width *
-                                          0.7,
-                                      child: Text(
-                                        data.data!
-                                            .map((e) => e.title)
-                                            .toString(),
-                                        style: TextStyle(
-                                            overflow: TextOverflow.ellipsis,
-                                            color: AppColorConst
-                                                .BUTTON_BLUE_COLOR),
-                                      ),
-                                    ),
-                                    const Spacer(),
-                                    Container(
-                                      padding: const EdgeInsets.all(4),
-                                      decoration: BoxDecoration(
-                                          color: AppColorConst.PRAYMERY_COLOR),
-                                      child: Text(
-                                        selectedValue!,
-                                        style: TextStyle(
-                                            color: AppColorConst
-                                                .PRAYMARY_TEXT_COLOR),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                const Row(
-                                  children: [
-                                    Icon(Icons.location_on_outlined,
-                                        size: 18, color: Colors.grey),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text('biratnagar'),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Icon(Icons.calendar_month_outlined,
-                                        size: 18, color: Colors.grey),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text("2080-1-21")
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                        );
+                      itemCount: data.data!.length,
+                      itemBuilder: (_, index) {
+                        return NewsNoticeCard(data: data.data![index]);
                       }),
                 );
               }, error: (_, __) {
-                return Text('error');
+                return const Text('error');
               }, loading: () {
                 return Text('Loading.....');
               })

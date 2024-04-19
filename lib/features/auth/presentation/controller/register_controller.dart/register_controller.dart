@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shramsansar/dashboard.dart';
@@ -31,19 +32,19 @@ class RegisterController extends StateNotifier<AsyncValue<LoginResponseModel>> {
     });
   }
 
-  registerWithFormData(
+  Future<bool> registerWithFormData(
       {required FormData formData, required BuildContext context}) async {
     final result = await _authRepo.registerWithFormData(formData);
+    bool flag = false;
     result.fold((l) {
       showCustomSnackBar(l.message, context);
       state = AsyncValue.error(l, StackTrace.fromString(l.message));
     }, (r) {
+      flag = true;
       state = AsyncValue.data(r);
-
-      if (context.mounted) {
-        pushAndRemoveUntil(context, const Dashboard());
-      }
     });
+
+    return flag;
   }
 }
 

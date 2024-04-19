@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shramsansar/const/app_color_const.dart';
+import 'package:shramsansar/dashboard.dart';
 import 'package:shramsansar/features/auth/data/models/register_model/register_request_model.dart';
 import 'package:shramsansar/features/auth/presentation/controller/register_controller.dart/register_controller.dart';
 import 'package:shramsansar/features/auth/presentation/views/register/widgets/national_id_card_button.dart';
@@ -19,7 +20,9 @@ import 'package:shramsansar/features/getMunicipalities/presentation/controller/m
 import 'package:shramsansar/features/getPradesh/presentation/controller/pradesh_controller.dart';
 import 'package:shramsansar/features/getWardnumber/presentation/controller/ward_controller.dart';
 import 'package:shramsansar/features/jobs/presentation/controller/job_catergory_controller.dart';
+import 'package:shramsansar/features/profile/presentation/controller/profile_controller.dart';
 import 'package:shramsansar/utils/custom_form/custom_form.dart';
+import 'package:shramsansar/utils/navigation/nav_app.dart';
 import 'package:shramsansar/utils/snackbar/custome_snack_bar.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
@@ -91,7 +94,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
         title: const Text('Register here'),
       ),
       body: FutureBuilder(
@@ -296,10 +298,30 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                   "ethnicity_type": selectedCasteId,
                                 });
 
+                                debugger();
+
                                 ref
                                     .read(registerControllerProvider.notifier)
                                     .registerWithFormData(
-                                        formData: formData, context: context);
+                                        formData: formData, context: context)
+                                    .then((value) async {
+                                  if (value) {
+                                    ref
+                                        .read(
+                                            profileControllerProvider.notifier)
+                                        .getMyProfile()
+                                        .then((_) {
+                                      pushAndRemoveUntil(
+                                          context, const Dashboard());
+                                    });
+                                  } else {
+                                    showCustomSnackBar(
+                                        "Something went wrong", context);
+                                  }
+                                }).onError((error, stackTrace) {
+                                  showCustomSnackBar(
+                                      "Something went wrong.", context);
+                                });
                               }
                             },
                             child: Container(

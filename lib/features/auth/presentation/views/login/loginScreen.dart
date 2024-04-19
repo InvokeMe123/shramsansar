@@ -10,6 +10,7 @@ import 'package:shramsansar/features/auth/data/models/login_model/login_request_
 import 'package:shramsansar/features/auth/presentation/controller/auth_controller.dart';
 import 'package:shramsansar/features/auth/presentation/controller/login_loading_controller.dart';
 import 'package:shramsansar/features/auth/presentation/views/register/register_screen.dart';
+import 'package:shramsansar/features/profile/presentation/controller/profile_controller.dart';
 import 'package:shramsansar/utils/custom_form/custom_form.dart';
 import 'package:shramsansar/utils/navigation/nav_app.dart';
 import 'package:shramsansar/utils/snackbar/custome_snack_bar.dart';
@@ -44,9 +45,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     if (formKey.currentState!.validate()) {
       ref.read(loginloadingProvider.notifier).update((state) => true);
       log(device_token);
-      await ref
+      ref
           .read(authControllerProvider.notifier)
-          .login(loginRequestModel, context, token);
+          .login(loginRequestModel, context, token)
+          .then((value) {
+        if (value) {
+          ref.read(profileControllerProvider.notifier).getMyProfile();
+        }
+      });
     } else {
       showCustomSnackBar('Wrong password', context);
     }

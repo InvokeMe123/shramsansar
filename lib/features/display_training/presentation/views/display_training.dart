@@ -34,7 +34,7 @@ class DisplayTraining extends ConsumerWidget {
                   style: TextStyle(
                       color: AppColorConst.BUTTON_BLUE_COLOR,
                       fontWeight: FontWeight.bold,
-                      fontSize: 24),
+                      fontSize: 18),
                 ),
                 Container(
                   height: 40,
@@ -78,7 +78,7 @@ class DisplayTraining extends ConsumerWidget {
                                       },
                                       loading: () {},
                                       error: (error, stackTrace) {
-                                        debugPrint("Appliied failed");
+                                        debugPrint("Applied failed");
                                       });
                                 },
                                 child: const Text('Yes'),

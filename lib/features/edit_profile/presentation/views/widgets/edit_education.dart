@@ -70,6 +70,7 @@ class _AddEducationState extends ConsumerState<EditEducation> {
       child: AlertDialog(
         contentPadding: const EdgeInsets.all(0),
         titlePadding: EdgeInsets.zero,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         title: Container(
           padding: const EdgeInsets.all(4),
           width: MediaQuery.sizeOf(context).width,
@@ -100,38 +101,42 @@ class _AddEducationState extends ConsumerState<EditEducation> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text('Level'),
-                      Container(
-                        height: 40,
-                        width: 160,
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                        ),
-                        child: DropdownButtonFormField<String>(
-                          hint: const Text('Education'),
-                          value: educ,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please select education level';
-                            }
-                            return null;
-                          },
-                          items: widget.educationLevel.map((eduList) {
-                            return DropdownMenuItem<String>(
-                              value: eduList,
-                              child: Text(
-                                eduList,
-                                style: const TextStyle(fontSize: 10),
-                              ),
-                            );
-                          }).toList(),
-                          onChanged: (newValue) {
-                            setState(() {
-                              educ = newValue;
-                              levelID =
-                                  widget.educationLevel.indexOf(educ!) + 1;
-                            });
-                          },
-                        ),
+                      DropdownButtonFormField<String>(
+                        decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            contentPadding: const EdgeInsets.all(3),
+                            constraints: BoxConstraints.tight(Size(
+                                MediaQuery.sizeOf(context).width * .38, 50)),
+                            focusedBorder: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.black, width: .5)),
+                            enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.black, width: .5))),
+                        hint: const Text('Education'),
+                        value: educ,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please select education level';
+                          }
+                          return null;
+                        },
+                        items: widget.educationLevel.map((eduList) {
+                          return DropdownMenuItem<String>(
+                            value: eduList,
+                            child: Text(
+                              eduList,
+                              style: const TextStyle(fontSize: 10),
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (newValue) {
+                          setState(() {
+                            educ = newValue;
+                            levelID = widget.educationLevel.indexOf(educ!) + 1;
+                          });
+                        },
                       )
                     ],
                   ),
@@ -142,24 +147,29 @@ class _AddEducationState extends ConsumerState<EditEducation> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text('Education Board'),
-                      Container(
-                        height: 30,
-                        width: MediaQuery.sizeOf(context).width * 0.34,
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                        ),
-                        child: TextFormField(
-                          style: TextStyle(fontSize: 14),
-                          controller: educationBoard,
-                          textInputAction: TextInputAction.next,
-                          keyboardType: TextInputType.name,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter education board';
-                            }
-                            return null;
-                          },
-                        ),
+                      TextFormField(
+                        decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            contentPadding: const EdgeInsets.all(3),
+                            constraints: BoxConstraints.tight(Size(
+                                MediaQuery.sizeOf(context).width * .34, 50)),
+                            focusedBorder: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.black, width: .5)),
+                            enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.black, width: .5))),
+                        style: TextStyle(fontSize: 14),
+                        controller: educationBoard,
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.name,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter education board';
+                          }
+                          return null;
+                        },
                       )
                     ],
                   ),
@@ -171,24 +181,29 @@ class _AddEducationState extends ConsumerState<EditEducation> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text('Program'),
-                      Container(
-                        height: 30,
-                        width: MediaQuery.sizeOf(context).width * 0.38,
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                        ),
-                        child: TextFormField(
-                          style: TextStyle(fontSize: 14),
-                          controller: program,
-                          textInputAction: TextInputAction.next,
-                          keyboardType: TextInputType.name,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter program';
-                            }
-                            return null;
-                          },
-                        ),
+                      TextFormField(
+                        decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            contentPadding: const EdgeInsets.all(3),
+                            constraints: BoxConstraints.tight(Size(
+                                MediaQuery.sizeOf(context).width * .38, 50)),
+                            focusedBorder: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.black, width: .5)),
+                            enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.black, width: .5))),
+                        style: TextStyle(fontSize: 14),
+                        controller: program,
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.name,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter program';
+                          }
+                          return null;
+                        },
                       )
                     ],
                   ),
@@ -199,24 +214,29 @@ class _AddEducationState extends ConsumerState<EditEducation> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text('Institute'),
-                      Container(
-                        height: 30,
-                        width: MediaQuery.sizeOf(context).width * 0.34,
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                        ),
-                        child: TextFormField(
-                          style: TextStyle(fontSize: 14),
-                          controller: institute,
-                          textInputAction: TextInputAction.next,
-                          keyboardType: TextInputType.name,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter institute';
-                            }
-                            return null;
-                          },
-                        ),
+                      TextFormField(
+                        decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            contentPadding: const EdgeInsets.all(3),
+                            constraints: BoxConstraints.tight(Size(
+                                MediaQuery.sizeOf(context).width * .34, 50)),
+                            focusedBorder: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.black, width: .5)),
+                            enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.black, width: .5))),
+                        style: TextStyle(fontSize: 14),
+                        controller: institute,
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.name,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter institute';
+                          }
+                          return null;
+                        },
                       )
                     ],
                   ),
@@ -228,39 +248,43 @@ class _AddEducationState extends ConsumerState<EditEducation> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text('Graduate Year'),
-                      SizedBox(
-                        height: 30,
-                        width: 160,
-                        child: TextFormField(
-                          style: TextStyle(fontSize: 14),
-                          decoration: const InputDecoration(
-                              fillColor: Colors.white,
-                              filled: true,
-                              hintText: "Select Date"),
-                          textInputAction: TextInputAction.next,
-                          controller: graduateYearController,
-                          keyboardType: TextInputType.name,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please select year';
-                            }
-                            return null;
-                          },
-                          onTap: () async {
-                            FocusScope.of(context).requestFocus(FocusNode());
-                            DateTime? picked = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(2015, 8),
-                                lastDate: DateTime.now());
-                            if (picked != null) {
-                              setState(() {
-                                graduateYearController.text =
-                                    _formatDate(picked);
-                              });
-                            }
-                          },
-                        ),
+                      TextFormField(
+                        decoration: InputDecoration(
+                            filled: true,
+                            hintText: "Select Date",
+                            fillColor: Colors.white,
+                            contentPadding: const EdgeInsets.all(3),
+                            constraints: BoxConstraints.tight(Size(
+                                MediaQuery.sizeOf(context).width * .38, 50)),
+                            focusedBorder: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.black, width: .5)),
+                            enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.black, width: .5))),
+                        style: TextStyle(fontSize: 14),
+                        textInputAction: TextInputAction.next,
+                        controller: graduateYearController,
+                        keyboardType: TextInputType.name,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please select year';
+                          }
+                          return null;
+                        },
+                        onTap: () async {
+                          FocusScope.of(context).requestFocus(FocusNode());
+                          DateTime? picked = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(2015, 8),
+                              lastDate: DateTime.now());
+                          if (picked != null) {
+                            setState(() {
+                              graduateYearController.text = _formatDate(picked);
+                            });
+                          }
+                        },
                       ),
                     ],
                   ),
@@ -270,23 +294,28 @@ class _AddEducationState extends ConsumerState<EditEducation> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text('Obtained Marks'),
-                      Container(
-                        height: 30,
-                        width: MediaQuery.sizeOf(context).width * 0.34,
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                        ),
-                        child: TextFormField(
-                          controller: obtainedMarks,
-                          textInputAction: TextInputAction.next,
-                          keyboardType: TextInputType.number,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter obtained marks';
-                            }
-                            return null;
-                          },
-                        ),
+                      TextFormField(
+                        decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            contentPadding: const EdgeInsets.all(3),
+                            constraints: BoxConstraints.tight(Size(
+                                MediaQuery.sizeOf(context).width * .34, 50)),
+                            focusedBorder: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.black, width: .5)),
+                            enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.black, width: .5))),
+                        controller: obtainedMarks,
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter obtained marks';
+                          }
+                          return null;
+                        },
                       )
                     ],
                   ),

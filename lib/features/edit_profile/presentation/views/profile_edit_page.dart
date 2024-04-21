@@ -13,6 +13,7 @@ import 'package:shramsansar/features/edit_profile/presentation/controller/experi
 import 'package:shramsansar/features/edit_profile/presentation/controller/language_controller/language_controller.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/social_accounts_controller/social_accounts_controller.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/training_certification_controller/training_certification_controller.dart';
+import 'package:shramsansar/features/edit_profile/presentation/views/full_profile_edit_page.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/add_education.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/add_experience.dart';
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/add_social_media.dart';
@@ -25,6 +26,7 @@ import 'package:shramsansar/features/edit_profile/presentation/views/widgets/lan
 import 'package:shramsansar/features/edit_profile/presentation/views/widgets/language_related/stars_rating.dart';
 import 'package:shramsansar/features/profile/data/model/profile_model.dart';
 import 'package:shramsansar/features/profile/presentation/controller/profile_controller.dart';
+import 'package:shramsansar/utils/navigation/nav_app.dart';
 import 'package:shramsansar/utils/snackbar/custome_snack_bar.dart';
 
 import 'package:intl/intl.dart';
@@ -110,7 +112,10 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                   ),
                                   const Spacer(),
                                   IconButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        normalNav(
+                                            context, FullProfileEditPage(myProfileModel));
+                                      },
                                       icon: const Icon(Icons.edit))
                                 ],
                               ),
@@ -715,7 +720,7 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                           .toString(),
                                       style: TextStyle(
                                           color: Colors.black,
-                                          fontSize: 16,
+                                          fontSize: 14.sp,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     const Spacer(),
@@ -769,8 +774,16 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                   ],
                                 ),
                                 Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text("Listening"),
+                                    Text(
+                                      "Listening",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.normal),
+                                    ),
                                     StarRating(
                                         count: int.parse(myProfileModel
                                             .languages![index]
@@ -784,8 +797,14 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                     //       fontSize: 14.sp,
                                     //       fontWeight: FontWeight.normal),
                                     // ),
-                                    const Spacer(),
-                                    Text("Reading"),
+
+                                    Text(
+                                      "Reading",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.normal),
+                                    ),
                                     StarRating(
                                         count: int.parse(myProfileModel
                                             .languages![index]
@@ -802,8 +821,16 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                   ],
                                 ),
                                 Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text("Speaking"),
+                                    Text(
+                                      "Speaking",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.normal),
+                                    ),
                                     StarRating(
                                         count: int.parse(myProfileModel
                                             .languages![index]
@@ -817,8 +844,14 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                     //       fontSize: 14.sp,
                                     //       fontWeight: FontWeight.normal),
                                     // ),
-                                    const Spacer(),
-                                    Text("Writing"),
+
+                                    Text(
+                                      "Writing",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.normal),
+                                    ),
                                     StarRating(
                                         count: int.parse(myProfileModel
                                             .languages![index]

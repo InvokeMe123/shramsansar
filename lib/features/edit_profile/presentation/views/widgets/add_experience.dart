@@ -64,7 +64,7 @@ class _AddExperienceState extends ConsumerState<AddExperience> {
       key: _formKey,
       child: AlertDialog(
         shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(12))),
+            borderRadius: BorderRadius.all(Radius.circular(8))),
         contentPadding: EdgeInsets.zero,
         content: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

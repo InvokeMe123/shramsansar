@@ -39,7 +39,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                           height: 80,
                           width: 80,
                           decoration: const BoxDecoration(
-                              shape: BoxShape.circle, color: Colors.blue),
+                              image: DecorationImage(
+                                  image: AssetImage("assets/images/cv.png")),
+                              shape: BoxShape.circle,
+                              color: Colors.blue),
                         ),
                       ),
                       Center(
@@ -51,32 +54,23 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                               fontWeight: FontWeight.bold),
                         ),
                       ),
-                      Center(
-                        child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.all(6),
-                                shape: const RoundedRectangleBorder(),
-                                backgroundColor:
-                                    AppColorConst.BUTTON_BLUE_COLOR),
-                            onPressed: () {},
-                            child: const Text(
-                              'Generate CV',
-                              style: TextStyle(color: Colors.white),
-                            )),
-                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Row(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               const Icon(Icons.location_on),
-                              Text(
-                                "${myProfileModel.perDistrictId}, ${myProfileModel.perMuniName}, ${myProfileModel.perWard}",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.normal),
-                              ),
+                              SizedBox(
+                                width: 100,
+                                child: Text(
+                                  "${myProfileModel.perDistrictName}, ${myProfileModel.perMuniName}, ${myProfileModel.perWard}",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                              )
                             ],
                           ),
                           Row(

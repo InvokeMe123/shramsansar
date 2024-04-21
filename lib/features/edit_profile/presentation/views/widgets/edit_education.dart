@@ -69,258 +69,274 @@ class _AddEducationState extends ConsumerState<EditEducation> {
       key: _formKey,
       child: AlertDialog(
         contentPadding: const EdgeInsets.all(0),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(4),
-              width: MediaQuery.sizeOf(context).width,
-              decoration: BoxDecoration(color: AppColorConst.BUTTON_BLUE_COLOR),
-              child: Row(
+        titlePadding: EdgeInsets.zero,
+        title: Container(
+          padding: const EdgeInsets.all(4),
+          width: MediaQuery.sizeOf(context).width,
+          decoration: BoxDecoration(color: AppColorConst.BUTTON_BLUE_COLOR),
+          child: Row(
+            children: [
+              const Text(
+                'Edit Education',
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              ),
+              const Spacer(),
+              GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Icon(Icons.close, color: Colors.white))
+            ],
+          ),
+        ),
+        content: Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
                 children: [
-                  const Text(
-                    'Edit Education',
-                    style: TextStyle(color: Colors.white),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Level'),
+                      Container(
+                        height: 40,
+                        width: 160,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                        ),
+                        child: DropdownButtonFormField<String>(
+                          hint: const Text('Education'),
+                          value: educ,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please select education level';
+                            }
+                            return null;
+                          },
+                          items: widget.educationLevel.map((eduList) {
+                            return DropdownMenuItem<String>(
+                              value: eduList,
+                              child: Text(
+                                eduList,
+                                style: const TextStyle(fontSize: 10),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (newValue) {
+                            setState(() {
+                              educ = newValue;
+                              levelID =
+                                  widget.educationLevel.indexOf(educ!) + 1;
+                            });
+                          },
+                        ),
+                      )
+                    ],
                   ),
-                  const Spacer(),
-                  GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Icon(Icons.close, color: Colors.white))
+                  const SizedBox(
+                    width: 15,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Education Board'),
+                      Container(
+                        height: 30,
+                        width: MediaQuery.sizeOf(context).width * 0.34,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                        ),
+                        child: TextFormField(
+                          style: TextStyle(fontSize: 14),
+                          controller: educationBoard,
+                          textInputAction: TextInputAction.next,
+                          keyboardType: TextInputType.name,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter education board';
+                            }
+                            return null;
+                          },
+                        ),
+                      )
+                    ],
+                  ),
                 ],
               ),
-            ),
-            Row(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Level'),
-                    Container(
-                      height: 40,
-                      width: 160,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
+              Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Program'),
+                      Container(
+                        height: 30,
+                        width: MediaQuery.sizeOf(context).width * 0.38,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                        ),
+                        child: TextFormField(
+                          style: TextStyle(fontSize: 14),
+                          controller: program,
+                          textInputAction: TextInputAction.next,
+                          keyboardType: TextInputType.name,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter program';
+                            }
+                            return null;
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(
+                    width: 15,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Institute'),
+                      Container(
+                        height: 30,
+                        width: MediaQuery.sizeOf(context).width * 0.34,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                        ),
+                        child: TextFormField(
+                          style: TextStyle(fontSize: 14),
+                          controller: institute,
+                          textInputAction: TextInputAction.next,
+                          keyboardType: TextInputType.name,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter institute';
+                            }
+                            return null;
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Graduate Year'),
+                      SizedBox(
+                        height: 30,
+                        width: 160,
+                        child: TextFormField(
+                          style: TextStyle(fontSize: 14),
+                          decoration: const InputDecoration(
+                              fillColor: Colors.white,
+                              filled: true,
+                              hintText: "Select Date"),
+                          textInputAction: TextInputAction.next,
+                          controller: graduateYearController,
+                          keyboardType: TextInputType.name,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please select year';
+                            }
+                            return null;
+                          },
+                          onTap: () async {
+                            FocusScope.of(context).requestFocus(FocusNode());
+                            DateTime? picked = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2015, 8),
+                                lastDate: DateTime.now());
+                            if (picked != null) {
+                              setState(() {
+                                graduateYearController.text =
+                                    _formatDate(picked);
+                              });
+                            }
+                          },
+                        ),
                       ),
-                      child: DropdownButtonFormField<String>(
-                        hint: const Text('Education'),
-                        value: educ,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please select education level';
-                          }
-                          return null;
-                        },
-                        items: widget.educationLevel.map((eduList) {
-                          return DropdownMenuItem<String>(
-                            value: eduList,
-                            child: Text(
-                              eduList,
-                              style: const TextStyle(fontSize: 10),
-                            ),
-                          );
-                        }).toList(),
-                        onChanged: (newValue) {
-                          setState(() {
-                            educ = newValue;
-                            levelID = widget.educationLevel.indexOf(educ!) + 1;
-                          });
-                        },
-                      ),
-                    )
-                  ],
-                ),
-                const SizedBox(
-                  width: 15,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Education Board'),
-                    Container(
-                      height: 40,
-                      width: MediaQuery.sizeOf(context).width * 0.38,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                      ),
-                      child: TextFormField(
-                        controller: educationBoard,
-                        textInputAction: TextInputAction.next,
-                        keyboardType: TextInputType.name,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter education board';
-                          }
-                          return null;
-                        },
-                      ),
-                    )
-                  ],
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Program'),
-                    Container(
-                      height: 40,
-                      width: MediaQuery.sizeOf(context).width * 0.38,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                      ),
-                      child: TextFormField(
-                        controller: program,
-                        textInputAction: TextInputAction.next,
-                        keyboardType: TextInputType.name,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter program';
-                          }
-                          return null;
-                        },
-                      ),
-                    )
-                  ],
-                ),
-                const SizedBox(
-                  width: 15,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Institute'),
-                    Container(
-                      height: 40,
-                      width: MediaQuery.sizeOf(context).width * 0.38,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                      ),
-                      child: TextFormField(
-                        controller: institute,
-                        textInputAction: TextInputAction.next,
-                        keyboardType: TextInputType.name,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter institute';
-                          }
-                          return null;
-                        },
-                      ),
-                    )
-                  ],
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Graduate Year'),
-                    SizedBox(
-                      width: 160,
-                      child: TextFormField(
-                        decoration:
-                            const InputDecoration(hintText: "Select Date"),
-                        textInputAction: TextInputAction.next,
-                        controller: graduateYearController,
-                        keyboardType: TextInputType.name,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please select year';
-                          }
-                          return null;
-                        },
-                        onTap: () async {
-                          FocusScope.of(context).requestFocus(FocusNode());
-                          DateTime? picked = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(2015, 8),
-                              lastDate: DateTime.now());
-                          if (picked != null) {
-                            setState(() {
-                              graduateYearController.text = _formatDate(picked);
-                            });
-                          }
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(width: 15),
-                Column(
-                  children: [
-                    const Text('Obtained Marks'),
-                    Container(
-                      height: 40,
-                      width: MediaQuery.sizeOf(context).width * 0.38,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                      ),
-                      child: TextFormField(
-                        controller: obtainedMarks,
-                        textInputAction: TextInputAction.next,
-                        keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter obtained marks';
-                          }
-                          return null;
-                        },
-                      ),
-                    )
-                  ],
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                const Spacer(),
-                TextButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        EducationReqModel educationReqModel = EducationReqModel(
-                            level_id: levelID.toString(),
-                            levelName:
-                                widget.educationLevel.elementAt(levelID - 1),
-                            program: program.text,
-                            board: educationBoard.text,
-                            institute: institute.text,
-                            graduation_year: graduateYearController.text,
-                            marks_secured: obtainedMarks.text);
+                    ],
+                  ),
+                  const SizedBox(width: 15),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Obtained Marks'),
+                      Container(
+                        height: 30,
+                        width: MediaQuery.sizeOf(context).width * 0.34,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                        ),
+                        child: TextFormField(
+                          controller: obtainedMarks,
+                          textInputAction: TextInputAction.next,
+                          keyboardType: TextInputType.number,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter obtained marks';
+                            }
+                            return null;
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  const Spacer(),
+                  TextButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          EducationReqModel educationReqModel =
+                              EducationReqModel(
+                                  level_id: levelID.toString(),
+                                  levelName: widget.educationLevel
+                                      .elementAt(levelID - 1),
+                                  program: program.text,
+                                  board: educationBoard.text,
+                                  institute: institute.text,
+                                  graduation_year: graduateYearController.text,
+                                  marks_secured: obtainedMarks.text);
 
-                        ref
-                            .read(profileControllerProvider.notifier)
-                            .updateEducation(
-                                educationReqModel: educationReqModel,
-                                id: widget.educationModel.id!)
-                            .then((value) {
-                          if (value) {
-                            ref
-                                .read(profileControllerProvider.notifier)
-                                .getMyProfile()
-                                .then((value) {
-                              Navigator.pop(context);
+                          ref
+                              .read(profileControllerProvider.notifier)
+                              .updateEducation(
+                                  educationReqModel: educationReqModel,
+                                  id: widget.educationModel.id!)
+                              .then((value) {
+                            if (value) {
+                              ref
+                                  .read(profileControllerProvider.notifier)
+                                  .getMyProfile()
+                                  .then((value) {
+                                Navigator.pop(context);
+                                showCustomSnackBar(
+                                    'Education updated successfully', context,
+                                    isError: false);
+                              });
+                            } else {
                               showCustomSnackBar(
-                                  'Education updated successfully', context,
-                                  isError: false);
-                            });
-                          } else {
-                            showCustomSnackBar(
-                                'Failed to update education', context);
-                          }
-                        });
-                      }
-                    },
-                    child: const Text('Save'))
-              ],
-            )
-          ],
+                                  'Failed to update education', context);
+                            }
+                          });
+                        }
+                      },
+                      child: const Text('Save'))
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

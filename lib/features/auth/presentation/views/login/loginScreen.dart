@@ -29,7 +29,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   String device_token =
       'fiRiB9DySGO4dzQG8-Qu7y:APA91bGIoNhOM1Ub8a6u7TN3SDd1DO3HahpS8DIqW0p_vf5eJQgICh5Byt6F8CqjGJLdWof2IadqdSXwVYxZfEyTCY-pB2zLs6u9ZtyQSWSnQ5w-RAIa61czHzJ-FqxGdtMyt7HnUQ_A';
   String token = '';
-  bool isVisible = false;
+  bool isVisible = true;
   Icon visible = const Icon(Icons.visibility);
   Icon notVisible = const Icon(Icons.visibility_off_outlined);
 
@@ -37,6 +37,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     token = prefs.getString('token').toString();
     log(token);
+
     LoginRequestModel loginRequestModel = LoginRequestModel(
         device_token: device_token,
         email: _emailController.text.trim(),
@@ -50,6 +51,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           .then((value) {
         if (value) {
           ref.read(profileControllerProvider.notifier).getMyProfile();
+        } else {
+          log('invalid email or pasowrd');
+          showCustomSnackBar('Invalid email or password', context);
         }
       });
     } else {

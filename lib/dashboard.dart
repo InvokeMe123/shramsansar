@@ -26,6 +26,7 @@ import 'package:shramsansar/features/trainings/presentation/views/training_page.
 import 'package:shramsansar/features/training_center/presentation/views/training_center.dart';
 import 'package:shramsansar/utils/navigation/nav_app.dart';
 import 'package:shramsansar/utils/shimmer/shimmer.dart';
+import 'package:shramsansar/utils/snackbar/custome_snack_bar.dart';
 
 class Dashboard extends ConsumerStatefulWidget {
   const Dashboard({super.key});
@@ -59,7 +60,9 @@ class _DashboardState extends ConsumerState<Dashboard> {
       (value) {
         pushReplacement(context, const LoginScreen());
       },
-    );
+    ).then((value) {
+      showCustomSnackBar('Logged Out Successfully', context);
+    });
   }
 
   @override
@@ -158,7 +161,8 @@ class _DashboardState extends ConsumerState<Dashboard> {
                                 const SizedBox(
                                   width: 8,
                                 ),
-                                Text('${data.perDistrictName} ,${data.perPradeshName}'),
+                                Text(
+                                    '${data.perDistrictName} ,${data.perPradeshName}'),
                               ],
                             ),
                             Row(
@@ -190,7 +194,7 @@ class _DashboardState extends ConsumerState<Dashboard> {
             isLoggedIn ? const Divider() : Container(),
             isLoggedIn
                 ? Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(4.0),
                     child: Container(
                       width: MediaQuery.sizeOf(context).width,
                       decoration: BoxDecoration(

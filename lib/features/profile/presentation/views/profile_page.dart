@@ -1,8 +1,5 @@
-import 'dart:developer';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shramsansar/const/app_color_const.dart';
@@ -102,9 +99,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                           )
                         ],
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Container(
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         width: MediaQuery.sizeOf(context).width,
                         decoration: BoxDecoration(
                           color: AppColorConst.BUTTON_BLUE_COLOR,
@@ -114,24 +111,24 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Container(
                           child: Text(
                               myProfileModel.aboutYourself?.description ??
                                   "No description provided")),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Container(
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         width: MediaQuery.sizeOf(context).width,
                         decoration: BoxDecoration(
                           color: AppColorConst.BUTTON_BLUE_COLOR,
                         ),
-                        child: Text(
+                        child: const Text(
                           'Education',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       ListView.builder(
                           shrinkWrap: true,
                           itemCount: myProfileModel.educations?.length,
@@ -213,24 +210,24 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                         fontWeight: FontWeight.normal),
                                   )
                                 ])),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                               ],
                             );
                           }),
                       Container(
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         width: MediaQuery.sizeOf(context).width,
                         decoration: BoxDecoration(
                           color: AppColorConst.BUTTON_BLUE_COLOR,
                         ),
-                        child: Text(
+                        child: const Text(
                           'Experience',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       ListView.builder(
@@ -305,27 +302,27 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                         fontWeight: FontWeight.normal),
                                   )
                                 ])),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                               ],
                             );
                           }),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Container(
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         width: MediaQuery.sizeOf(context).width,
                         decoration: BoxDecoration(
                           color: AppColorConst.BUTTON_BLUE_COLOR,
                         ),
-                        child: Text(
+                        child: const Text(
                           'Training/Certifications',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       ListView.builder(
@@ -367,7 +364,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.normal),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                               ],
@@ -378,7 +375,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 );
               },
               error: (_, __) {
-                return Text("he");
+                return const Text("he");
               },
               loading: () => const Center(child: CircularProgressIndicator()),
             )

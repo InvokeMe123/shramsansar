@@ -4,7 +4,7 @@ import 'package:shramsansar/features/edit_profile/data/repositories/language_rep
 
 class LanguageController extends StateNotifier<AsyncValue<LanguageModel>> {
   final LanguageRepo languageRepo;
-  LanguageController(this.languageRepo) : super(AsyncValue.loading());
+  LanguageController(this.languageRepo) : super(const AsyncValue.loading());
 
   Future<bool> addLanguage(LanguageModel language) async {
     final result = await languageRepo.addLanguage(language);

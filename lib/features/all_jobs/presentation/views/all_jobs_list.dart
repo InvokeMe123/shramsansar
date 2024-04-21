@@ -9,14 +9,14 @@ import 'package:shramsansar/features/all_jobs/data/models/all_jobs_model.dart';
 // ignore: must_be_immutable
 class AllJobList extends ConsumerWidget {
   Data viewAllJobsData;
-  AllJobList(this.viewAllJobsData, {Key? key}) : super(key: key);
+  AllJobList(this.viewAllJobsData, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return InkWell(
         onTap: () {},
         child: Container(
-          margin: EdgeInsets.only(
+          margin: const EdgeInsets.only(
             left: 10,
             right: 10,
             bottom: 5,
@@ -45,7 +45,7 @@ class AllJobList extends ConsumerWidget {
               Column(
                 children: [
                   Container(
-                    margin: EdgeInsets.only(),
+                    margin: const EdgeInsets.only(),
                     width: MediaQuery.of(context).size.width - 120,
                     child: Text(
                       '${viewAllJobsData.title}',
@@ -62,7 +62,7 @@ class AllJobList extends ConsumerWidget {
                         '${viewAllJobsData.serviceProviderName}',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(),
+                        style: const TextStyle(),
                       )),
                 ],
               )

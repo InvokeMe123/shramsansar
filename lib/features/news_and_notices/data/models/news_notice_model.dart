@@ -9,23 +9,23 @@ class NewsNoticeModel {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
     }
-    links = json['links'] != null ? new Links.fromJson(json['links']) : null;
-    meta = json['meta'] != null ? new Meta.fromJson(json['meta']) : null;
+    links = json['links'] != null ? Links.fromJson(json['links']) : null;
+    meta = json['meta'] != null ? Meta.fromJson(json['meta']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
-    if (this.links != null) {
-      data['links'] = this.links!.toJson();
+    if (links != null) {
+      data['links'] = links!.toJson();
     }
-    if (this.meta != null) {
-      data['meta'] = this.meta!.toJson();
+    if (meta != null) {
+      data['meta'] = meta!.toJson();
     }
     return data;
   }
@@ -39,7 +39,7 @@ class Data {
   String? description;
   int? type;
   String? typeName;
-  Null? file;
+  Null file;
 
   Data(
       {this.id,
@@ -63,15 +63,15 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['published_date'] = this.publishedDate;
-    data['location'] = this.location;
-    data['title'] = this.title;
-    data['description'] = this.description;
-    data['type'] = this.type;
-    data['type_name'] = this.typeName;
-    data['file'] = this.file;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['published_date'] = publishedDate;
+    data['location'] = location;
+    data['title'] = title;
+    data['description'] = description;
+    data['type'] = type;
+    data['type_name'] = typeName;
+    data['file'] = file;
     return data;
   }
 }
@@ -79,8 +79,8 @@ class Data {
 class Links {
   String? first;
   String? last;
-  Null? prev;
-  Null? next;
+  Null prev;
+  Null next;
 
   Links({this.first, this.last, this.prev, this.next});
 
@@ -92,11 +92,11 @@ class Links {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['first'] = this.first;
-    data['last'] = this.last;
-    data['prev'] = this.prev;
-    data['next'] = this.next;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['first'] = first;
+    data['last'] = last;
+    data['prev'] = prev;
+    data['next'] = next;
     return data;
   }
 }
@@ -128,7 +128,7 @@ class Meta {
     if (json['links'] != null) {
       links2 = <Links2>[];
       json['links'].forEach((v) {
-        links2!.add(new Links2.fromJson(v));
+        links2!.add(Links2.fromJson(v));
       });
     }
     path = json['path'];
@@ -138,17 +138,17 @@ class Meta {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['current_page'] = this.currentPage;
-    data['from'] = this.from;
-    data['last_page'] = this.lastPage;
-    if (this.links2 != null) {
-      data['links'] = this.links2!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['current_page'] = currentPage;
+    data['from'] = from;
+    data['last_page'] = lastPage;
+    if (links2 != null) {
+      data['links'] = links2!.map((v) => v.toJson()).toList();
     }
-    data['path'] = this.path;
-    data['per_page'] = this.perPage;
-    data['to'] = this.to;
-    data['total'] = this.total;
+    data['path'] = path;
+    data['per_page'] = perPage;
+    data['to'] = to;
+    data['total'] = total;
     return data;
   }
 }
@@ -167,10 +167,10 @@ class Links2 {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['url'] = this.url;
-    data['label'] = this.label;
-    data['active'] = this.active;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['url'] = url;
+    data['label'] = label;
+    data['active'] = active;
     return data;
   }
 }

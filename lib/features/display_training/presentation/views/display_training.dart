@@ -1,12 +1,8 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shramsansar/const/app_color_const.dart';
-import 'package:shramsansar/core/api_client/api_client.dart';
 import 'package:shramsansar/core/api_const/api_const.dart';
-import 'package:shramsansar/core/dbclient.dart';
-import 'package:shramsansar/features/trainings/data/data_source/apply_for_training_ds.dart';
 import 'package:shramsansar/features/trainings/data/models/training_model/training_model.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:shramsansar/features/trainings/presentation/controller/apply_for_training_controller.dart';
@@ -96,8 +92,8 @@ class DisplayTraining extends ConsumerWidget {
                 ),
               ],
             ),
-            Divider(),
-            Center(
+            const Divider(),
+            const Center(
               child: Text(
                 "Company's details",
                 style: TextStyle(
@@ -108,22 +104,21 @@ class DisplayTraining extends ConsumerWidget {
             ),
             Row(
               children: [
-                Container(
+                SizedBox(
                   height: 50,
                   width: 50,
                   child: Image(
-                    image: NetworkImage('${ApiConst.IMAGE_URL}' +
-                        dataModel.serviceProvider!.logo.toString()),
+                    image: NetworkImage('${ApiConst.IMAGE_URL}${dataModel.serviceProvider!.logo}'),
                   ),
                 ),
                 const SizedBox(
                   width: 10,
                 ),
-                Container(
+                SizedBox(
                   width: MediaQuery.sizeOf(context).width * .70,
                   child: Text(
                     dataModel.serviceProviderName.toString(),
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.normal,
                         fontSize: 16),
@@ -134,61 +129,61 @@ class DisplayTraining extends ConsumerWidget {
             Row(
               children: [
                 const Icon(Icons.location_on_outlined, size: 18),
-                SizedBox(
+                const SizedBox(
                   width: 5,
                 ),
                 Text(dataModel.districtName.toString(),
-                    style: TextStyle(fontSize: 12)),
-                Text(", ${dataModel.muniName}", style: TextStyle(fontSize: 12))
+                    style: const TextStyle(fontSize: 12)),
+                Text(", ${dataModel.muniName}", style: const TextStyle(fontSize: 12))
               ],
             ),
             Row(
               children: [
                 const Icon(Icons.phone_outlined, size: 18),
-                SizedBox(
+                const SizedBox(
                   width: 5,
                 ),
                 Text(dataModel.serviceProvider!.mobile.toString(),
-                    style: TextStyle(fontSize: 12))
+                    style: const TextStyle(fontSize: 12))
               ],
             ),
             Row(
               children: [
                 const Icon(Icons.email_outlined, size: 18),
-                SizedBox(
+                const SizedBox(
                   width: 5,
                 ),
                 Text(dataModel.serviceProvider!.email.toString(),
-                    style: TextStyle(fontSize: 12))
+                    style: const TextStyle(fontSize: 12))
               ],
             ),
-            Divider(),
+            const Divider(),
             const Text("Test details"),
             Row(
               children: [
                 const Icon(Icons.location_on_outlined, size: 18),
-                SizedBox(
+                const SizedBox(
                   width: 5,
                 ),
                 Text(dataModel.districtName.toString(),
-                    style: TextStyle(fontSize: 12)),
-                Text(", ${dataModel.muniName}", style: TextStyle(fontSize: 12)),
+                    style: const TextStyle(fontSize: 12)),
+                Text(", ${dataModel.muniName}", style: const TextStyle(fontSize: 12)),
               ],
             ),
             Row(
               children: [
                 const Icon(Icons.people_alt_outlined, size: 18),
-                SizedBox(
+                const SizedBox(
                   width: 5,
                 ),
                 Text(dataModel.noOfParticipant.toString(),
-                    style: TextStyle(fontSize: 12))
+                    style: const TextStyle(fontSize: 12))
               ],
             ),
             Row(
               children: [
                 const Icon(Icons.calendar_month_outlined, size: 18),
-                SizedBox(
+                const SizedBox(
                   width: 5,
                 ),
                 Text("${dataModel.startDate} to ${dataModel.endDate}",
@@ -198,11 +193,11 @@ class DisplayTraining extends ConsumerWidget {
             Row(
               children: [
                 const Icon(Icons.access_time, size: 18),
-                SizedBox(
+                const SizedBox(
                   width: 5,
                 ),
                 Text("${dataModel.startTime} - ${dataModel.endTime}",
-                    style: TextStyle(fontSize: 12))
+                    style: const TextStyle(fontSize: 12))
               ],
             ),
             Html(

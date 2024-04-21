@@ -1,11 +1,8 @@
 import 'dart:developer';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shramsansar/commons/latest_job_card.dart';
 import 'package:shramsansar/commons/training_card.dart';
 import 'package:shramsansar/const/app_color_const.dart';
@@ -15,14 +12,12 @@ import 'package:shramsansar/core/dbclient.dart';
 import 'package:shramsansar/features/aboutUs.dart';
 import 'package:shramsansar/features/all_jobs/presentation/controller/latest_job_controller.dart';
 import 'package:shramsansar/features/all_jobs/presentation/views/all_jobs.dart';
-import 'package:shramsansar/features/all_jobs/presentation/views/all_jobs_list.dart';
 import 'package:shramsansar/features/auth/presentation/views/change_password/change_password.dart';
 import 'package:shramsansar/features/auth/presentation/views/login/loginScreen.dart';
 
 import 'package:shramsansar/features/edit_profile/presentation/views/profile_edit_page.dart';
 import 'package:shramsansar/features/latest_training/presentation/controller/latest_training_controller.dart';
 
-import 'package:shramsansar/features/latest_training/presentation/views/latest_training.dart';
 import 'package:shramsansar/features/news_and_notices/presentation/views/news_notice.dart';
 import 'package:shramsansar/features/profile/presentation/controller/profile_controller.dart';
 
@@ -59,10 +54,10 @@ class _DashboardState extends ConsumerState<Dashboard> {
   }
 
   logout() async {
-    await ApiClient(DbClient()).request(path: "${ApiConst.LOG_OUT_URI}");
+    await ApiClient(DbClient()).request(path: ApiConst.LOG_OUT_URI);
     await DbClient().removeData(dbkey: 'token').then(
       (value) {
-        normalNav(context, const LoginScreen());
+        pushReplacement(context, const LoginScreen());
       },
     );
   }
@@ -124,6 +119,10 @@ class _DashboardState extends ConsumerState<Dashboard> {
                   ),
                   profile.when(
                       data: (data) {
+                        if (data.email == null) {
+                          return const SizedBox();
+                        }
+
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -140,11 +139,11 @@ class _DashboardState extends ConsumerState<Dashboard> {
                             ),
                             Row(
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.email_outlined,
                                   size: 16,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 8,
                                 ),
                                 Text(data.email!),
@@ -152,21 +151,19 @@ class _DashboardState extends ConsumerState<Dashboard> {
                             ),
                             Row(
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.location_on_outlined,
                                   size: 16,
                                 ),
                                 const SizedBox(
                                   width: 8,
                                 ),
-                                Text(data.perDistrictName.toString() +
-                                    ' ,' +
-                                    data.perPradeshName.toString()),
+                                Text('${data.perDistrictName} ,${data.perPradeshName}'),
                               ],
                             ),
                             Row(
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.phone_outlined,
                                   size: 16,
                                 ),
@@ -179,10 +176,10 @@ class _DashboardState extends ConsumerState<Dashboard> {
                           ],
                         );
                       },
-                      error: (_, __) => Text('error'),
+                      error: (_, __) => const Text('error'),
                       loading: () {
                         if (isLoggedIn) {
-                          return CircularProgressIndicator();
+                          return const CircularProgressIndicator();
                         } else {
                           return Container();
                         }
@@ -442,7 +439,7 @@ class _DashboardState extends ConsumerState<Dashboard> {
               GestureDetector(
                 onTap: () {
                   // normalNav(context, AllJobs());
-                  normalNav(context, AllJobs());
+                  normalNav(context, const AllJobs());
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(left: 0),
@@ -456,7 +453,7 @@ class _DashboardState extends ConsumerState<Dashboard> {
               ),
               GestureDetector(
                 onTap: () {
-                  normalNav(context, TrainingPage());
+                  normalNav(context, const TrainingPage());
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(left: 7.0),
@@ -509,6 +506,9 @@ class _DashboardState extends ConsumerState<Dashboard> {
                       color: Colors.black)),
               const Divider(color: Colors.black),
               latestJobs.when(data: (data) {
+                if (data.data!.isEmpty) {
+                  return const Text('No data found');
+                }
                 return Column(
                   children: [
                     for (int a = 0; a < 10; a++)
@@ -516,7 +516,7 @@ class _DashboardState extends ConsumerState<Dashboard> {
                   ],
                 );
               }, error: (_, __) {
-                return Text('error');
+                return const Text('error');
               }, loading: () {
                 return const ShimmerSkeleton(
                   count: 3,
@@ -527,9 +527,9 @@ class _DashboardState extends ConsumerState<Dashboard> {
                   const Spacer(),
                   TextButton(
                       onPressed: () {
-                        normalNav(context, AllJobs());
+                        normalNav(context, const AllJobs());
                       },
-                      child: Text('See All Jobs ',
+                      child: const Text('See All Jobs ',
                           style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -543,6 +543,10 @@ class _DashboardState extends ConsumerState<Dashboard> {
                       color: Colors.black)),
               const Divider(color: Colors.black),
               latestTraining.when(data: (data) {
+                if (data.data!.isEmpty) {
+                  return const Text('No training data found');
+                }
+
                 return Column(
                   children: [
                     for (int a = 0; a < 10; a++)
@@ -550,9 +554,9 @@ class _DashboardState extends ConsumerState<Dashboard> {
                   ],
                 );
               }, error: (_, __) {
-                return Text('error');
+                return const Text('error');
               }, loading: () {
-                return ShimmerSkeleton(
+                return const ShimmerSkeleton(
                   count: 3,
                 );
               }),

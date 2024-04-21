@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,7 +5,6 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shramsansar/commons/pagination_card.dart';
 import 'package:shramsansar/commons/training_card.dart';
 import 'package:shramsansar/const/app_color_const.dart';
-import 'package:shramsansar/const/app_const.dart';
 import 'package:shramsansar/features/getDistricts/data/models/district_model.dart';
 import 'package:shramsansar/features/getDistricts/presentation/controller/district_controller.dart';
 import 'package:shramsansar/features/getMunicipalities/data/models/municipality_model.dart';
@@ -14,7 +12,6 @@ import 'package:shramsansar/features/getMunicipalities/presentation/controller/m
 import 'package:shramsansar/features/getPradesh/data/models/pradeshModel.dart';
 import 'package:shramsansar/features/getPradesh/presentation/controller/pradesh_controller.dart';
 import 'package:shramsansar/features/jobs/data/models/job_category_model.dart';
-import 'package:shramsansar/features/jobs/presentation/controller/job_catergory_controller.dart';
 import 'package:shramsansar/features/trainings/presentation/controller/training_category_controller.dart';
 import 'package:shramsansar/features/trainings/presentation/controller/view_all_training_controller.dart';
 import 'package:shramsansar/features/trainings/provider/filtered_provider.dart';
@@ -156,7 +153,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
                   );
                 },
                 error: (_, __) {
-                  return Text("he");
+                  return const Text("he");
                 },
                 loading: () =>
                     const Center(child: CircularProgressIndicator())),
@@ -192,7 +189,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
             return Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: DropdownButton<String>(
-                  icon: Padding(
+                  icon: const Padding(
                     padding: EdgeInsets.only(
                         left: 203), // Adjust the left padding as needed
                     child: Icon(Icons.arrow_drop_down),
@@ -244,7 +241,7 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
           return Container(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: DropdownButton<String>(
-              icon: Padding(
+              icon: const Padding(
                 padding: EdgeInsets.only(
                     left: 210), // Adjust the left padding as needed
                 child: Icon(Icons.arrow_drop_down),
@@ -299,8 +296,8 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
             return Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: DropdownButton<String>(
-                  icon: Padding(
-                    padding: const EdgeInsets.only(
+                  icon: const Padding(
+                    padding: EdgeInsets.only(
                         left: 145), // Adjust the left padding as needed
                     child: Icon(Icons.arrow_drop_down),
                   ),

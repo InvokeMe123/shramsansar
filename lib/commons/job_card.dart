@@ -5,7 +5,6 @@ import 'package:shramsansar/const/app_color_const.dart';
 import 'package:shramsansar/core/api_const/api_const.dart';
 import 'package:shramsansar/features/all_jobs/data/models/all_jobs_model.dart';
 import 'package:shramsansar/features/all_jobs/presentation/views/display_job_detail.dart';
-import 'package:shramsansar/features/display_training/presentation/views/display_training.dart';
 
 import 'package:shramsansar/utils/navigation/nav_app.dart';
 
@@ -31,7 +30,7 @@ class JobCard extends StatelessWidget {
               Image(
                   width: 16.w,
                   image: NetworkImage(
-                      '${ApiConst.IMAGE_URL}' + model.serviceProvider!.logo!)),
+                      '${ApiConst.IMAGE_URL}${model.serviceProvider!.logo!}')),
               const SizedBox(
                 width: 15,
               ),
@@ -62,14 +61,14 @@ class JobCard extends StatelessWidget {
                         children: [
                           const Icon(Icons.location_on_outlined, size: 18),
                           Text("${model.districtName}",
-                              style: TextStyle(fontSize: 12))
+                              style: const TextStyle(fontSize: 12))
                         ],
                       ),
                       Row(
                         children: [
                           const Icon(Icons.access_time, size: 18),
                           Text("${model.deadline}",
-                              style: TextStyle(fontSize: 12))
+                              style: const TextStyle(fontSize: 12))
                         ],
                       )
                     ],

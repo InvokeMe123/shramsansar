@@ -1,16 +1,13 @@
 import 'dart:developer';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shramsansar/const/app_color_const.dart';
-import 'package:shramsansar/features/edit_profile/data/models/education_model/education_model_req.dart';
 import 'package:shramsansar/features/edit_profile/data/models/language_model/language_model.dart';
 import 'package:shramsansar/features/edit_profile/data/models/social_accounts_model/social_accounts_model.dart';
-import 'package:shramsansar/features/edit_profile/presentation/controller/education_controller/educationAddController.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/education_controller/education_controller.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/experience_controller/experience_controller.dart';
 import 'package:shramsansar/features/edit_profile/presentation/controller/language_controller/language_controller.dart';
@@ -396,7 +393,7 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                 showDialog(
                                     context: context,
                                     builder: (_) {
-                                      return AddExperience();
+                                      return const AddExperience();
                                     });
                               },
                               child: const Icon(
@@ -533,7 +530,7 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                         fontWeight: FontWeight.normal),
                                   )
                                 ])),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                               ],
@@ -560,7 +557,7 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                                 showDialog(
                                     context: context,
                                     builder: (_) {
-                                      return AddTrainingCertificate();
+                                      return const AddTrainingCertificate();
                                     });
                               },
                               child: const Icon(

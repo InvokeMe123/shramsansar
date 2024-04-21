@@ -29,7 +29,7 @@ class _AddLanguageState extends ConsumerState<AddLanguage> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('Add Language'),
+            const Text('Add Language'),
             TextFormField(
               controller: _languageController,
               validator: (value) {
@@ -38,14 +38,14 @@ class _AddLanguageState extends ConsumerState<AddLanguage> {
                 }
                 return null;
               },
-              decoration: InputDecoration(labelText: "Language "),
+              decoration: const InputDecoration(hintText: "Language "),
             ),
             Row(
               children: [
                 Expanded(
                   child: TextFormField(
                     controller: _readingController,
-                    decoration: InputDecoration(labelText: "Reading "),
+                    decoration: const InputDecoration(hintText: "Reading "),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Reading is required';
@@ -57,7 +57,7 @@ class _AddLanguageState extends ConsumerState<AddLanguage> {
                 Expanded(
                   child: TextFormField(
                     controller: _speakingController,
-                    decoration: InputDecoration(labelText: "Speaking "),
+                    decoration: const InputDecoration(hintText: "Speaking "),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Speaking is required';
@@ -73,7 +73,7 @@ class _AddLanguageState extends ConsumerState<AddLanguage> {
                 Expanded(
                   child: TextFormField(
                     controller: _writingController,
-                    decoration: InputDecoration(labelText: "Writing "),
+                    decoration: const InputDecoration(hintText: "Writing "),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Writing is required';
@@ -85,7 +85,7 @@ class _AddLanguageState extends ConsumerState<AddLanguage> {
                 Expanded(
                   child: TextFormField(
                     controller: _listeningController,
-                    decoration: InputDecoration(labelText: "Listening "),
+                    decoration: const InputDecoration(hintText: "Listening "),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Listening is required';

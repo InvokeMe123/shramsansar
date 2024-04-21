@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shramsansar/core/app_error/app_error.dart';
 import 'package:shramsansar/features/news_and_notices/data/data_source/news_notices_data_source.dart';
 import 'package:shramsansar/features/news_and_notices/data/models/news_notice_model.dart';
-import 'package:shramsansar/features/news_and_notices/presentation/views/news_notice.dart';
 
 abstract class NewsNoticeRepo {
   Future<Either<AppError, NewsNoticeModel>> newsnoticeRepo(int page);

@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shramsansar/core/api_client/api_client.dart';
 import 'package:shramsansar/core/api_const/api_const.dart';
 import 'package:shramsansar/features/getDocumentType/data/models/document_type_model.dart';
-import 'package:shramsansar/features/getDocumentType/presentation/controller/document_type_controller.dart';
 
 abstract class DocumentTypeDataSource {
   Future<DocumentTypeModel> getDocumentType();

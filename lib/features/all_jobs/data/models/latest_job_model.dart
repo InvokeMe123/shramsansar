@@ -8,18 +8,18 @@ class LatestJobModel {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
     }
     success = json['success'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
-    data['success'] = this.success;
+    data['success'] = success;
     return data;
   }
 }
@@ -106,44 +106,44 @@ class Data {
     requiredEducation = json['required_education'];
     discloseOrgAddress = json['disclose_org_address'];
     organization = json['organization'] != null
-        ? new Organization.fromJson(json['organization'])
+        ? Organization.fromJson(json['organization'])
         : null;
     serviceProvider = json['serviceProvider'] != null
-        ? new ServiceProvider.fromJson(json['serviceProvider'])
+        ? ServiceProvider.fromJson(json['serviceProvider'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['service_provider_name'] = this.serviceProviderName;
-    data['title'] = this.title;
-    data['position_type'] = this.positionType;
-    data['category_id'] = this.categoryId;
-    data['category_name'] = this.categoryName;
-    data['openings'] = this.openings;
-    data['pradesh_id'] = this.pradeshId;
-    data['pradesh_name'] = this.pradeshName;
-    data['district_id'] = this.districtId;
-    data['district_name'] = this.districtName;
-    data['muni_id'] = this.muniId;
-    data['muni_name'] = this.muniName;
-    data['ward'] = this.ward;
-    data['address'] = this.address;
-    data['deadline'] = this.deadline;
-    data['eng_deadline'] = this.engDeadline;
-    data['description'] = this.description;
-    data['specification'] = this.specification;
-    data['salary_min'] = this.salaryMin;
-    data['salary_max'] = this.salaryMax;
-    data['required_experience'] = this.requiredExperience;
-    data['required_education'] = this.requiredEducation;
-    data['disclose_org_address'] = this.discloseOrgAddress;
-    if (this.organization != null) {
-      data['organization'] = this.organization!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['service_provider_name'] = serviceProviderName;
+    data['title'] = title;
+    data['position_type'] = positionType;
+    data['category_id'] = categoryId;
+    data['category_name'] = categoryName;
+    data['openings'] = openings;
+    data['pradesh_id'] = pradeshId;
+    data['pradesh_name'] = pradeshName;
+    data['district_id'] = districtId;
+    data['district_name'] = districtName;
+    data['muni_id'] = muniId;
+    data['muni_name'] = muniName;
+    data['ward'] = ward;
+    data['address'] = address;
+    data['deadline'] = deadline;
+    data['eng_deadline'] = engDeadline;
+    data['description'] = description;
+    data['specification'] = specification;
+    data['salary_min'] = salaryMin;
+    data['salary_max'] = salaryMax;
+    data['required_experience'] = requiredExperience;
+    data['required_education'] = requiredEducation;
+    data['disclose_org_address'] = discloseOrgAddress;
+    if (organization != null) {
+      data['organization'] = organization!.toJson();
     }
-    if (this.serviceProvider != null) {
-      data['serviceProvider'] = this.serviceProvider!.toJson();
+    if (serviceProvider != null) {
+      data['serviceProvider'] = serviceProvider!.toJson();
     }
     return data;
   }
@@ -184,16 +184,16 @@ class Organization {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['pradesh_name'] = this.pradeshName;
-    data['district_name'] = this.districtName;
-    data['muni_name'] = this.muniName;
-    data['ward'] = this.ward;
-    data['address'] = this.address;
-    data['email'] = this.email;
-    data['contact_number'] = this.contactNumber;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['pradesh_name'] = pradeshName;
+    data['district_name'] = districtName;
+    data['muni_name'] = muniName;
+    data['ward'] = ward;
+    data['address'] = address;
+    data['email'] = email;
+    data['contact_number'] = contactNumber;
     return data;
   }
 }
@@ -248,21 +248,21 @@ class ServiceProvider {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['pradesh_name'] = this.pradeshName;
-    data['district_name'] = this.districtName;
-    data['muni_name'] = this.muniName;
-    data['ward'] = this.ward;
-    data['type'] = this.type;
-    data['type_name'] = this.typeName;
-    data['phone'] = this.phone;
-    data['mobile'] = this.mobile;
-    data['email'] = this.email;
-    data['website'] = this.website;
-    data['description'] = this.description;
-    data['logo'] = this.logo;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['pradesh_name'] = pradeshName;
+    data['district_name'] = districtName;
+    data['muni_name'] = muniName;
+    data['ward'] = ward;
+    data['type'] = type;
+    data['type_name'] = typeName;
+    data['phone'] = phone;
+    data['mobile'] = mobile;
+    data['email'] = email;
+    data['website'] = website;
+    data['description'] = description;
+    data['logo'] = logo;
     return data;
   }
 }

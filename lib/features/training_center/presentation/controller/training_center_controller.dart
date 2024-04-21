@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shramsansar/core/app_error/app_error.dart';
 import 'package:shramsansar/features/training_center/data/model/training_centers_model.dart';
 import 'package:shramsansar/features/training_center/data/repositories/training_center_repo.dart';
 

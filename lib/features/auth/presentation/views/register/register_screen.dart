@@ -1,19 +1,18 @@
 import 'dart:developer';
 
-import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shramsansar/const/app_color_const.dart';
 import 'package:shramsansar/dashboard.dart';
-import 'package:shramsansar/features/auth/data/models/register_model/register_request_model.dart';
+
 import 'package:shramsansar/features/auth/presentation/controller/register_controller.dart/register_controller.dart';
 import 'package:shramsansar/features/auth/presentation/views/register/widgets/national_id_card_button.dart';
+import 'package:shramsansar/features/auth/presentation/views/register/widgets/skills_drop_down.dart';
 import 'package:shramsansar/features/caste/presentation/controller/caste_controller.dart';
 import 'package:shramsansar/features/gender/presentation/controller/gender_controller.dart';
 import 'package:shramsansar/features/getDistricts/presentation/controller/district_controller.dart';
-import 'package:shramsansar/features/getDocumentType/data/data_source/document_type_data_source.dart';
 import 'package:shramsansar/features/getDocumentType/data/models/document_type_model.dart';
 import 'package:shramsansar/features/getDocumentType/presentation/controller/document_type_controller.dart';
 import 'package:shramsansar/features/getMunicipalities/presentation/controller/municipality_controller.dart';
@@ -21,7 +20,6 @@ import 'package:shramsansar/features/getPradesh/presentation/controller/pradesh_
 import 'package:shramsansar/features/getWardnumber/presentation/controller/ward_controller.dart';
 import 'package:shramsansar/features/jobs/presentation/controller/job_catergory_controller.dart';
 import 'package:shramsansar/features/profile/presentation/controller/profile_controller.dart';
-import 'package:shramsansar/utils/custom_form/custom_form.dart';
 import 'package:shramsansar/utils/navigation/nav_app.dart';
 import 'package:shramsansar/utils/snackbar/custome_snack_bar.dart';
 
@@ -58,7 +56,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   int selectedWardId = 0;
 
   //temporary address
-
   String? tSelectedPradesh;
   int tselectedPradeshId = 0;
 
@@ -90,6 +87,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
   final otherSkillsController = TextEditingController();
 
+  List<String> selectedSkills = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,14 +110,14 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     key: _formKey,
                     child: Column(
                       children: [
-                        for (var item in requiredTextField)
-                          CustomTextformFormField(
+                        for (var item in requiredTextField) ...[
+                          TextFormField(
                             keyboardType: TextInputType.name,
                             controller: item['controller'],
                             textInputAction: TextInputAction.next,
-                            isLablerequire: true,
-                            hintText: item['title'],
-                            isFieldrequired: true,
+                            decoration: InputDecoration(
+                              hintText: "${item['title']} *",
+                            ),
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return 'Please enter ${item['title']}';
@@ -126,18 +125,63 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                               return null;
                             },
                           ),
-                        SizedBox(
-                          height: 1.2.h,
-                        ),
+                          SizedBox(height: 1.2.h),
+                        ],
+
                         genderDropDown(context),
                         SizedBox(
                           height: 2.1.h,
                         ),
-                        jobCategoryDropDown(context),
 
-                        TextField(
+                        ref.read(jobCategoryControllerProvider).when(
+                          data: (data) {
+                            return TextFormField(
+                              decoration: const InputDecoration(
+                                hintText: "Select your skills",
+                              ),
+                              textInputAction: TextInputAction.next,
+                              controller: TextEditingController(
+                                  text: selectedSkills.join(', ')),
+                              onTap: () async {
+                                FocusScope.of(context)
+                                    .requestFocus(FocusNode());
+                                final result = await showDialog<List<String>>(
+                                    context: context,
+                                    builder: (_) {
+                                      return SkillsDropDown(
+                                        options: data.data
+                                            .map((model) => model.name)
+                                            .toSet()
+                                            .toList(),
+                                      );
+                                    });
+
+                                if (result!.isNotEmpty) {
+                                  setState(() {
+                                    selectedSkills = result;
+                                  });
+                                }
+                              },
+                            );
+                          },
+                          error: (error, stackTrace) {
+                            log(error.toString());
+                            return const SizedBox();
+                          },
+                          loading: () {
+                            return const CircularProgressIndicator();
+                          },
+                        ),
+
+                        SizedBox(
+                          height: 2.1.h,
+                        ),
+
+                        TextFormField(
                           controller: otherSkillsController,
-                          decoration: InputDecoration(hintText: 'Other Skills'),
+                          decoration: const InputDecoration(
+                            hintText: 'Other Skills',
+                          ),
                         ),
 
                         SizedBox(
@@ -165,6 +209,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         SizedBox(height: 2.1.h),
 
                         documentTypeDropDown(context),
+
+                        SizedBox(height: 3.5.h),
+
                         const Text(
                           'Permanent address Details *',
                           style: TextStyle(color: Colors.black, fontSize: 20),
@@ -185,11 +232,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           height: 2.1.h,
                         ),
                         getWard(context),
-                        SizedBox(
-                          height: 2.1.h,
-                        ),
+
                         CheckboxListTile(
-                            title: Text('Same as permanent'),
+                            title: const Text('Same as permanent'),
                             value: isCheckBoxSelected,
                             onChanged: (value) {
                               setState(() {
@@ -220,12 +265,16 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                 }
                               });
                             }),
+
+                        SizedBox(
+                          height: 1.h,
+                        ),
                         const Text(
                           'Temporary address Details',
                           style: TextStyle(color: Colors.black, fontSize: 20),
                         ),
                         SizedBox(
-                          height: 2.1.h,
+                          height: 2.4.h,
                         ),
                         tgetPradesh(context),
                         SizedBox(
@@ -241,7 +290,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         ),
                         tgetWard(context),
                         SizedBox(
-                          height: 2.1.h,
+                          height: 3.5.h,
                         ),
                         InkWell(
                             onTap: () async {
@@ -284,10 +333,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                   "ward": tselectedWardId,
                                   "mobile": int.parse(
                                       requiredTextField[4]['controller'].text),
-                                  "preference_job_cat[0]":
-                                      selectedJobCategoryId,
-                                  "preference_job_cat[1]": "2",
-                                  "preference_job_cat[2]": "3",
                                   "document_type": selectedDocumentTypeID,
                                   "document_type_file": imagePath.isEmpty
                                       ? ""
@@ -298,8 +343,13 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                   "ethnicity_type": selectedCasteId,
                                 });
 
-                                debugger();
-
+                                for (int a = 0;
+                                    a < selectedSkills.length;
+                                    a++) {
+                                  formData.fields.add(MapEntry(
+                                      "preference_job_cat[$a]",
+                                      selectedSkills[a]));
+                                }
                                 ref
                                     .read(registerControllerProvider.notifier)
                                     .registerWithFormData(
@@ -326,11 +376,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             },
                             child: Container(
                               width: MediaQuery.sizeOf(context).width,
-                              padding: EdgeInsets.all(12),
+                              padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12),
                                   color: AppColorConst.PRAYMARY_TEXT_COLOR),
-                              child: Center(
+                              child: const Center(
                                   child: Text(
                                 'REGISTER',
                                 style: TextStyle(color: Colors.white),
@@ -350,209 +400,163 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     var getPradesh = ref.watch(pradeshControllerProvider);
     List<String> pradesh = [];
 
-    return Container(
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          color: const Color(0xffF1F1F1),
-          borderRadius: BorderRadius.circular(5),
-        ),
-        child: Consumer(
-          builder: (context, watch, child) {
-            getPradesh.when(
-                data: (data) {
-                  for (var model in data.data) {
-                    pradesh.add(model.name);
-                  }
-                },
-                error: (error, stack) => Text(error.toString()),
-                loading: () =>
-                    const Center(child: CircularProgressIndicator()));
-            return Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: DropdownButtonFormField<String>(
-                  hint: const Text('Pradesh'),
-                  validator: (value) {
-                    if (value == null) {
-                      return 'Please select pradesh';
-                    }
-                    return null;
-                  },
-                  value:
-                      selectedPradesh ?? (pradesh.isEmpty ? null : pradesh[0]),
-                  items: pradesh.map((name) {
-                    return DropdownMenuItem(
-                      value: name,
-                      child: Text(name),
-                    );
-                  }).toList(),
-                  onChanged: (String? value) {
-                    setState(() {
-                      selectedPradesh = value;
-                      selectedDistrict = null;
-                      selectedMunicipality = null;
-                      selectedWard = null;
-                      selectedPradeshId = pradesh.indexOf(selectedPradesh!) + 1;
-                    });
-                  }),
-            );
-          },
-        ));
+    return Consumer(
+      builder: (context, watch, child) {
+        getPradesh.when(
+            data: (data) {
+              for (var model in data.data) {
+                pradesh.add(model.name);
+              }
+            },
+            error: (error, stack) => Text(error.toString()),
+            loading: () => const Center(child: CircularProgressIndicator()));
+        return DropdownButtonFormField<String>(
+            hint: const Text('Pradesh'),
+            validator: (value) {
+              if (value == null) {
+                return 'Please select pradesh';
+              }
+              return null;
+            },
+            value: selectedPradesh,
+            items: pradesh.map((name) {
+              return DropdownMenuItem(
+                value: name,
+                child: Text(name),
+              );
+            }).toList(),
+            onChanged: (String? value) {
+              setState(() {
+                selectedPradesh = value;
+                selectedDistrict = null;
+                selectedMunicipality = null;
+                selectedWard = null;
+                selectedPradeshId = pradesh.indexOf(selectedPradesh!) + 1;
+              });
+            });
+      },
+    );
   }
 
   districtsDropDown(BuildContext context) {
     var getDistricts = ref.watch(districtControllerProvider);
     List<String> districts = [];
-    return Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.rectangle,
-        color: const Color(0xffF1F1F1),
-        borderRadius: BorderRadius.circular(5),
-      ),
-      width: MediaQuery.sizeOf(context).width,
-      child: Consumer(
-        builder: (context, watch, child) {
-          getDistricts.when(
-              data: (data) {
-                for (var model in data.data) {
-                  if (model.pradesh_id == selectedPradeshId) {
-                    districts.add(model.name);
-                  }
+    return Consumer(
+      builder: (context, watch, child) {
+        getDistricts.when(
+            data: (data) {
+              for (var model in data.data) {
+                if (model.pradesh_id == selectedPradeshId) {
+                  districts.add(model.name);
                 }
-              },
-              error: (error, stack) => Text(error.toString()),
-              loading: () => const Center(child: CircularProgressIndicator()));
-          return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: DropdownButtonFormField<String>(
-              hint: const Text('Enter district'),
-              value: selectedDistrict,
-              validator: (value) {
-                if (value == null) {
-                  return 'Please select district';
-                }
-                return null;
-              },
-              items: districts.map((distict) {
-                return DropdownMenuItem(
-                  value: distict,
-                  child: Text(distict),
-                );
-              }).toList(),
-              onChanged: (newValue) {
-                setState(() {
-                  selectedDistrict = newValue;
-                  selectedMunicipality = null;
-                  selectedDistrictId = districts.indexOf(selectedDistrict!) + 1;
-                });
-              },
-            ),
-          );
-        },
-      ),
+              }
+            },
+            error: (error, stack) => Text(error.toString()),
+            loading: () => const Center(child: CircularProgressIndicator()));
+        return DropdownButtonFormField<String>(
+          hint: const Text('Enter district'),
+          value: selectedDistrict,
+          validator: (value) {
+            if (value == null) {
+              return 'Please select district';
+            }
+            return null;
+          },
+          items: districts.map((distict) {
+            return DropdownMenuItem(
+              value: distict,
+              child: Text(distict),
+            );
+          }).toList(),
+          onChanged: (newValue) {
+            setState(() {
+              selectedDistrict = newValue;
+              selectedDistrictId = districts.indexOf(selectedDistrict!) + 1;
+            });
+          },
+        );
+      },
     );
   }
 
   getMuni(BuildContext context) {
     var getMuni = ref.watch(muniControllerProvider);
     List<String> muni = [];
-    return Container(
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          color: const Color(0xffF1F1F1),
-          borderRadius: BorderRadius.circular(5),
-        ),
-        child: Consumer(
-          builder: (context, watch, child) {
-            getMuni.when(
-                data: (data) {
-                  for (var model in data.data) {
-                    if (model.district_id == selectedDistrictId) {
-                      muni.add(model.name);
-                    }
-                  }
-                },
-                error: (error, stack) => Text(error.toString()),
-                loading: () =>
-                    const Center(child: CircularProgressIndicator()));
-            return Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: DropdownButtonFormField<String>(
-                  hint: const Text('Municipality'),
-                  value: selectedMunicipality,
-                  validator: (value) {
-                    if (value == null) {
-                      return 'Please select Municipality';
-                    }
-                    return null;
-                  },
-                  items: muni.map((name) {
-                    return DropdownMenuItem(
-                      value: name,
-                      child: Text(name),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      selectedMunicipality = value;
-                      selectedMunicipalityId =
-                          muni.indexOf(selectedMunicipality!) + 1;
-                    });
-                  }),
-            );
-          },
-        ));
+    return Consumer(
+      builder: (context, watch, child) {
+        getMuni.when(
+            data: (data) {
+              for (var model in data.data) {
+                if (model.district_id == selectedDistrictId) {
+                  muni.add(model.name);
+                }
+              }
+            },
+            error: (error, stack) => Text(error.toString()),
+            loading: () => const Center(child: CircularProgressIndicator()));
+        return DropdownButtonFormField<String>(
+            hint: const Text('Municipality'),
+            value: selectedMunicipality,
+            validator: (value) {
+              if (value == null) {
+                return 'Please select Municipality';
+              }
+              return null;
+            },
+            items: muni.map((name) {
+              return DropdownMenuItem(
+                value: name,
+                child: Text(name),
+              );
+            }).toList(),
+            onChanged: (value) {
+              setState(() {
+                selectedMunicipality = value;
+                selectedMunicipalityId =
+                    muni.indexOf(selectedMunicipality!) + 1;
+              });
+            });
+      },
+    );
   }
 
   getWard(BuildContext context) {
     var getWard = ref.watch(wardControllerProvider);
     List<String> wardNo = [];
-    return Container(
-      width: MediaQuery.sizeOf(context).width,
-      decoration: BoxDecoration(
-        shape: BoxShape.rectangle,
-        color: const Color(0xffF1F1F1),
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: Consumer(
-        builder: (context, watch, ref) {
-          getWard.when(
-              data: (data) {
-                for (var model in data.data) {
-                  wardNo.add(model.ward_no);
-                }
-              },
-              error: (error, stack) => Text(error.toString()),
-              loading: () => Center(
-                    child: CircularProgressIndicator(),
-                  ));
-          return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: DropdownButtonFormField<String>(
-                hint: const Text('Ward'),
-                value: selectedWard,
-                validator: (value) {
-                  if (value == null) {
-                    return 'Please select Ward';
-                  }
-                  return null;
-                },
-                items: wardNo.map((name) {
-                  return DropdownMenuItem(
-                    value: name,
-                    child: Text(name),
-                  );
-                }).toList(),
-                onChanged: (String? value) {
-                  setState(() {
-                    selectedWard = value;
-                  });
-                  selectedWardId = wardNo.indexOf(selectedWard!) + 1;
-                }),
-          );
-        },
-      ),
+    return Consumer(
+      builder: (context, watch, ref) {
+        getWard.when(
+            data: (data) {
+              for (var model in data.data) {
+                wardNo.add(model.ward_no);
+              }
+            },
+            error: (error, stack) => Text(error.toString()),
+            loading: () => const Center(
+                  child: CircularProgressIndicator(),
+                ));
+        return DropdownButtonFormField<String>(
+            hint: const Text('Ward'),
+            value: selectedWard,
+            validator: (value) {
+              if (value == null) {
+                return 'Please select Ward';
+              }
+              return null;
+            },
+            items: wardNo.map((name) {
+              return DropdownMenuItem(
+                value: name,
+                child: Text(name),
+              );
+            }).toList(),
+            onChanged: (String? value) {
+              setState(() {
+                selectedWard = value;
+              });
+              selectedWardId = wardNo.indexOf(selectedWard!) + 1;
+            });
+      },
     );
   }
 
@@ -560,310 +564,202 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     var getPradesh = ref.watch(pradeshControllerProvider);
     List<String> pradesh = [];
 
-    return Container(
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          color: const Color(0xffF1F1F1),
-          borderRadius: BorderRadius.circular(5),
-        ),
-        child: Consumer(
-          builder: (context, watch, child) {
-            getPradesh.when(
-                data: (data) {
-                  for (var model in data.data) {
-                    pradesh.add(model.name);
-                  }
-                },
-                error: (error, stack) => Text(error.toString()),
-                loading: () =>
-                    const Center(child: CircularProgressIndicator()));
-            return Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: DropdownButtonFormField<String>(
-                  hint: const Text('Pradesh'),
-                  value: tSelectedPradesh,
-                  validator: (value) {
-                    if (value == null) {
-                      return 'Please select pradesh';
-                    }
-                    return null;
-                  },
-                  items: pradesh.map((name) {
-                    return DropdownMenuItem(
-                      value: name,
-                      child: Text(name),
-                    );
-                  }).toList(),
-                  onChanged: (String? value) {
-                    setState(() {
-                      tSelectedPradesh = value;
-                      isCheckBoxSelected = false;
+    return Consumer(
+      builder: (context, watch, child) {
+        getPradesh.when(
+            data: (data) {
+              for (var model in data.data) {
+                pradesh.add(model.name);
+              }
+            },
+            error: (error, stack) => Text(error.toString()),
+            loading: () => const Center(child: CircularProgressIndicator()));
+        return DropdownButtonFormField<String>(
+            hint: const Text('Pradesh'),
+            value: tSelectedPradesh,
+            validator: (value) {
+              if (value == null) {
+                return 'Please select pradesh';
+              }
+              return null;
+            },
+            items: pradesh.map((name) {
+              return DropdownMenuItem(
+                value: name,
+                child: Text(name),
+              );
+            }).toList(),
+            onChanged: (String? value) {
+              setState(() {
+                tSelectedPradesh = value;
+                isCheckBoxSelected = false;
 
-                      tSelectedDistrict = null;
-                      tSelectedMunicipality = null;
-                      tSelectedWard = null;
-
-                      tselectedPradeshId =
-                          pradesh.indexOf(tSelectedPradesh!) + 1;
-                    });
-                  }),
-            );
-          },
-        ));
+                tselectedPradeshId = pradesh.indexOf(tSelectedPradesh!) + 1;
+              });
+            });
+      },
+    );
   }
 
   tgetDistrict(BuildContext context) {
     var getDistricts = ref.watch(districtControllerProvider);
     List<String> districts = [];
-    return Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.rectangle,
-        color: const Color(0xffF1F1F1),
-        borderRadius: BorderRadius.circular(5),
-      ),
-      width: MediaQuery.sizeOf(context).width,
-      child: Consumer(
-        builder: (context, watch, child) {
-          getDistricts.when(
-              data: (data) {
-                for (var model in data.data) {
-                  if (model.pradesh_id == tselectedPradeshId) {
-                    districts.add(model.name);
-                  }
+    return Consumer(
+      builder: (context, watch, child) {
+        getDistricts.when(
+            data: (data) {
+              for (var model in data.data) {
+                if (model.pradesh_id == tselectedPradeshId) {
+                  districts.add(model.name);
                 }
-              },
-              error: (error, stack) => Text(error.toString()),
-              loading: () => const Center(child: CircularProgressIndicator()));
-          return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: DropdownButtonFormField<String>(
-              hint: const Text('Enter district'),
-              value: tSelectedDistrict,
-              validator: (value) {
-                if (value == null) {
-                  return 'Please select district';
-                }
-                return null;
-              },
-              items: districts.map((distict) {
-                return DropdownMenuItem(
-                  value: distict,
-                  child: Text(distict),
-                );
-              }).toList(),
-              onChanged: (newValue) {
-                setState(() {
-                  tSelectedDistrict = newValue;
-                  isCheckBoxSelected = false;
+              }
+            },
+            error: (error, stack) => Text(error.toString()),
+            loading: () => const Center(child: CircularProgressIndicator()));
+        return DropdownButtonFormField<String>(
+          hint: const Text('Enter district'),
+          value: tSelectedDistrict,
+          validator: (value) {
+            if (value == null) {
+              return 'Please select district';
+            }
+            return null;
+          },
+          items: districts.map((distict) {
+            return DropdownMenuItem(
+              value: distict,
+              child: Text(distict),
+            );
+          }).toList(),
+          onChanged: (newValue) {
+            setState(() {
+              tSelectedDistrict = newValue;
+              isCheckBoxSelected = false;
 
-                  tSelectedMunicipality = null;
-                  tSelectedDistrictId =
-                      districts.indexOf(tSelectedDistrict!) + 1;
-                });
-              },
-            ),
-          );
-        },
-      ),
+              tSelectedDistrictId = districts.indexOf(tSelectedDistrict!) + 1;
+            });
+          },
+        );
+      },
     );
   }
 
   tgetMuni(BuildContext context) {
     var getMuni = ref.watch(muniControllerProvider);
     List<String> muni = [];
-    return Container(
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          color: const Color(0xffF1F1F1),
-          borderRadius: BorderRadius.circular(5),
-        ),
-        child: Consumer(
-          builder: (context, watch, child) {
-            getMuni.when(
-                data: (data) {
-                  for (var model in data.data) {
-                    if (model.district_id == selectedDistrictId) {
-                      muni.add(model.name);
-                    }
-                  }
-                },
-                error: (error, stack) => Text(error.toString()),
-                loading: () =>
-                    const Center(child: CircularProgressIndicator()));
-            return Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: DropdownButtonFormField<String>(
-                  hint: const Text('Municipality'),
-                  value: tSelectedMunicipality,
-                  validator: (value) {
-                    if (value == null) {
-                      return 'Please select municipality';
-                    }
-                    return null;
-                  },
-                  items: muni.map((name) {
-                    return DropdownMenuItem(
-                      value: name,
-                      child: Text(name),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      tSelectedMunicipality = value;
-                      isCheckBoxSelected = false;
-                    });
-                  }),
-            );
-          },
-        ));
+    return Consumer(
+      builder: (context, watch, child) {
+        getMuni.when(
+            data: (data) {
+              for (var model in data.data) {
+                if (model.district_id == selectedDistrictId) {
+                  muni.add(model.name);
+                }
+              }
+            },
+            error: (error, stack) => Text(error.toString()),
+            loading: () => const Center(child: CircularProgressIndicator()));
+        return DropdownButtonFormField<String>(
+            hint: const Text('Municipality'),
+            value: tSelectedMunicipality,
+            validator: (value) {
+              if (value == null) {
+                return 'Please select municipality';
+              }
+              return null;
+            },
+            items: muni.map((name) {
+              return DropdownMenuItem(
+                value: name,
+                child: Text(name),
+              );
+            }).toList(),
+            onChanged: (value) {
+              setState(() {
+                tSelectedMunicipality = value;
+                isCheckBoxSelected = false;
+              });
+            });
+      },
+    );
   }
 
   tgetWard(BuildContext context) {
     var getWard = ref.watch(wardControllerProvider);
     List<String> wardNo = [];
-    return Container(
-      width: MediaQuery.sizeOf(context).width,
-      decoration: BoxDecoration(
-        shape: BoxShape.rectangle,
-        color: const Color(0xffF1F1F1),
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: Consumer(
-        builder: (context, watch, ref) {
-          getWard.when(
-              data: (data) {
-                for (var model in data.data) {
-                  wardNo.add(model.ward_no);
-                }
-              },
-              error: (error, stack) => Text(error.toString()),
-              loading: () => const Center(
-                    child: CircularProgressIndicator(),
-                  ));
-          return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: DropdownButtonFormField<String>(
-                hint: const Text('Ward'),
-                value: tSelectedWard,
-                validator: (value) {
-                  if (value == null) {
-                    return 'Please select ward';
-                  }
-                  return null;
-                },
-                items: wardNo.map((name) {
-                  return DropdownMenuItem(
-                    value: name,
-                    child: Text(name),
-                  );
-                }).toList(),
-                onChanged: (String? value) {
-                  setState(() {
-                    tSelectedWard = value;
-                    isCheckBoxSelected = false;
-                  });
-                }),
-          );
-        },
-      ),
+    return Consumer(
+      builder: (context, watch, ref) {
+        getWard.when(
+            data: (data) {
+              for (var model in data.data) {
+                wardNo.add(model.ward_no);
+              }
+            },
+            error: (error, stack) => Text(error.toString()),
+            loading: () => const Center(
+                  child: CircularProgressIndicator(),
+                ));
+        return DropdownButtonFormField<String>(
+            hint: const Text('Ward'),
+            value: tSelectedWard,
+            validator: (value) {
+              if (value == null) {
+                return 'Please select ward';
+              }
+              return null;
+            },
+            items: wardNo.map((name) {
+              return DropdownMenuItem(
+                value: name,
+                child: Text(name),
+              );
+            }).toList(),
+            onChanged: (String? value) {
+              setState(() {
+                tSelectedWard = value;
+                isCheckBoxSelected = false;
+              });
+            });
+      },
     );
   }
 
   casteDropDown(BuildContext context) {
     var getCaste = ref.watch(casteControllerProvicer);
     List<String> caste = [];
-    return Container(
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          color: const Color(0xffF1F1F1),
-          borderRadius: BorderRadius.circular(5),
-        ),
-        child: Consumer(
-          builder: (context, watch, child) {
-            getCaste.when(
-                data: (data) {
-                  for (var model in data.data) {
-                    caste.add(model.name);
-                  }
-                },
-                error: (error, stack) => Text(error.toString()),
-                loading: () =>
-                    const Center(child: CircularProgressIndicator()));
-            return Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: DropdownButtonFormField<String>(
-                  hint: const Text('Caste *'),
-                  value: selectedCaste,
-                  validator: (value) {
-                    if (value == null) {
-                      return 'Please select caste';
-                    }
-                    return null;
-                  },
-                  items: caste.map((name) {
-                    return DropdownMenuItem(
-                      value: name,
-                      child: Text(name),
-                    );
-                  }).toList(),
-                  onChanged: (String? value) {
-                    setState(() {
-                      selectedCaste = value;
-                    });
-
-                    selectedCasteId = caste.indexOf(selectedCaste!) + 1;
-                  }),
-            );
-          },
-        ));
-  }
-
-  jobCategoryDropDown(BuildContext context) {
-    var jobCat = ref.watch(jobcontrollerProvider);
-
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-        shape: BoxShape.rectangle,
-        color: const Color(0xffF1F1F1),
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: Consumer(
-        builder: (context, watch, child) {
-          return jobCat.when(
+    return Consumer(
+      builder: (context, watch, child) {
+        getCaste.when(
             data: (data) {
-              List<String> jobCate =
-                  data.data.map((model) => model.name).toSet().toList();
-              return Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: DropdownButton<String>(
-                  hint: const Text('Place of interest'),
-                  onChanged: (String? value) {
-                    setState(() {
-                      selectedJobCategory = value;
-                    });
-                    selectedJobCategoryId = data.data
-                        .firstWhere((element) => element.name == value)
-                        .id;
-                  },
-                  value: selectedJobCategory,
-                  items: jobCate.map((name) {
-                    return DropdownMenuItem<String>(
-                      value: name,
-                      child: Text(name),
-                    );
-                  }).toList(),
-                ),
-              );
+              for (var model in data.data) {
+                caste.add(model.name);
+              }
             },
             error: (error, stack) => Text(error.toString()),
-            loading: () => const Center(child: CircularProgressIndicator()),
-          );
-        },
-      ),
+            loading: () => const Center(child: CircularProgressIndicator()));
+        return DropdownButtonFormField<String>(
+            hint: const Text('Caste *'),
+            value: selectedCaste,
+            validator: (value) {
+              if (value == null) {
+                return 'Please select caste';
+              }
+              return null;
+            },
+            items: caste.map((name) {
+              return DropdownMenuItem(
+                value: name,
+                child: Text(name),
+              );
+            }).toList(),
+            onChanged: (String? value) {
+              setState(() {
+                selectedCaste = value;
+              });
+
+              selectedCasteId = caste.indexOf(selectedCaste!) + 1;
+            });
+      },
     );
   }
 
@@ -874,23 +770,20 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           documentTypes = data.data!;
         },
         error: (error, stackTrace) {},
-        loading: () => SizedBox());
+        loading: () => const SizedBox());
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: DropdownButtonFormField<String>(
-        hint: const Text('Document Type'),
-        items: documentTypes.map((doc) {
-          return DropdownMenuItem<String>(
-            value: doc.name,
-            child: Text(doc.name.toString()),
-          );
-        }).toList(),
-        onChanged: (String? value) {
-          selectedDocumentTypeID =
-              documentTypes.firstWhere((element) => element.name == value).id!;
-        },
-      ),
+    return DropdownButtonFormField<String>(
+      hint: const Text('Document Type'),
+      items: documentTypes.map((doc) {
+        return DropdownMenuItem<String>(
+          value: doc.name,
+          child: Text(doc.name.toString()),
+        );
+      }).toList(),
+      onChanged: (String? value) {
+        selectedDocumentTypeID =
+            documentTypes.firstWhere((element) => element.name == value).id!;
+      },
     );
   }
 
@@ -898,52 +791,41 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     var gen = ref.watch(genderControllerProvider);
     List<String> itemGender = [];
 
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-        shape: BoxShape.rectangle,
-        color: const Color(0xffF1F1F1),
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: Consumer(
-        builder: (context, watch, child) {
-          gen.when(
-            data: (data) {
-              for (var model in data.data) {
-                itemGender.add(model.gender);
-              }
-            },
-            error: (error, stack) => Text(error.toString()),
-            loading: () => const Center(child: CircularProgressIndicator()),
-          );
+    return Consumer(
+      builder: (context, watch, child) {
+        gen.when(
+          data: (data) {
+            for (var model in data.data) {
+              itemGender.add(model.gender);
+            }
+          },
+          error: (error, stack) => Text(error.toString()),
+          loading: () => const Center(child: CircularProgressIndicator()),
+        );
 
-          return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: DropdownButtonFormField<String>(
-              hint: const Text('Gender *'),
-              value: selectedGender,
-              validator: (value) {
-                if (value == null) {
-                  return 'Please select gender';
-                }
-                return null;
-              },
-              items: itemGender.map((gender) {
-                return DropdownMenuItem<String>(
-                  value: gender,
-                  child: Text(gender),
-                );
-              }).toList(),
-              onChanged: (String? value) {
-                setState(() {
-                  selectedGender = value;
-                });
-                selectedGenderId = itemGender.indexOf(selectedGender!) + 1;
-              },
-            ),
-          );
-        },
-      ),
+        return DropdownButtonFormField<String>(
+          hint: const Text('Gender *'),
+          value: selectedGender,
+          validator: (value) {
+            if (value == null) {
+              return 'Please select gender';
+            }
+            return null;
+          },
+          items: itemGender.map((gender) {
+            return DropdownMenuItem<String>(
+              value: gender,
+              child: Text(gender),
+            );
+          }).toList(),
+          onChanged: (String? value) {
+            setState(() {
+              selectedGender = value;
+            });
+            selectedGenderId = itemGender.indexOf(selectedGender!) + 1;
+          },
+        );
+      },
     );
   }
 }

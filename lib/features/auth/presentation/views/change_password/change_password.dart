@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shramsansar/const/app_color_const.dart';
@@ -22,8 +21,8 @@ class _ChangePasswordState extends ConsumerState<ChangePassword> {
   bool isVisible2 = false;
   bool isVisible3 = false;
 
-  Icon visible = Icon(Icons.visibility);
-  Icon notvisible = Icon(Icons.visibility_off);
+  Icon visible = const Icon(Icons.visibility);
+  Icon notvisible = const Icon(Icons.visibility_off);
 
   void toggleVisibilty1() {
     setState(() {
@@ -48,10 +47,10 @@ class _ChangePasswordState extends ConsumerState<ChangePassword> {
     var update = ref.watch(changePasswordControllerProvider.notifier);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Change Password'),
+        title: const Text('Change Password'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(12),
+        padding: const EdgeInsets.all(12),
         child: Column(
           children: [
             CustomTextformFormField(
@@ -134,14 +133,14 @@ class _ChangePasswordState extends ConsumerState<ChangePassword> {
                   }
                 });
               },
-              child: Text(
-                'Change Password',
-                style: TextStyle(color: Colors.white),
-              ),
               style: ElevatedButton.styleFrom(
                   backgroundColor: AppColorConst.BUTTON_BLUE_COLOR,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(4))),
+              child: const Text(
+                'Change Password',
+                style: TextStyle(color: Colors.white),
+              ),
             )
           ],
         ),

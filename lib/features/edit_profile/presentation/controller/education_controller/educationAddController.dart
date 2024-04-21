@@ -2,12 +2,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shramsansar/features/edit_profile/data/models/education_model/education_model_req.dart';
 import 'package:shramsansar/features/edit_profile/data/models/education_model/education_res_model.dart';
 import 'package:shramsansar/features/edit_profile/data/repositories/education_repo/education_repo.dart';
-import 'package:shramsansar/features/edit_profile/presentation/controller/education_controller/education_controller.dart';
 
 class EducationAddController
     extends StateNotifier<AsyncValue<EducationResModel>> {
   final EducationRepo educationRepo;
-  EducationAddController(this.educationRepo) : super(AsyncValue.loading());
+  EducationAddController(this.educationRepo) : super(const AsyncValue.loading());
   addEducation(EducationReqModel educationReqModel) async {
     final result = await educationRepo.educationAddRepo(educationReqModel);
     result.fold(
